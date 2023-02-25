@@ -3,7 +3,7 @@
 Three types of services
  - ForeGround
  - Background
- - Intent Service
+ - Intent Service - creates a new thread for execution of task on backgroud. we don't have to manage creating new thread.
  - Bound
 
 
