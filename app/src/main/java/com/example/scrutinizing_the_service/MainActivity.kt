@@ -12,6 +12,10 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private val russianServiceIntent by lazy {
+        Intent(this, RussianService::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -23,10 +27,10 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding) {
             btnStartService.setOnClickListener {
-                startService(Intent(this@MainActivity, RussianService::class.java))
+                startService(russianServiceIntent)
             }
             btnStopService.setOnClickListener {
-                stopService(Intent(this@MainActivity, RussianService::class.java))
+                stopService(russianServiceIntent)
             }
         }
     }
