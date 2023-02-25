@@ -14,6 +14,7 @@ class SmartServices : LifecycleService() {
         const val TAG = "LEARNING SmartServices"
     }
 
+    @Volatile
     private var currentNumber = 0
 
     private val binderImpl by lazy {

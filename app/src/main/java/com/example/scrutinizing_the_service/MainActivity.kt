@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private lateinit var smartServices: SmartServices
+    private var smartServices = SmartServices()
+
     private var isServiceBound = false
     private val serviceConnection by lazy {
         object : ServiceConnection {
