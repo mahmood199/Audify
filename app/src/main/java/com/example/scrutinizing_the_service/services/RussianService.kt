@@ -5,11 +5,17 @@ import android.content.Intent
 import android.os.IBinder
 import android.os.IInterface
 import android.os.Parcel
+import android.util.Log
 import java.io.FileDescriptor
 
 class RussianService : Service() {
 
+    companion object {
+        const val TAG = "RussianService"
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG, "Started")
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -18,6 +24,7 @@ class RussianService : Service() {
     }
 
     override fun onDestroy() {
+        Log.d(TAG, "Stopped")
         super.onDestroy()
     }
 
