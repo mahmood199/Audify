@@ -8,11 +8,7 @@ import android.util.Log
 class RussianService : Service() {
 
     companion object {
-        const val TAG = "RussianService"
-    }
-
-    private val binderImpl by lazy {
-        BinderImpl(this)
+        const val TAG = "LEARNING RussianService"
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -21,8 +17,8 @@ class RussianService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    override fun onBind(p0: Intent?): IBinder {
-        return binderImpl
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
     }
 
     override fun onDestroy() {
