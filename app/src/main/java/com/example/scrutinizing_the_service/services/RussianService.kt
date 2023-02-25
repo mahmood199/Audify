@@ -11,14 +11,18 @@ class RussianService : Service() {
         const val TAG = "RussianService"
     }
 
+    private val binderImpl by lazy {
+        BinderImpl(this)
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "Started")
         Log.d(TAG, Thread.currentThread().name)
         return super.onStartCommand(intent, flags, startId)
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
+    override fun onBind(p0: Intent?): IBinder {
+        return binderImpl
     }
 
     override fun onDestroy() {
