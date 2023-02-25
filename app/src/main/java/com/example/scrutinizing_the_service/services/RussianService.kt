@@ -7,7 +7,7 @@ import android.os.IInterface
 import android.os.Parcel
 import java.io.FileDescriptor
 
-class MyService : Service() {
+class RussianService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         return object : IBinder {

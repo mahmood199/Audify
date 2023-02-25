@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.scrutinizing_the_service.databinding.ActivityMainBinding
-import com.example.scrutinizing_the_service.services.MyService
+import com.example.scrutinizing_the_service.services.RussianService
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,10 +23,10 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding) {
             btnStartService.setOnClickListener {
-                startService(Intent(this@MainActivity, MyService::class.java))
+                startService(Intent(this@MainActivity, RussianService::class.java))
             }
             btnStopService.setOnClickListener {
-                stopService(Intent(this@MainActivity, MyService::class.java))
+                stopService(Intent(this@MainActivity, RussianService::class.java))
             }
         }
     }
