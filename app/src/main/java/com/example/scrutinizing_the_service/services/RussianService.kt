@@ -8,7 +8,7 @@ import android.util.Log
 class RussianService : Service() {
 
     companion object {
-        const val TAG = "RussianService"
+        const val TAG = "LEARNING RussianService"
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
