@@ -3,6 +3,7 @@
 Three types of services
  - ForeGround
  - Background
+ - Intent Service
  - Bound
 
 
