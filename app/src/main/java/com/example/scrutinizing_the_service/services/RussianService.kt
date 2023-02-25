@@ -3,10 +3,7 @@ package com.example.scrutinizing_the_service.services
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.os.IInterface
-import android.os.Parcel
 import android.util.Log
-import java.io.FileDescriptor
 
 class RussianService : Service() {
 
@@ -16,6 +13,7 @@ class RussianService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "Started")
+        Log.d(TAG, Thread.currentThread().name)
         return super.onStartCommand(intent, flags, startId)
     }
 
