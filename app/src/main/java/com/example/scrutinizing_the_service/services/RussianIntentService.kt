@@ -23,7 +23,7 @@ class RussianIntentService : IntentService("RussianIntentService") {
     }
 
     override fun onHandleIntent(p0: Intent?) {
-
+        //write logic here to be executed
     }
 
     override fun onDestroy() {
