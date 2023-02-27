@@ -27,6 +27,7 @@ LifeCycle methods of services
 4) onRebind 
 5) onCreate 
 6) onDestroy 
+7) onTaskRemoved() <-- called when application is removed from recents tab.
 
 We must explicitly set the service in the intent.
 
