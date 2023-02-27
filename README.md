@@ -31,6 +31,10 @@ LifeCycle methods of services
 
 We must explicitly set the service in the intent.
 
+If we start a service by just calling bindService() then it will be destroyed when its clients are destroyed.
+But is we start by using startService() or startForegroundService() then it will be killed by stopSelf only.
+
+
 By default service runs on main thread.
 https://developerlife.com/2017/07/10/android-o-n-and-below-component-lifecycles-and-background-tasks/
 
