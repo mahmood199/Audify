@@ -7,15 +7,15 @@ Three types of services
  - Bound
 
 <br>
-Two ways to start a STARTED Services
-1) startService() method
-2) startForegroundService() method
+Two ways to start a STARTED Services <br/>
+1) startService() method <br/>
+2) startForegroundService() method <br/>
 <br>
 
 <br>
-Two ways to start a BOUND Services
-1) call startService()/startForegroundService() method and then bind client to it.
-2) directly binding client to service using bindService() method.
+Two ways to start a BOUND Services <br/>
+1) call startService()/startForegroundService() method and then bind client to it. <br/>
+2) directly binding client to service using bindService() method. <br/>
 <br>
 
 
