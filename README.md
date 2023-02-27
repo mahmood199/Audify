@@ -15,6 +15,8 @@ LifeCycle methods of services
 5) onCreate 
 6) onDestroy 
 
+We must explicitly set the service in the intent.
+
 By default service runs on main thread.
 https://developerlife.com/2017/07/10/android-o-n-and-below-component-lifecycles-and-background-tasks/
 
