@@ -6,6 +6,19 @@ Three types of services
  - Intent Service - creates a new thread for execution of task on backgroud. we don't have to manage creating new thread. intent services works the same way like normal service if it is bound. Functionality wise it remains the same as service.
  - Bound
 
+<br>
+Two ways to start a STARTED Services
+1) startService() method
+2) startForegroundService() method
+<br>
+
+<br>
+Two ways to start a BOUND Services
+1) call startService()/startForegroundService() method and then bind client to it.
+2) directly binding client to service using bindService() method.
+<br>
+
+
 
 LifeCycle methods of services
 1) onStartCommand 
