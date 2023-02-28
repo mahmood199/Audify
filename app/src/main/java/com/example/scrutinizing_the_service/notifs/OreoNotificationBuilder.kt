@@ -3,18 +3,23 @@ package com.example.scrutinizing_the_service.notifs
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.ui.MainActivity
 
 class OreoNotificationBuilder(context: Context) : NotificationBuilder {
 
     companion object {
         const val CHANNEL_1_ID = "CHANNEL_1_ID"
         const val CHANNEL_2_ID = "CHANNEL_2_ID"
+        const val REQUEST_CODE = 100
     }
 
     private val notificationManager by lazy {
@@ -23,11 +28,19 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
+        // Pending intent is passed on the to the click listener
+        // of the notification.
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE)
+
         val notification = Notification.Builder(context, CHANNEL_1_ID)
             .setSmallIcon(R.drawable.placeholder)
             .setContentTitle("My First Notification Title")
             .setContentText("First Notification Description")
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .setColor(ContextCompat.getColor(context, R.color.purple_200))
             .build()
         notificationManager.notify(1, notification)
     }
