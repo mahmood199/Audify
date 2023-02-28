@@ -10,7 +10,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
 
-@RequiresApi(Build.VERSION_CODES.O)
 class OreoNotificationBuilder(context: Context) : NotificationBuilder {
 
     companion object {
@@ -22,6 +21,7 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
         NotificationManagerCompat.from(context)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
         val notification = Notification.Builder(context, CHANNEL_1_ID)
             .setSmallIcon(R.drawable.placeholder)
@@ -32,6 +32,7 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
         notificationManager.notify(1, notification)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun createChannel(context: Context) {
         val channel1 = NotificationChannel(
             CHANNEL_1_ID,
@@ -50,7 +51,6 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel1)
         manager.createNotificationChannel(channel2)
-
 /*
         manager.createNotificationChannels(mutableListOf(channel1, channel2))
 */
