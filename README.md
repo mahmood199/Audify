@@ -3,8 +3,21 @@
 Three types of services
  - ForeGround
  - Background
- - Intent Service - creates a new thread for execution of task on backgroud. we don't have to manage creating new thread.
+ - Intent Service - creates a new thread for execution of task on backgroud. we don't have to manage creating new thread. intent services works the same way like normal service if it is bound. Functionality wise it remains the same as service.
  - Bound
+
+<br>
+Two ways to start a STARTED Services <br/>
+1) startService() method <br/>
+2) startForegroundService() method <br/>
+<br>
+
+<br>
+Two ways to start a BOUND Services <br/>
+1) call startService()/startForegroundService() method and then bind client to it. <br/>
+2) directly binding client to service using bindService() method. <br/>
+<br>
+
 
 
 LifeCycle methods of services
@@ -14,8 +27,13 @@ LifeCycle methods of services
 4) onRebind 
 5) onCreate 
 6) onDestroy 
+7) onTaskRemoved() <-- called when application is removed from recents tab. Call stopSelf() here.
 
 We must explicitly set the service in the intent.
+
+If we start a service by just calling bindService() then it will be destroyed when its clients are destroyed.
+But is we start by using startService() or startForegroundService() then it will be killed by stopSelf only.
+
 
 By default service runs on main thread.
 https://developerlife.com/2017/07/10/android-o-n-and-below-component-lifecycles-and-background-tasks/
