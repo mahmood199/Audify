@@ -29,7 +29,9 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
         // Pending intent is passed on the to the click listener
-        // of the notification.
+        // of the notification. This is a wrapper around
+        // normal intents. We can set more properties to
+        // configure the actions on it.
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE)
 
