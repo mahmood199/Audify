@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Build
 
 class SafeNotificationBuilder(
-    val oreoNotificationBuilder: OreoNotificationBuilder,
+    val oreoNotificationBuilder: NotificationBuilder,
     val preOreoNotificationBuilder: PreOreoNotificationBuilder
 ) : NotificationBuilder {
 
