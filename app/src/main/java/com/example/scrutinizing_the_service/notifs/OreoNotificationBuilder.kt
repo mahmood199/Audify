@@ -49,6 +49,8 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
                     R.drawable.placeholder
                 )
             )
+                // TODO See code examples from medium to how to add image files to
+                // TODO notifications on devices of Android OReo or above.
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
