@@ -65,3 +65,25 @@ OnBind is only called once to bind the service. Later calls are ignored
 # Notification
 
 *Note -* A channel is needed to show notifications. If we try to send notification before creating channel we won't be able to see the notification. because it won't even trigger.
+
+## Modifying notification from code and its visial effect
+
+<br>
+
+![Screenshot 2023-03-01 015945](https://user-images.githubusercontent.com/58071934/221971843-34ffaef3-48ab-47d9-908f-fe6f4e5d1e58.png)
+
+<br>
+
+<br>
+
+![WhatsApp Image 2023-03-01 at 1 58 03 AM](https://user-images.githubusercontent.com/58071934/221971911-cf920ee2-7fe7-48c7-9616-fda3851f853b.jpeg)
+
+<br>
+
+<br>
+
+![WhatsApp Image 2023-03-01 at 1 58 03 AM (1)](https://user-images.githubusercontent.com/58071934/221972006-2e3a8aa2-d589-4a6a-8d39-300fa17e5014.jpeg)
+
+<br>
+
+
