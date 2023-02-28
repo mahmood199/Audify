@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -33,13 +35,32 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
         // normal intents. We can set more properties to
         // configure the actions on it.
         val intent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent =
+            PendingIntent.getActivity(context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        val notification = Notification.Builder(context, CHANNEL_1_ID)
+        val notification = NotificationCompat.Builder(context, CHANNEL_1_ID)
             .setSmallIcon(R.drawable.placeholder)
             .setContentTitle("My First Notification Title")
             .setContentText("First Notification Description")
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    Resources.getSystem(),
+                    R.drawable.placeholder
+                )
+            )
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
+                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s," +
+                            " when an unknown printer took a galley of type and scrambled it to make a type specimen book." +
+                            " It has survived not only five centuries, but also the leap into electronic typesetting," +
+                            " remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset" +
+                            " sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like" +
+                            " Aldus PageMaker including versions of Lorem Ipsum."
+                ).setBigContentTitle("Expanded Title")
+                    .setSummaryText("This is the summary test. Lets see where this goes.")
+            )
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setColor(ContextCompat.getColor(context, R.color.purple_200))
