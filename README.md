@@ -89,4 +89,6 @@ OnBind is only called once to bind the service. Later calls are ignored
 
 <br>
 
-### 2. 
+### 2. For BigPicture Style and Media Style Notification - Refer this video https://www.youtube.com/watch?v=s0Q2QKZ4OP8&list=PLrnPJCHvNZuDR7-cBjRXssxYK0Y5EEKzr&index=5 
+
+### 3. For Messaging and Direct Reply - Refer to this video https://www.youtube.com/watch?v=DsFYPTnCbs8&list=PLrnPJCHvNZuDR7-cBjRXssxYK0Y5EEKzr&index=7
