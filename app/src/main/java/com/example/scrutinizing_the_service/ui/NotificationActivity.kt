@@ -24,7 +24,7 @@ class NotificationActivity : AppCompatActivity() {
 
     private val safeNotificationBuilder by lazy {
         SafeNotificationBuilder(
-            OreoMultiNotificationBuilder(this),
+            OreoNotificationBuilder(this),
             PreOreoNotificationBuilder(this)
         )
     }
