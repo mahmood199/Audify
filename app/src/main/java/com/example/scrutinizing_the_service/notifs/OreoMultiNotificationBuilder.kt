@@ -15,8 +15,6 @@ class OreoMultiNotificationBuilder(
 ) : NotificationBuilder {
 
     companion object {
-        const val CHANNEL_1_ID = "CHANNEL_1_ID"
-        const val CHANNEL_2_ID = "CHANNEL_2_ID"
         const val GENERIC_CHANNEL = "CHANNEL_ID_"
     }
 
