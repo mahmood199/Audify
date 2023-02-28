@@ -1,9 +1,10 @@
 package com.example.scrutinizing_the_service.notifs
 
-import android.app.Service
+import android.content.Context
 
 interface NotificationBuilder {
 
-    fun createNotification(context: Service)
+    fun createNotification(context: Context)
+    fun createChannel(context: Context)
 
 }

@@ -1,10 +1,14 @@
 package com.example.scrutinizing_the_service.notifs
 
-import android.app.Service
+import android.content.Context
 
-class PreOreoNotificationBuilder : NotificationBuilder {
+class PreOreoNotificationBuilder(applicationContext: Context) : NotificationBuilder {
 
-    override fun createNotification(context: Service) {
+    override fun createNotification(context: Context) {
+
+    }
+
+    override fun createChannel(context: Context) {
 
     }
 

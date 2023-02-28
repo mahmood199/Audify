@@ -5,4 +5,7 @@
     <string name="bind_service">Bind service</string>
     <string name="unbind_service">Unbind Service</string>
     <string name="get_current_value">get current value</string>
+    <string name="show_notification">Show Notification</string>
+    <string name="create_channel">Create Channel</string>
+    <string name="go_to_notification_screen">Go to Notification screen</string>
 </resources>

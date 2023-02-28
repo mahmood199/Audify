@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service
+package com.example.scrutinizing_the_service.ui
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
@@ -69,6 +69,9 @@ class MainActivity : AppCompatActivity() {
             }
             btnGetRandomNumber.setOnClickListener {
                 setRandomNumber()
+            }
+            btnGoToNotifScreen.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NotificationActivity::class.java))
             }
         }
     }
