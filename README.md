@@ -68,8 +68,7 @@ OnBind is only called once to bind the service. Later calls are ignored
 
 ## Modifying notification from code and its visial effect
 
-1. LongText(BigText) Style and big context title.
-2. 
+### 1. LongText(BigText) Style and big context title.
 
 
 <br>
@@ -90,4 +89,4 @@ OnBind is only called once to bind the service. Later calls are ignored
 
 <br>
 
-
+### 2. 
