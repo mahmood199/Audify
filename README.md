@@ -59,3 +59,9 @@ Local Binding
 A bound service cannot be stopped. We need to unbind it first.
 If we try to stop an unbound service it wont stop. But as soon as its unbounded itll be stopped and destroyed.
 OnBind is only called once to bind the service. Later calls are ignored
+
+<br>
+
+# Notification
+
+*Note -* A channel is needed to show notifications. If we try to send notification before creating channel we won't be able to see the notification. because it won't even trigger.
