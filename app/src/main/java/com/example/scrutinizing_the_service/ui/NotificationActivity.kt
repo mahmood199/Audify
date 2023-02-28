@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.databinding.ActivityNotificationBinding
+import com.example.scrutinizing_the_service.notifs.OreoMultiNotificationBuilder
 import com.example.scrutinizing_the_service.notifs.OreoNotificationBuilder
 import com.example.scrutinizing_the_service.notifs.PreOreoNotificationBuilder
 import com.example.scrutinizing_the_service.notifs.SafeNotificationBuilder
@@ -23,7 +24,7 @@ class NotificationActivity : AppCompatActivity() {
 
     private val safeNotificationBuilder by lazy {
         SafeNotificationBuilder(
-            OreoNotificationBuilder(this),
+            OreoMultiNotificationBuilder(this),
             PreOreoNotificationBuilder(this)
         )
     }
