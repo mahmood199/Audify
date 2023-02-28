@@ -68,6 +68,9 @@ OnBind is only called once to bind the service. Later calls are ignored
 
 ## Modifying notification from code and its visial effect
 
+### 1. LongText(BigText) Style and big context title.
+
+
 <br>
 
 ![Screenshot 2023-03-01 015945](https://user-images.githubusercontent.com/58071934/221971843-34ffaef3-48ab-47d9-908f-fe6f4e5d1e58.png)
@@ -86,4 +89,6 @@ OnBind is only called once to bind the service. Later calls are ignored
 
 <br>
 
+### 2. For BigPicture Style and Media Style Notification - Refer this video https://www.youtube.com/watch?v=s0Q2QKZ4OP8&list=PLrnPJCHvNZuDR7-cBjRXssxYK0Y5EEKzr&index=5 
 
+### 3. For Messaging and Direct Reply - Refer to this video https://www.youtube.com/watch?v=DsFYPTnCbs8&list=PLrnPJCHvNZuDR7-cBjRXssxYK0Y5EEKzr&index=7
