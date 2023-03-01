@@ -82,7 +82,7 @@ class ProgressNotificationBuilder(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun redirectToSettings() {
-        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
             putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
             context.startActivity(this)
         }

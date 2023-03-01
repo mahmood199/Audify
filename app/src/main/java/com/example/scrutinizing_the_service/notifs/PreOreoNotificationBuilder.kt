@@ -18,7 +18,7 @@ class PreOreoNotificationBuilder(
     }
 
     override fun redirectToSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.parse("package:${context.packageName}")
             context.startActivity(this)
         }
