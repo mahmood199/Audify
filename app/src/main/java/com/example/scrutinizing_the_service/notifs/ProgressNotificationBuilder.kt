@@ -1,10 +1,11 @@
 package com.example.scrutinizing_the_service.notifs
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -32,6 +33,11 @@ class ProgressNotificationBuilder(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        if(!areNotificationsEnabled) {
+            redirectToSettings()
+            return
+        }
         val notification = NotificationCompat.Builder(context, PROGRESS_CHANNEL_ID)
             .setSmallIcon(R.drawable.placeholder)
             .setContentTitle("Download")
@@ -72,6 +78,14 @@ class ProgressNotificationBuilder(
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel1)
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun redirectToSettings() {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            context.startActivity(this)
+        }
     }
 
 

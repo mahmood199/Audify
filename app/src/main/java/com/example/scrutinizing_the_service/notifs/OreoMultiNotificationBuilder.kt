@@ -56,6 +56,8 @@ class OreoMultiNotificationBuilder(
         manager.createNotificationChannels(channels)
     }
 
-
+    override fun redirectToSettings() {
+        TODO("Not yet implemented")
+    }
 
 }

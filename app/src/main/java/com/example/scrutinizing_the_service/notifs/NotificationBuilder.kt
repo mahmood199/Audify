@@ -6,5 +6,6 @@ interface NotificationBuilder {
 
     fun createNotification(context: Context)
     fun createChannel(context: Context)
+    fun redirectToSettings()
 
 }

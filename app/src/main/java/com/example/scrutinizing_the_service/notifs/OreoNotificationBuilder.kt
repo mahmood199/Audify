@@ -94,5 +94,9 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
 */
     }
 
+    override fun redirectToSettings() {
+
+    }
+
 
 }
