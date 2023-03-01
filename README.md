@@ -96,3 +96,5 @@ OnBind is only called once to bind the service. Later calls are ignored
 *Note -* From API level 24 onwards notification from an app are grouped together if there are multiple of them. So it is handled automatically. 
 
 *Note -* Multiple channels can be grouped under one channel group. If we don't put a channel in a group then by default it goes to other(default) channel.
+
+*Note -* For custom layout notification, refer to this video https://www.youtube.com/watch?v=axcdnRAcqLw&list=PLrnPJCHvNZuDR7-cBjRXssxYK0Y5EEKzr&index=12 
