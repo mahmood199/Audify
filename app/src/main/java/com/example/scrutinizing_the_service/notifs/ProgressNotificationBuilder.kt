@@ -24,11 +24,11 @@ class ProgressNotificationBuilder(
         const val PROGRESS_INTERVAL = 10
     }
 
-    private val notificationManager by lazy {
+    private val notificationManagerCompat by lazy {
         NotificationManagerCompat.from(context)
     }
 
-    private val manager by lazy {
+    private val actualNotificationManager by lazy {
         context.getSystemService(NotificationManager::class.java)
     }
 
@@ -38,7 +38,7 @@ class ProgressNotificationBuilder(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
-        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
         if (!areNotificationsEnabled) {
             redirectToSettings()
             return
@@ -72,7 +72,7 @@ class ProgressNotificationBuilder(
          * But see below. For every notification, we are incrementing the id.
          * So each notification will be created and they will be distinguishable by their id
          */
-        notificationManager.notify(notificationId, notification.build())
+        notificationManagerCompat.notify(notificationId, notification.build())
 
     }
 
@@ -102,7 +102,7 @@ class ProgressNotificationBuilder(
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun isChannelBlocked(channelId: String): Boolean {
-        val channel = manager.getNotificationChannel(channelId)
+        val channel = actualNotificationManager.getNotificationChannel(channelId)
         return channel != null && channel.importance != NotificationManager.IMPORTANCE_NONE
     }
 
@@ -113,6 +113,16 @@ class ProgressNotificationBuilder(
             putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
             context.startActivity(this)
         }
+    }
+
+    /**
+     *  Deletes the channel or channel group that we created already
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun deleteChannel(channelId: String) {
+        actualNotificationManager.deleteNotificationChannel(channelId)
+        // TODO - The below line of code deletes all the channels in a particular group.
+        // actualNotificationManager.deleteNotificationChannelGroup()
     }
 
 
