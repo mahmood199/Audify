@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -16,7 +17,9 @@ import androidx.core.content.ContextCompat
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.ui.MainActivity
 
-class OreoNotificationBuilder(context: Context) : NotificationBuilder {
+class OreoNotificationBuilder(
+    val context: Context
+) : NotificationBuilder {
 
     companion object {
         const val CHANNEL_1_ID = "CHANNEL_1_ID"
@@ -49,8 +52,8 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
                     R.drawable.placeholder
                 )
             )
-                // TODO See code examples from medium to how to add image files to
-                // TODO notifications on devices of Android OReo or above.
+            // TODO See code examples from medium to how to add image files to
+            // TODO notifications on devices of Android OReo or above.
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
@@ -89,9 +92,14 @@ class OreoNotificationBuilder(context: Context) : NotificationBuilder {
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel1)
         manager.createNotificationChannel(channel2)
-/*
-        manager.createNotificationChannels(mutableListOf(channel1, channel2))
-*/
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun redirectToSettings() {
+        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            context.startActivity(this)
+        }
     }
 
 

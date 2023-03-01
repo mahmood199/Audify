@@ -24,4 +24,12 @@ class SafeNotificationBuilder(
         }
     }
 
+    override fun redirectToSettings() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            oreoNotificationBuilder.redirectToSettings()
+        } else {
+            preOreoNotificationBuilder.redirectToSettings()
+        }
+    }
+
 }
