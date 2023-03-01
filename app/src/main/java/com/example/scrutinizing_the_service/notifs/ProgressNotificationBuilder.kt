@@ -17,6 +17,9 @@ class ProgressNotificationBuilder(
     companion object {
         const val PROGRESS_CHANNEL_ID = "PROGRESS_CHANNEL_ID"
         const val PROGRESS_CHANNEL_IDENTIFIER = "PROGRESS_CHANNEL_IDENTIFIER"
+        const val PROGRESS_BAR_MAX_VALUE = 100
+        const val INITIAL_PROGRESS = 0
+        const val PROGRESS_INTERVAL = 10
     }
 
     private val notificationManager by lazy {
@@ -25,15 +28,27 @@ class ProgressNotificationBuilder(
 
     //TODO Notice this variables role
     private var notificationId = 0
+    private var currentProgress = INITIAL_PROGRESS
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
-        val notification = Notification.Builder(context, PROGRESS_CHANNEL_ID)
+        val notification = NotificationCompat.Builder(context, PROGRESS_CHANNEL_ID)
             .setSmallIcon(R.drawable.placeholder)
-            .setContentTitle("My First Notification Title")
-            .setContentText("First Notification Description")
+            .setContentTitle("Download")
+            .setContentText("Something download in progress")
+            .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-            .build()
+            .setProgress(PROGRESS_BAR_MAX_VALUE, currentProgress, false)
+
+        if(currentProgress > PROGRESS_BAR_MAX_VALUE) {
+            notification.setContentTitle("Download finish")
+                .setContentText("")
+                .setProgress(0, 0, false)
+                .setOngoing(false)
+        } else {
+            currentProgress += PROGRESS_INTERVAL
+        }
+
         /**
          * Every time we are creating a new notification.
          * But if the id is same as previous notifcation then it will
@@ -42,7 +57,8 @@ class ProgressNotificationBuilder(
          * But see below. For every notification, we are incrementing the id.
          * So each notification will be created and they will be distinguishable by their id
          */
-        notificationManager.notify(notificationId++, notification)
+        notificationManager.notify(notificationId, notification.build())
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
