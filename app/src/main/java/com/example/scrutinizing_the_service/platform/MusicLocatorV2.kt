@@ -50,7 +50,7 @@ object MusicLocatorV2 {
                 val lastPoint = path.lastIndexOf(".")
                 path = path.substring(0, lastPoint) + path.substring(lastPoint).lowercase(Locale.getDefault())
                 Log.d(TAG, path)
-                files.add(Song(name, artist, false))
+                files.add(Song(name, artist, false, path))
                 cursor.moveToNext()
             }
         } catch (e: Exception) {
