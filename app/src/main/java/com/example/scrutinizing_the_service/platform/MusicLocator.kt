@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import com.example.scrutinizing_the_service.data.Song
 import java.io.File
 
@@ -16,8 +17,7 @@ object MusicLocator {
 
     fun getAllMusicFilesInDevice(
         mContext: Context,
-        offset: Int,
-        searchText: String
+        offset: Int
     ): List<Song> {
         val tempAudioList: MutableList<Song> = ArrayList()
         val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
@@ -31,7 +31,6 @@ object MusicLocator {
             MediaStore.Audio.ArtistColumns.ARTIST,
         )
         val selection = MediaStore.Audio.Media.DISPLAY_NAME + " LIKE ?"
-        val selectionArgs = arrayOf(searchText)
         val sortOrder =
             "${MediaStore.Audio.Media.DISPLAY_NAME} ASC LIMIT $PAGE_SIZE OFFSET $offset"
         val c = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -71,6 +70,10 @@ object MusicLocator {
                 }
             }
             c.close()
+        }
+        Log.d("MusicLocator", tempAudioList.size.toString())
+        tempAudioList.forEach {
+            Log.d("MusicLocator", "${it.name} ${it.artist}")
         }
         return tempAudioList
     }
