@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocator
+import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 
 class MusicPlayerActivity : AppCompatActivity() {
 
@@ -20,7 +21,6 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setAdapter()
-        Thread.sleep(1000)
         (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
             listOf(
                 Song("Song 1", " Artist 1", false),
@@ -34,7 +34,7 @@ class MusicPlayerActivity : AppCompatActivity() {
 
         binding.btnAction.setOnClickListener {
             (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
-                MusicLocator.getAllMusicFilesInDevice(it.context, 10)
+                MusicLocatorV2.getAllMediaFilesOnDevice(it.context)
             )
         }
 

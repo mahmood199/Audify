@@ -13,26 +13,39 @@ import java.io.File
 object MusicLocator {
 
     private const val PAGE_SIZE = 10
-    private const val AUDIO_PAGE_SIZE = 10
+    private const val AUDIO_PAGE_SIZE = 100
 
     fun getAllMusicFilesInDevice(
         mContext: Context,
         offset: Int
     ): List<Song> {
         val tempAudioList: MutableList<Song> = ArrayList()
-        val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-            MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
-        else
+        val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
+
+        val x = MediaStore.Audio.AudioColumns.DATA
+        val y = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        //columns
         val projection = arrayOf(
             MediaStore.Audio.AudioColumns.DATA,
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.AudioColumns.ALBUM,
-            MediaStore.Audio.ArtistColumns.ARTIST,
         )
+
+/*
+
+        //Manipulation
         val selection = MediaStore.Audio.Media.DISPLAY_NAME + " LIKE ?"
         val sortOrder =
             "${MediaStore.Audio.Media.DISPLAY_NAME} ASC LIMIT $PAGE_SIZE OFFSET $offset"
+*/
+
+        //Reading
         val c = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val limit = Bundle().apply {
                 // Limit & Offset
@@ -48,6 +61,10 @@ object MusicLocator {
                 null,
                 "${MediaStore.Audio.Media.DISPLAY_NAME} ASC LIMIT $AUDIO_PAGE_SIZE OFFSET $offset"
             )
+
+
+
+
         if (c != null) {
             while (c.moveToNext()) {
                 try {
@@ -56,6 +73,7 @@ object MusicLocator {
                     val album: String = c.getString(2)
                     val artist: String = c.getString(3)
                     val extension = File(path).extension
+                    Log.d("MusicLocator SONGS", " $path $extension")
                     if (isMusicFile(extension)) {
                         val audioModel =
                             Song(
