@@ -4,6 +4,7 @@ import android.Manifest.permission.*
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,10 +18,6 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivityMusicPlayerBinding.inflate(layoutInflater)
-    }
-
-    private val adapter by lazy {
-        SongsAdapter()
     }
 
     companion object {
@@ -103,7 +100,17 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private fun setAdapter() {
         with(binding) {
-            rvMusicItems.adapter = SongsAdapter()
+            rvMusicItems.adapter = SongsAdapter {
+                handleItemClicks(it)
+            }
+        }
+    }
+
+    private fun handleItemClicks(it: ItemClickListener) {
+        when(it) {
+            is ItemClickListener.ItemClicked -> {
+                Toast.makeText(this@MusicPlayerActivity, "Play \n ${it.song.name}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
