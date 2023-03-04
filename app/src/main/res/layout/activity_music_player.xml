@@ -11,13 +11,49 @@
         android:id="@+id/rv_music_items"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="12dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/btn_action"
+        app:layout_constraintBottom_toTopOf="@+id/pb_player"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="8"
         tools:listitem="@layout/item_music" />
+
+    <ProgressBar
+        android:id="@+id/pb_player"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:progress="54"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_current_time_stamp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_total_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_current_time_stamp"
+        app:layout_constraintTop_toTopOf="@+id/tv_current_time_stamp" />
+
+    <TextView
+        android:id="@+id/tv_current_time_stamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="8dp"
+        android:text="00:32"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/btn_prev"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tv_total_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        android:text="3:22"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btn_prev"

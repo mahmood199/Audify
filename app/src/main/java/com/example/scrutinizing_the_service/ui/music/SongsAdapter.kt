@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ItemMusicBinding
 
-class SongsAdapter : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
+class SongsAdapter(
+    val itemClickListener : (ItemClickListener) -> Unit
+) : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
 
     private val songs = mutableListOf<Song>()
 
@@ -37,6 +39,10 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
                 tvSong.text = song.name
                 tvArtist.text = song.artist
                 tvPath.text = song.path
+
+                root.setOnClickListener {
+                    itemClickListener(ItemClickListener.ItemClicked(song))
+                }
             }
         }
 
