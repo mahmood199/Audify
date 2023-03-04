@@ -42,11 +42,16 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setAdapter()
+        checkForPermission()
 
         binding.btnAction.setOnClickListener {
-            checkForPermission()
+            nowPlayTheFuckingMusic()
         }
 
+
+    }
+
+    private fun nowPlayTheFuckingMusic() {
 
     }
 

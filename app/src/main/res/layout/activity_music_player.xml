@@ -23,9 +23,33 @@
     <ProgressBar
         android:id="@+id/pb_player"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_action" />
+        android:layout_marginHorizontal="10dp"
+        android:progress="54"
+        app:layout_constraintBottom_toTopOf="@+id/btn_action"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/tv_current_time_stamp"
+        app:layout_constraintTop_toTopOf="@+id/tv_current_time_stamp" />
+
+    <TextView
+        android:id="@+id/tv_current_time_stamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="00:32"
+        app:layout_constraintBottom_toTopOf="@+id/btn_prev"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:text="3:22"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btn_prev"
