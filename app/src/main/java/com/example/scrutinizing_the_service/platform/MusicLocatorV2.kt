@@ -61,7 +61,7 @@ object MusicLocatorV2 {
         val uri = Uri.parse(pathStr)
         mmr.setDataSource(context, uri)
         val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        return durationStr?.toInt() ?: 1000
+        return durationStr?.toInt()?.div(1000) ?: 1
     }
 
 

@@ -160,9 +160,13 @@ class MusicPlayerActivity : AppCompatActivity() {
         playSong(this.song)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun playSong(song: Song) {
         val myUri = song.path.toUri()
         mediaPlayer.reset()
+        with(binding) {
+            tvTotalTime.text = "${song.duration / 60} : ${song.duration % 60}"
+        }
         mediaPlayer.apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
