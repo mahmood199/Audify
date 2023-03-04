@@ -5,10 +5,8 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.media.TimedText
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,6 +17,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
@@ -37,14 +36,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         MediaPlayer()
     }
 
-    private val emitter = flow {
-        var seconds = 0
-        while (mediaPlayer.isPlaying) {
-            emit(seconds)
-            delay(1000)
-            seconds++
-        }
-    }
+    private lateinit var emitter : Flow<Int>
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -62,26 +54,21 @@ class MusicPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         setAdapter()
         checkForPermission()
-        receiveTheFlow()
         binding.btnAction.setOnClickListener {
             checkPlayerState()
-        }
-
-
-    }
-
-    private fun receiveTheFlow() {
-        lifecycleScope.launchWhenStarted {
-            emitter.collect {
-                updatePlayerProgress(it)
-            }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun updatePlayerProgress(it: Int) {
         with(binding) {
-            tvCurrentTimeStamp.text = "${it / 60} : ${it % 60}"
+            tvCurrentTimeStamp.text = "${
+                if ((it / 60) > 9) it / 60
+                else "0" + it / 60
+            }:${
+                if ((it % 60) > 9) it % 60
+                else "0" + it % 60
+            }"
             pbPlayer.progress = ((it * 100.0) / song.duration).toInt()
         }
     }
@@ -161,11 +148,17 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun playSong(song: Song) {
-        val myUri = song.path.toUri()
+    private fun playSong(it: Song) {
+        val myUri = it.path.toUri()
         mediaPlayer.reset()
         with(binding) {
-            tvTotalTime.text = "${song.duration / 60} : ${song.duration % 60}"
+            tvTotalTime.text = "${
+                if ((it.duration / 60) > 9) it.duration / 60
+                else "0" + it.duration / 60
+            }:${
+                if ((it.duration % 60) > 9) it.duration % 60
+                else "0" + it.duration % 60
+            }"
         }
         mediaPlayer.apply {
             setAudioAttributes(
@@ -174,9 +167,24 @@ class MusicPlayerActivity : AppCompatActivity() {
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .build()
             )
-            setDataSource(applicationContext, myUri)
+            setDataSource(this@MusicPlayerActivity, myUri)
             prepare()
             start()
+        }
+
+        emitter = flow {
+            var current = 0
+            while (current < it.duration) {
+                emit(current)
+                delay(1000)
+                current++
+            }
+        }
+
+        lifecycleScope.launch {
+            emitter.collect {
+                updatePlayerProgress(it)
+            }
         }
     }
 
