@@ -36,6 +36,7 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
             with(binding) {
                 tvSong.text = song.name
                 tvArtist.text = song.artist
+                tvPath.text = song.path
             }
         }
 
