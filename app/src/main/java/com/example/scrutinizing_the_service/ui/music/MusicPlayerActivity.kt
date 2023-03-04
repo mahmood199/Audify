@@ -1,22 +1,17 @@
 package com.example.scrutinizing_the_service.ui.music
 
-import android.Manifest
 import android.Manifest.permission.*
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
-import com.example.scrutinizing_the_service.platform.MusicLocator
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import com.example.scrutinizing_the_service.platform.MusicLocator
 import com.example.scrutinizing_the_service.platform.MusicLocatorV3
-import java.security.Permission
-import java.security.Permissions
 
 class MusicPlayerActivity : AppCompatActivity() {
 
@@ -63,7 +58,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
-                MusicLocatorV3.getAllAudioContent(this)
+                MusicLocatorV2.getAllAudio(this)
             )
         } else {
             requestPermission()
@@ -71,7 +66,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, READ_EXTERNAL_STORAGE)
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, READ_EXTERNAL_STORAGE)
         ) {
 
         } else {
@@ -92,9 +87,9 @@ class MusicPlayerActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == CODE) {
+        if (requestCode == CODE) {
             (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
-                MusicLocatorV3.getAllAudioContent(this)
+                MusicLocatorV2.getAllAudio(this)
             )
         } else {
 

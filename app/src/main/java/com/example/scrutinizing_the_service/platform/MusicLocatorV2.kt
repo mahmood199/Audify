@@ -13,7 +13,7 @@ object MusicLocatorV2 {
 
     private const val TAG = "MusicLocatorV2"
 
-    fun getAllMediaFilesOnDevice(context: Context): List<Song> {
+    fun getAllAudio(context: Context): List<Song> {
         val files: MutableList<Song> = ArrayList()
         try {
             val columns = arrayOf(
@@ -31,13 +31,6 @@ object MusicLocatorV2 {
                         null,
                         null
                     ),
-                    context.contentResolver.query(
-                        MediaStore.Audio.Media.INTERNAL_CONTENT_URI,
-                        columns,
-                        null,
-                        null,
-                        null
-                    )
                 )
             )
             cursor.moveToFirst()

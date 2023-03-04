@@ -15,7 +15,7 @@ object MusicLocator {
     private const val PAGE_SIZE = 10
     private const val AUDIO_PAGE_SIZE = 100
 
-    fun getAllMusicFilesInDevice(
+    fun getAllAudio(
         mContext: Context,
         offset: Int
     ): List<Song> {

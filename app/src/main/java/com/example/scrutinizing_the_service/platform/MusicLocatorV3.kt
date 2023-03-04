@@ -7,11 +7,10 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.core.net.toUri
 import com.example.scrutinizing_the_service.data.Song
-import java.net.URI
 
 object MusicLocatorV3 {
 
-    const val TAG = "MusicLocatorV3"
+    private const val TAG = "MusicLocatorV3"
 
     private val projections = arrayOf(
         MediaStore.Audio.Media.TITLE,
@@ -25,11 +24,10 @@ object MusicLocatorV3 {
         MediaStore.Audio.Media._ID,
         MediaStore.Audio.Media.DATA,
         MediaStore.Audio.Media.DURATION,
-        MediaStore.Audio.Media.BUCKET_ID
     )
 
 
-    fun getAllAudioContent(
+    fun getAllAudio(
         context: Context
     ): ArrayList<Song> {
         val contentLocation = Environment.getExternalStoragePublicDirectory(
@@ -47,6 +45,7 @@ object MusicLocatorV3 {
              null
         )
         if (cursor != null) {
+            Log.d(TAG, "Cursor not null")
             if (cursor.moveToFirst()) {
                 do {
                     val name = cursor.getString(
