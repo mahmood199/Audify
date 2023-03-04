@@ -54,8 +54,14 @@ class MusicPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         setAdapter()
         checkForPermission()
-        binding.btnAction.setOnClickListener {
-            checkPlayerState()
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
+        with(binding) {
+            btnAction.setOnClickListener {
+                checkPlayerState()
+            }
         }
     }
 
