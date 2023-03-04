@@ -32,13 +32,28 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_song"
         tools:ignore="HardcodedText" />
 
+    <TextView
+        android:id="@+id/tv_path"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:text="Path"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_artist"
+        app:layout_constraintTop_toBottomOf="@+id/tv_artist"
+        tools:ignore="HardcodedText" />
+
     <View
         android:id="@+id/divider"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_artist" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_path" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
