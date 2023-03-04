@@ -6,6 +6,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocator
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import com.example.scrutinizing_the_service.platform.MusicLocatorV3
 
 class MusicPlayerActivity : AppCompatActivity() {
 
@@ -24,7 +25,7 @@ class MusicPlayerActivity : AppCompatActivity() {
 
         binding.btnAction.setOnClickListener {
             (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
-                MusicLocatorV2.getAllMediaFilesOnDevice(it.context)
+                MusicLocatorV3.getAllAudioContent(it.context)
             )
         }
 
