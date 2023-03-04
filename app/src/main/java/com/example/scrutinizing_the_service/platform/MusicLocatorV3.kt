@@ -2,9 +2,12 @@ package com.example.scrutinizing_the_service.platform
 
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.net.toUri
 import com.example.scrutinizing_the_service.data.Song
+import java.net.URI
 
 object MusicLocatorV3 {
 
@@ -24,21 +27,24 @@ object MusicLocatorV3 {
         MediaStore.Audio.Media.DURATION,
         MediaStore.Audio.Media.BUCKET_ID
     )
-    private const val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
 
-    private val externalContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
     fun getAllAudioContent(
-        context: Context,
-        contentLocation: Uri = externalContentUri
+        context: Context
     ): ArrayList<Song> {
+        val contentLocation = Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DOWNLOADS + "/"
+        )?.toUri()!!
+
+        contentLocation.path?.let { Log.d(TAG, it) }
+
         val allAudioContent = ArrayList<Song>()
         val cursor = context.contentResolver.query(
             contentLocation,
             projections,
             null,
             null,
-            "LOWER (" + MediaStore.Audio.Media.TITLE + ") ASC"
+             null
         )
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -92,7 +98,7 @@ object MusicLocatorV3 {
 
                     allAudioContent.add(
                         Song(
-                            name,
+                            title,
                             artist,
                             false,
                             path
@@ -102,6 +108,7 @@ object MusicLocatorV3 {
             }
             cursor.close()
         }
+        Log.d(TAG, allAudioContent.size.toString())
         return allAudioContent
     }
 
