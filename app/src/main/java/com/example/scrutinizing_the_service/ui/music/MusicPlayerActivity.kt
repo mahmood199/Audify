@@ -9,10 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
-import com.example.scrutinizing_the_service.platform.MusicLocator
-import com.example.scrutinizing_the_service.platform.MusicLocatorV3
 
 class MusicPlayerActivity : AppCompatActivity() {
 
@@ -23,6 +22,8 @@ class MusicPlayerActivity : AppCompatActivity() {
     companion object {
         const val CODE = 1
     }
+
+    private lateinit var song: Song
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -42,13 +43,13 @@ class MusicPlayerActivity : AppCompatActivity() {
         checkForPermission()
 
         binding.btnAction.setOnClickListener {
-            nowPlayTheFuckingMusic()
+            checkPlayerState()
         }
 
 
     }
 
-    private fun nowPlayTheFuckingMusic() {
+    private fun checkPlayerState() {
 
     }
 
@@ -109,9 +110,14 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun handleItemClicks(it: ItemClickListener) {
         when(it) {
             is ItemClickListener.ItemClicked -> {
-                Toast.makeText(this@MusicPlayerActivity, "Play \n ${it.song.name}", Toast.LENGTH_SHORT).show()
+                playTheMusic(it.song)
             }
         }
+    }
+
+    private fun playTheMusic(song: Song) {
+        this.song = song
+        Toast.makeText(this@MusicPlayerActivity, "Play \n ${song.name}", Toast.LENGTH_SHORT).show()
     }
 
 
