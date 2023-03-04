@@ -1,19 +1,26 @@
 package com.example.scrutinizing_the_service.ui.music
 
 import android.Manifest.permission.*
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.media.TimedText
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class MusicPlayerActivity : AppCompatActivity() {
 
@@ -28,6 +35,15 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var song: Song
     private val mediaPlayer by lazy {
         MediaPlayer()
+    }
+
+    private val emitter = flow {
+        var seconds = 0
+        while (mediaPlayer.isPlaying) {
+            emit(seconds)
+            delay(1000)
+            seconds++
+        }
     }
 
     private val requestPermissionLauncher =
@@ -46,7 +62,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         setAdapter()
         checkForPermission()
-
+        receiveTheFlow()
         binding.btnAction.setOnClickListener {
             checkPlayerState()
         }
@@ -54,8 +70,24 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     }
 
+    private fun receiveTheFlow() {
+        lifecycleScope.launchWhenStarted {
+            emitter.collect {
+                updatePlayerProgress(it)
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updatePlayerProgress(it: Int) {
+        with(binding) {
+            tvCurrentTimeStamp.text = "${it / 60} : ${it % 60}"
+            pbPlayer.progress = ((it * 100.0) / song.duration).toInt()
+        }
+    }
+
     private fun checkPlayerState() {
-        if(mediaPlayer.isPlaying)
+        if (mediaPlayer.isPlaying)
             mediaPlayer.pause()
         else
             mediaPlayer.start()
@@ -116,7 +148,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private fun handleItemClicks(it: ItemClickListener) {
-        when(it) {
+        when (it) {
             is ItemClickListener.ItemClicked -> {
                 setUpTheNewSong(it.song)
             }

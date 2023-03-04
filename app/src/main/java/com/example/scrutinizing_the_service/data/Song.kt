@@ -4,5 +4,6 @@ data class Song(
     val name: String,
     val artist: String,
     val isFavourite: Boolean,
-    val path : String = ""
+    val path: String = "",
+    val duration: Int = 0
 )
