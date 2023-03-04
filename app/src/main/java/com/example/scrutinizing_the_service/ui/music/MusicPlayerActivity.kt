@@ -2,13 +2,15 @@ package com.example.scrutinizing_the_service.ui.music
 
 import android.Manifest.permission.*
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
@@ -24,6 +26,9 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private lateinit var song: Song
+    private val mediaPlayer by lazy {
+        MediaPlayer()
+    }
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -50,7 +55,10 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private fun checkPlayerState() {
-
+        if(mediaPlayer.isPlaying)
+            mediaPlayer.pause()
+        else
+            mediaPlayer.start()
     }
 
     private fun checkForPermission() {
@@ -110,14 +118,30 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun handleItemClicks(it: ItemClickListener) {
         when(it) {
             is ItemClickListener.ItemClicked -> {
-                playTheMusic(it.song)
+                setUpTheNewSong(it.song)
             }
         }
     }
 
-    private fun playTheMusic(song: Song) {
+    private fun setUpTheNewSong(song: Song) {
         this.song = song
-        Toast.makeText(this@MusicPlayerActivity, "Play \n ${song.name}", Toast.LENGTH_SHORT).show()
+        playSong(this.song)
+    }
+
+    private fun playSong(song: Song) {
+        val myUri = song.path.toUri()
+        mediaPlayer.reset()
+        mediaPlayer.apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+            setDataSource(applicationContext, myUri)
+            prepare()
+            start()
+        }
     }
 
 
