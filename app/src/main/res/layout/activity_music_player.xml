@@ -11,13 +11,21 @@
         android:id="@+id/rv_music_items"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="12dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/btn_action"
+        app:layout_constraintBottom_toTopOf="@+id/pb_player"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="8"
         tools:listitem="@layout/item_music" />
+
+    <ProgressBar
+        android:id="@+id/pb_player"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btn_action" />
 
     <Button
         android:id="@+id/btn_prev"
