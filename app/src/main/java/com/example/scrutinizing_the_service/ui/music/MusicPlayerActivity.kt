@@ -83,38 +83,19 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private fun forwardSong() {
         val currentPosition = mediaPlayer.currentPosition
-        currentPlayingTime = if (currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
+         if (currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
             mediaPlayer.seekTo(currentPosition + SEEK_FORWARD_TIME)
-            currentPosition + SEEK_FORWARD_TIME
         } else {
             mediaPlayer.seekTo(mediaPlayer.duration)
-            mediaPlayer.duration
         }
     }
 
     private fun rewindSong() {
         val currentPosition = mediaPlayer.currentPosition
-        currentPlayingTime = if (currentPosition - SEEK_BACKWARD_TIME >= 0) {
+        if (currentPosition - SEEK_BACKWARD_TIME >= 0) {
             mediaPlayer.seekTo(currentPosition - SEEK_BACKWARD_TIME)
-            currentPosition - SEEK_BACKWARD_TIME
         } else {
             mediaPlayer.seekTo(0)
-            0
-        }
-    }
-
-
-    @SuppressLint("SetTextI18n")
-    private fun updatePlayerProgress(it: Int) {
-        with(binding) {
-            tvCurrentTimeStamp.text = "${
-                if ((it / 60) > 9) it / 60
-                else "0" + it / 60
-            }:${
-                if ((it % 60) > 9) it % 60
-                else "0" + it % 60
-            }"
-            pbPlayer.progress = ((it * 100.0) / song.duration).toInt()
         }
     }
 
@@ -130,7 +111,8 @@ class MusicPlayerActivity : AppCompatActivity() {
             mediaPlayer.start()
             with(binding) {
                 btnAction.text = getString(R.string.pause)
-                pbPlayer.progress = (currentPlayingTime * 100) / song.duration
+                pbPlayer.progress = mediaPlayer.currentPosition
+                pbPlayer.max = mediaPlayer.duration
             }
             updateSeekBar()
         }
@@ -140,15 +122,16 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun updateSeekBar() {
         with(binding) {
             tvCurrentTimeStamp.text = "${
-                if ((currentPlayingTime / 60) > 9) currentPlayingTime / 60
-                else "0" + currentPlayingTime / 60
+                if ((mediaPlayer.currentPosition / 60) > 9) mediaPlayer.currentPosition / 60
+                else "0" + mediaPlayer.currentPosition / 60
             }:${
-                if ((currentPlayingTime % 60) > 9) currentPlayingTime % 60
-                else "0" + currentPlayingTime % 60
+                if ((mediaPlayer.currentPosition % 60) > 9) mediaPlayer.currentPosition % 60
+                else "0" + mediaPlayer.currentPosition % 60
             }"
-            pbPlayer.progress = ((currentPlayingTime * 100.0) / song.duration).toInt()
+            pbPlayer.progress = mediaPlayer.currentPosition
+            pbPlayer.max = mediaPlayer.duration
         }
-        Handler(Looper.getMainLooper()).postDelayed(runnable, 50)
+        Handler(Looper.getMainLooper()).postDelayed(runnable, 1000)
     }
 
     var runnable = Runnable { updateSeekBar() }
@@ -244,6 +227,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             setDataSource(this@MusicPlayerActivity, myUri)
             prepare()
             start()
+            updateSeekBar()
         }
     }
 
