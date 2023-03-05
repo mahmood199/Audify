@@ -7,6 +7,7 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,6 +31,8 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     companion object {
         const val CODE = 1
+        const val SEEK_FORWARD_TIME = 5000
+        const val SEEK_BACKWARD_TIME = 5000
     }
 
     private lateinit var song: Song
@@ -36,7 +40,10 @@ class MusicPlayerActivity : AppCompatActivity() {
         MediaPlayer()
     }
 
-    private lateinit var emitter : Flow<Int>
+    val job = Job()
+
+    private lateinit var emitter: Flow<Int>
+    private var currentPlayingTime = 0
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -62,8 +69,42 @@ class MusicPlayerActivity : AppCompatActivity() {
             btnAction.setOnClickListener {
                 checkPlayerState()
             }
+
+            btnForward.setOnClickListener {
+                forwardSong()
+            }
+
+            btnRewind.setOnClickListener {
+                rewindSong()
+            }
         }
     }
+
+
+    private fun forwardSong() {
+        val currentPosition = mediaPlayer.currentPosition
+        currentPlayingTime = if (currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
+            mediaPlayer.seekTo(currentPosition + SEEK_FORWARD_TIME)
+            currentPosition + SEEK_FORWARD_TIME
+        } else {
+            mediaPlayer.seekTo(mediaPlayer.duration)
+            mediaPlayer.duration
+        }
+        setupFlowEmitter(currentPlayingTime, song)
+    }
+
+    private fun rewindSong() {
+        val currentPosition = mediaPlayer.currentPosition
+        currentPlayingTime = if (currentPosition - SEEK_BACKWARD_TIME >= 0) {
+            mediaPlayer.seekTo(currentPosition - SEEK_BACKWARD_TIME)
+            currentPosition - SEEK_BACKWARD_TIME
+        } else {
+            mediaPlayer.seekTo(0)
+            0
+        }
+        setupFlowEmitter(currentPlayingTime, song)
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun updatePlayerProgress(it: Int) {
@@ -82,8 +123,10 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun checkPlayerState() {
         if (mediaPlayer.isPlaying)
             mediaPlayer.pause()
-        else
+        else {
             mediaPlayer.start()
+            setupFlowEmitter(currentPlayingTime, song)
+        }
     }
 
     private fun checkForPermission() {
@@ -158,6 +201,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         val myUri = it.path.toUri()
         mediaPlayer.reset()
         with(binding) {
+            player.visibility = View.VISIBLE
             tvTotalTime.text = "${
                 if ((it.duration / 60) > 9) it.duration / 60
                 else "0" + it.duration / 60
@@ -178,20 +222,30 @@ class MusicPlayerActivity : AppCompatActivity() {
             start()
         }
 
-        emitter = flow {
-            var current = 0
-            while (current < it.duration) {
-                emit(current)
-                delay(1000)
-                current++
-            }
-        }
+        currentPlayingTime = 0
+        setupFlowEmitter(currentPlayingTime, song)
 
         lifecycleScope.launch {
             emitter.collect {
                 updatePlayerProgress(it)
             }
         }
+    }
+
+    private fun setupFlowEmitter(i: Int, song: Song) {
+        emitter = flow {
+            var current = i
+            while (current < song.duration && mediaPlayer.isPlaying) {
+                emit(current)
+                delay(1000)
+                current++
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 
 

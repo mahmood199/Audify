@@ -40,7 +40,7 @@
         android:layout_marginBottom="8dp"
         android:text="00:32"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/btn_prev"
+        app:layout_constraintBottom_toTopOf="@+id/btn_rewind"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="HardcodedText" />
 
@@ -52,14 +52,21 @@
         android:layout_marginBottom="8dp"
         android:text="3:22"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintBottom_toTopOf="@+id/btn_forward"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btn_prev"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_current_time_stamp, tv_total_time, pb_player" />
+
+    <Button
+        android:id="@+id/btn_rewind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rewind"
         app:layout_constraintBottom_toBottomOf="@+id/btn_action"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -70,37 +77,37 @@
         android:layout_marginBottom="64dp"
         android:text="@string/play"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_next"
-        app:layout_constraintStart_toEndOf="@+id/btn_prev" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_forward"
+        app:layout_constraintStart_toEndOf="@+id/btn_rewind" />
 
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:text="@string/forward"
         app:layout_constraintBottom_toBottomOf="@+id/btn_action"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/btn_rewind"
+        android:id="@+id/btn_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rewind"
+        android:text="@string/previous"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_fast_forward"
+        app:layout_constraintEnd_toStartOf="@+id/btn_next_song"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_prev" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_rewind" />
 
     <Button
-        android:id="@+id/btn_fast_forward"
+        android:id="@+id/btn_next_song"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/forward"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_rewind"
-        app:layout_constraintTop_toBottomOf="@+id/btn_next" />
+        app:layout_constraintStart_toEndOf="@+id/btn_previous"
+        app:layout_constraintTop_toBottomOf="@+id/btn_forward" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
