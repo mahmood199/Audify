@@ -49,4 +49,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
+    implementation 'com.android.support:support-media-compat:26.+'
+
 }
