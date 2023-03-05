@@ -15,23 +15,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.lifecycle.lifecycleScope
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 class MusicPlayerActivity : AppCompatActivity() {
-
-    private val binding by lazy {
-        ActivityMusicPlayerBinding.inflate(layoutInflater)
-    }
 
     companion object {
         const val CODE = 1
@@ -39,23 +29,22 @@ class MusicPlayerActivity : AppCompatActivity() {
         const val SEEK_BACKWARD_TIME = 5000
     }
 
+    private val binding by lazy {
+        ActivityMusicPlayerBinding.inflate(layoutInflater)
+    }
+
     private lateinit var song: Song
     private val mediaPlayer by lazy {
         MediaPlayer()
     }
 
-    private var currentPlayingTime = 0
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Log.i("Permission: ", "Granted")
-            } else {
-                Log.i("Permission: ", "Denied")
-            }
+    private val runnable by lazy {
+        Runnable {
+            updateMusicProgressBar()
         }
+    }
+
+    private var currentPlayingTime = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +57,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding) {
             btnAction.setOnClickListener {
-                if(this@MusicPlayerActivity::song.isInitialized)
+                if (this@MusicPlayerActivity::song.isInitialized)
                     checkPlayerState()
             }
 
@@ -82,13 +71,13 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
-
     private fun forwardSong() {
-        currentPlayingTime = if (mediaPlayer.currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
-            mediaPlayer.currentPosition + SEEK_FORWARD_TIME
-        } else {
-            mediaPlayer.duration
-        }
+        currentPlayingTime =
+            if (mediaPlayer.currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
+                mediaPlayer.currentPosition + SEEK_FORWARD_TIME
+            } else {
+                mediaPlayer.duration
+            }
         mediaPlayer.seekTo(currentPlayingTime)
     }
 
@@ -116,21 +105,20 @@ class MusicPlayerActivity : AppCompatActivity() {
                 pbPlayer.progress = mediaPlayer.currentPosition
                 pbPlayer.max = mediaPlayer.duration
             }
-            updateSeekBar()
+            updateMusicProgressBar()
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateSeekBar() {
+    private fun updateMusicProgressBar() {
         with(binding) {
-            tvCurrentTimeStamp.text = TimeConverter.getConvertedTime(mediaPlayer.currentPosition.toLong())
+            tvCurrentTimeStamp.text =
+                TimeConverter.getConvertedTime(mediaPlayer.currentPosition.toLong())
             pbPlayer.progress = mediaPlayer.currentPosition
             pbPlayer.max = mediaPlayer.duration
         }
         Handler(Looper.getMainLooper()).postDelayed(runnable, 1000)
     }
-
-    var runnable = Runnable { updateSeekBar() }
 
     private fun checkForPermission() {
         if (
@@ -213,7 +201,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             setDataSource(this@MusicPlayerActivity, myUri)
             prepare()
             start()
-            updateSeekBar()
+            updateMusicProgressBar()
         }
         with(binding) {
             player.visibility = View.VISIBLE
