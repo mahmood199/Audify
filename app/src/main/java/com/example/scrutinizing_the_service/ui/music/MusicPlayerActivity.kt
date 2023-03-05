@@ -47,6 +47,8 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private var currentPlayingTime = 0
+    private var songPosition = 0
+    private var size = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,34 @@ class MusicPlayerActivity : AppCompatActivity() {
             btnRewind.setOnClickListener {
                 rewindSong()
             }
+
+            btnPrevious.setOnClickListener {
+                playPreviousSong()
+            }
+
+            btnNextSong.setOnClickListener {
+                playNextSong()
+            }
+        }
+    }
+
+    private fun playPreviousSong() {
+        songPosition--
+        songPosition = (songPosition + size) % size
+        with(binding) {
+            playSong(
+                (rvMusicItems.adapter as SongsAdapter).getItemAtPosition(songPosition)
+            )
+        }
+    }
+
+    private fun playNextSong() {
+        songPosition++
+        songPosition %= size
+        with(binding) {
+            playSong(
+                (rvMusicItems.adapter as SongsAdapter).getItemAtPosition(songPosition)
+            )
         }
     }
 
@@ -180,6 +210,8 @@ class MusicPlayerActivity : AppCompatActivity() {
         when (it) {
             is ItemClickListener.ItemClicked -> {
                 setUpTheNewSong(it.song)
+                songPosition = it.position
+                size = it.totalItem
             }
         }
     }
@@ -193,15 +225,6 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun playSong(it: Song) {
         val myUri = it.path.toUri()
         mediaPlayer.reset()
-        with(binding) {
-            tvTotalTime.text = "${
-                if ((it.duration / 60) > 9) it.duration / 60
-                else "0" + it.duration / 60
-            }:${
-                if ((it.duration % 60) > 9) it.duration % 60
-                else "0" + it.duration % 60
-            }"
-        }
         mediaPlayer.apply {
             setAudioAttributes(
                 AudioAttributes.Builder()

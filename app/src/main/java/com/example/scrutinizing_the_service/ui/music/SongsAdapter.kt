@@ -7,7 +7,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ItemMusicBinding
 
 class SongsAdapter(
-    val itemClickListener : (ItemClickListener) -> Unit
+    val itemClickListener: (ItemClickListener) -> Unit
 ) : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
 
     private val songs = mutableListOf<Song>()
@@ -19,7 +19,7 @@ class SongsAdapter(
     }
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
-        holder.bindData(songs[position])
+        holder.bindData(songs[position], position)
     }
 
     override fun getItemCount() = songs.size
@@ -30,18 +30,26 @@ class SongsAdapter(
         notifyItemChanged(size, songs.size)
     }
 
+    fun getItemAtPosition(songPosition: Int) =  songs[songPosition]
+
     inner class SongViewHolder(
         private val binding: ItemMusicBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(song: Song) {
+        fun bindData(song: Song, position: Int) {
             with(binding) {
                 tvSong.text = song.name
                 tvArtist.text = song.artist
                 tvPath.text = song.path
 
                 root.setOnClickListener {
-                    itemClickListener(ItemClickListener.ItemClicked(song))
+                    itemClickListener(
+                        ItemClickListener.ItemClicked(
+                            song,
+                            position,
+                            itemCount
+                        )
+                    )
                 }
             }
         }
