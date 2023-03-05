@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.os.postDelayed
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
@@ -42,6 +43,10 @@ class MusicPlayerActivity : AppCompatActivity() {
         Runnable {
             updateMusicProgressBar()
         }
+    }
+
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
     }
 
     private var currentPlayingTime = 0
@@ -117,7 +122,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             pbPlayer.progress = mediaPlayer.currentPosition
             pbPlayer.max = mediaPlayer.duration
         }
-        Handler(Looper.getMainLooper()).postDelayed(runnable, 1000)
+        handler.postDelayed(runnable, 1000)
     }
 
     private fun checkForPermission() {
@@ -214,6 +219,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         //TODO while implementing service remove this
         // Because I want my music to run even though i have switched app
         // or killed this activity
+        handler.removeCallbacks(runnable)
         mediaPlayer.run {
             pause()
             stop()
