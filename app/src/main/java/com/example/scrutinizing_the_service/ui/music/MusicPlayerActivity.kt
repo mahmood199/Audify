@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
@@ -67,7 +68,8 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding) {
             btnAction.setOnClickListener {
-                checkPlayerState()
+                if(this@MusicPlayerActivity::song.isInitialized)
+                    checkPlayerState()
             }
 
             btnForward.setOnClickListener {
@@ -82,21 +84,21 @@ class MusicPlayerActivity : AppCompatActivity() {
 
 
     private fun forwardSong() {
-        val currentPosition = mediaPlayer.currentPosition
-         if (currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
-            mediaPlayer.seekTo(currentPosition + SEEK_FORWARD_TIME)
+        currentPlayingTime = if (mediaPlayer.currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
+            mediaPlayer.currentPosition + SEEK_FORWARD_TIME
         } else {
-            mediaPlayer.seekTo(mediaPlayer.duration)
+            mediaPlayer.duration
         }
+        mediaPlayer.seekTo(currentPlayingTime)
     }
 
     private fun rewindSong() {
-        val currentPosition = mediaPlayer.currentPosition
-        if (currentPosition - SEEK_BACKWARD_TIME >= 0) {
-            mediaPlayer.seekTo(currentPosition - SEEK_BACKWARD_TIME)
+        currentPlayingTime = if (mediaPlayer.currentPosition - SEEK_BACKWARD_TIME >= 0) {
+            mediaPlayer.currentPosition - SEEK_BACKWARD_TIME
         } else {
-            mediaPlayer.seekTo(0)
+            0
         }
+        mediaPlayer.seekTo(currentPlayingTime)
     }
 
     private fun checkPlayerState() {
@@ -121,13 +123,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun updateSeekBar() {
         with(binding) {
-            tvCurrentTimeStamp.text = "${
-                if ((mediaPlayer.currentPosition / 60) > 9) mediaPlayer.currentPosition / 60
-                else "0" + mediaPlayer.currentPosition / 60
-            }:${
-                if ((mediaPlayer.currentPosition % 60) > 9) mediaPlayer.currentPosition % 60
-                else "0" + mediaPlayer.currentPosition % 60
-            }"
+            tvCurrentTimeStamp.text = TimeConverter.getConvertedTime(mediaPlayer.currentPosition.toLong())
             pbPlayer.progress = mediaPlayer.currentPosition
             pbPlayer.max = mediaPlayer.duration
         }
@@ -207,16 +203,6 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun playSong(it: Song) {
         val myUri = it.path.toUri()
         mediaPlayer.reset()
-        with(binding) {
-            player.visibility = View.VISIBLE
-            tvTotalTime.text = "${
-                if ((it.duration / 60) > 9) it.duration / 60
-                else "0" + it.duration / 60
-            }:${
-                if ((it.duration % 60) > 9) it.duration % 60
-                else "0" + it.duration % 60
-            }"
-        }
         mediaPlayer.apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -228,6 +214,11 @@ class MusicPlayerActivity : AppCompatActivity() {
             prepare()
             start()
             updateSeekBar()
+        }
+        with(binding) {
+            player.visibility = View.VISIBLE
+            btnAction.text = getString(R.string.pause)
+            tvTotalTime.text = TimeConverter.getConvertedTime(mediaPlayer.duration.toLong())
         }
     }
 
