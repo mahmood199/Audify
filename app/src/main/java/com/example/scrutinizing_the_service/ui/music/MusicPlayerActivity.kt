@@ -8,14 +8,11 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.os.postDelayed
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
@@ -196,6 +193,15 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun playSong(it: Song) {
         val myUri = it.path.toUri()
         mediaPlayer.reset()
+        with(binding) {
+            tvTotalTime.text = "${
+                if ((it.duration / 60) > 9) it.duration / 60
+                else "0" + it.duration / 60
+            }:${
+                if ((it.duration % 60) > 9) it.duration % 60
+                else "0" + it.duration % 60
+            }"
+        }
         mediaPlayer.apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
