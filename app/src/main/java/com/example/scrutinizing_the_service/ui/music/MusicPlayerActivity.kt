@@ -6,28 +6,20 @@ import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.lifecycle.lifecycleScope
+import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 class MusicPlayerActivity : AppCompatActivity() {
-
-    private val binding by lazy {
-        ActivityMusicPlayerBinding.inflate(layoutInflater)
-    }
 
     companion object {
         const val CODE = 1
@@ -35,26 +27,26 @@ class MusicPlayerActivity : AppCompatActivity() {
         const val SEEK_BACKWARD_TIME = 5000
     }
 
+    private val binding by lazy {
+        ActivityMusicPlayerBinding.inflate(layoutInflater)
+    }
+
     private lateinit var song: Song
     private val mediaPlayer by lazy {
         MediaPlayer()
     }
 
-    val job = Job()
-
-    private lateinit var emitter: Flow<Int>
-    private var currentPlayingTime = 0
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Log.i("Permission: ", "Granted")
-            } else {
-                Log.i("Permission: ", "Denied")
-            }
+    private val runnable by lazy {
+        Runnable {
+            updateMusicProgressBar()
         }
+    }
+
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
+    private var currentPlayingTime = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +59,8 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding) {
             btnAction.setOnClickListener {
-                checkPlayerState()
+                if (this@MusicPlayerActivity::song.isInitialized)
+                    checkPlayerState()
             }
 
             btnForward.setOnClickListener {
@@ -80,53 +73,53 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
-
     private fun forwardSong() {
-        val currentPosition = mediaPlayer.currentPosition
-        currentPlayingTime = if (currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
-            mediaPlayer.seekTo(currentPosition + SEEK_FORWARD_TIME)
-            currentPosition + SEEK_FORWARD_TIME
-        } else {
-            mediaPlayer.seekTo(mediaPlayer.duration)
-            mediaPlayer.duration
-        }
-        setupFlowEmitter(currentPlayingTime, song)
+        currentPlayingTime =
+            if (mediaPlayer.currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
+                mediaPlayer.currentPosition + SEEK_FORWARD_TIME
+            } else {
+                mediaPlayer.duration
+            }
+        mediaPlayer.seekTo(currentPlayingTime)
     }
 
     private fun rewindSong() {
-        val currentPosition = mediaPlayer.currentPosition
-        currentPlayingTime = if (currentPosition - SEEK_BACKWARD_TIME >= 0) {
-            mediaPlayer.seekTo(currentPosition - SEEK_BACKWARD_TIME)
-            currentPosition - SEEK_BACKWARD_TIME
+        currentPlayingTime = if (mediaPlayer.currentPosition - SEEK_BACKWARD_TIME >= 0) {
+            mediaPlayer.currentPosition - SEEK_BACKWARD_TIME
         } else {
-            mediaPlayer.seekTo(0)
             0
         }
-        setupFlowEmitter(currentPlayingTime, song)
-    }
-
-
-    @SuppressLint("SetTextI18n")
-    private fun updatePlayerProgress(it: Int) {
-        with(binding) {
-            tvCurrentTimeStamp.text = "${
-                if ((it / 60) > 9) it / 60
-                else "0" + it / 60
-            }:${
-                if ((it % 60) > 9) it % 60
-                else "0" + it % 60
-            }"
-            pbPlayer.progress = ((it * 100.0) / song.duration).toInt()
-        }
+        mediaPlayer.seekTo(currentPlayingTime)
     }
 
     private fun checkPlayerState() {
-        if (mediaPlayer.isPlaying)
+        if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-        else {
+            currentPlayingTime = mediaPlayer.currentPosition
+            with(binding) {
+                btnAction.text = getString(R.string.play)
+            }
+        } else {
+            mediaPlayer.seekTo(currentPlayingTime)
             mediaPlayer.start()
-            setupFlowEmitter(currentPlayingTime, song)
+            with(binding) {
+                btnAction.text = getString(R.string.pause)
+                pbPlayer.progress = mediaPlayer.currentPosition
+                pbPlayer.max = mediaPlayer.duration
+            }
+            updateMusicProgressBar()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateMusicProgressBar() {
+        with(binding) {
+            tvCurrentTimeStamp.text =
+                TimeConverter.getConvertedTime(mediaPlayer.currentPosition.toLong())
+            pbPlayer.progress = mediaPlayer.currentPosition
+            pbPlayer.max = mediaPlayer.duration
+        }
+        handler.postDelayed(runnable, 1000)
     }
 
     private fun checkForPermission() {
@@ -201,7 +194,6 @@ class MusicPlayerActivity : AppCompatActivity() {
         val myUri = it.path.toUri()
         mediaPlayer.reset()
         with(binding) {
-            player.visibility = View.VISIBLE
             tvTotalTime.text = "${
                 if ((it.duration / 60) > 9) it.duration / 60
                 else "0" + it.duration / 60
@@ -220,31 +212,26 @@ class MusicPlayerActivity : AppCompatActivity() {
             setDataSource(this@MusicPlayerActivity, myUri)
             prepare()
             start()
+            updateMusicProgressBar()
         }
-
-        currentPlayingTime = 0
-        setupFlowEmitter(currentPlayingTime, song)
-
-        lifecycleScope.launch {
-            emitter.collect {
-                updatePlayerProgress(it)
-            }
-        }
-    }
-
-    private fun setupFlowEmitter(i: Int, song: Song) {
-        emitter = flow {
-            var current = i
-            while (current < song.duration && mediaPlayer.isPlaying) {
-                emit(current)
-                delay(1000)
-                current++
-            }
+        with(binding) {
+            player.visibility = View.VISIBLE
+            btnAction.text = getString(R.string.pause)
+            tvTotalTime.text = TimeConverter.getConvertedTime(mediaPlayer.duration.toLong())
         }
     }
 
     override fun onDestroy() {
-        job.cancel()
+        //TODO while implementing service remove this
+        // Because I want my music to run even though i have switched app
+        // or killed this activity
+        handler.removeCallbacks(runnable)
+        mediaPlayer.run {
+            pause()
+            stop()
+            reset()
+            release()
+        }
         super.onDestroy()
     }
 
