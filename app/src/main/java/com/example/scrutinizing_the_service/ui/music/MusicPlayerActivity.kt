@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
@@ -40,9 +43,6 @@ class MusicPlayerActivity : AppCompatActivity() {
         MediaPlayer()
     }
 
-    val job = Job()
-
-    private lateinit var emitter: Flow<Int>
     private var currentPlayingTime = 0
 
     private val requestPermissionLauncher =
@@ -90,7 +90,6 @@ class MusicPlayerActivity : AppCompatActivity() {
             mediaPlayer.seekTo(mediaPlayer.duration)
             mediaPlayer.duration
         }
-        setupFlowEmitter(currentPlayingTime, song)
     }
 
     private fun rewindSong() {
@@ -102,7 +101,6 @@ class MusicPlayerActivity : AppCompatActivity() {
             mediaPlayer.seekTo(0)
             0
         }
-        setupFlowEmitter(currentPlayingTime, song)
     }
 
 
@@ -121,13 +119,39 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private fun checkPlayerState() {
-        if (mediaPlayer.isPlaying)
+        if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-        else {
+            currentPlayingTime = mediaPlayer.currentPosition
+            with(binding) {
+                btnAction.text = getString(R.string.play)
+            }
+        } else {
+            mediaPlayer.seekTo(currentPlayingTime)
             mediaPlayer.start()
-            setupFlowEmitter(currentPlayingTime, song)
+            with(binding) {
+                btnAction.text = getString(R.string.pause)
+                pbPlayer.progress = (currentPlayingTime * 100) / song.duration
+            }
+            updateSeekBar()
         }
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateSeekBar() {
+        with(binding) {
+            tvCurrentTimeStamp.text = "${
+                if ((currentPlayingTime / 60) > 9) currentPlayingTime / 60
+                else "0" + currentPlayingTime / 60
+            }:${
+                if ((currentPlayingTime % 60) > 9) currentPlayingTime % 60
+                else "0" + currentPlayingTime % 60
+            }"
+            pbPlayer.progress = ((currentPlayingTime * 100.0) / song.duration).toInt()
+        }
+        Handler(Looper.getMainLooper()).postDelayed(runnable, 50)
+    }
+
+    var runnable = Runnable { updateSeekBar() }
 
     private fun checkForPermission() {
         if (
@@ -221,30 +245,18 @@ class MusicPlayerActivity : AppCompatActivity() {
             prepare()
             start()
         }
-
-        currentPlayingTime = 0
-        setupFlowEmitter(currentPlayingTime, song)
-
-        lifecycleScope.launch {
-            emitter.collect {
-                updatePlayerProgress(it)
-            }
-        }
-    }
-
-    private fun setupFlowEmitter(i: Int, song: Song) {
-        emitter = flow {
-            var current = i
-            while (current < song.duration && mediaPlayer.isPlaying) {
-                emit(current)
-                delay(1000)
-                current++
-            }
-        }
     }
 
     override fun onDestroy() {
-        job.cancel()
+        //TODO while implementing service remove this
+        // Because I want my music to run even though i have switched app
+        // or killed this activity
+        mediaPlayer.run {
+            pause()
+            stop()
+            reset()
+            release()
+        }
         super.onDestroy()
     }
 
