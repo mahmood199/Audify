@@ -36,7 +36,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private val mediaPlayerNotificationBuilder by lazy {
-        MediaPlayerNotificationBuilder(this)
+        MediaPlayerNotificationBuilder(this, mediaPlayer)
     }
 
     private lateinit var song: Song
