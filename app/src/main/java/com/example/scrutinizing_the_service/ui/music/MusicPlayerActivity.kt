@@ -5,10 +5,12 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,8 +19,10 @@ import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
+import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 
+@RequiresApi(Build.VERSION_CODES.O)
 class MusicPlayerActivity : AppCompatActivity() {
 
     companion object {
@@ -29,6 +33,10 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivityMusicPlayerBinding.inflate(layoutInflater)
+    }
+
+    private val mediaPlayerNotificationBuilder by lazy {
+        MediaPlayerNotificationBuilder(this)
     }
 
     private lateinit var song: Song
@@ -237,6 +245,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             start()
             updateMusicProgressBar()
         }
+        mediaPlayerNotificationBuilder.createNotification(this, song)
         with(binding) {
             player.visibility = View.VISIBLE
             btnAction.text = getString(R.string.pause)
