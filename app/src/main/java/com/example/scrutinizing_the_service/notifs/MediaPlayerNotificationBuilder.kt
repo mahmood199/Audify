@@ -94,14 +94,6 @@ class MediaPlayerNotificationBuilder(
 
     private fun getMediaSession(song: Song): MediaSession {
         return MediaSession(context, TAG).apply {
-            setPlaybackState(PlaybackState.Builder()
-                .setState(
-                    PlaybackState.STATE_PLAYING,
-                    mediaPlayer.currentPosition.toLong(),
-                    1.0F
-                )
-                .setActions(PlaybackState.ACTION_SEEK_TO).build()
-            )
             setMetadata(
                 MediaMetadata
                     .Builder()
@@ -109,6 +101,14 @@ class MediaPlayerNotificationBuilder(
                     .putString(MediaMetadata.METADATA_KEY_ARTIST, song.artist)
                     .putLong(MediaMetadata.METADATA_KEY_DURATION, song.duration.toLong())
                     .build()
+            )
+            setPlaybackState(PlaybackState.Builder()
+                .setState(
+                    PlaybackState.STATE_PLAYING,
+                    mediaPlayer.currentPosition.toLong(),
+                    1.0F
+                )
+                .setActions(PlaybackState.ACTION_SEEK_TO).build()
             )
         }
     }
