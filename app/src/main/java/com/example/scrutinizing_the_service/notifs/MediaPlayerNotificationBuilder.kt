@@ -1,19 +1,14 @@
 package com.example.scrutinizing_the_service.notifs
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.MediaSession2Service.MediaNotification
 import android.media.session.MediaSession
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.os.Build
 import android.provider.Settings
-import android.support.v4.media.session.MediaButtonReceiver
-import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
@@ -32,6 +27,7 @@ class MediaPlayerNotificationBuilder(
 
         const val REQUEST_CODE = 100
         const val NOTIFICATION_ID = 1234
+        const val TAG = "MediaPlayerNotificationBuilder"
     }
 
     private val notificationManagerCompat by lazy {
@@ -43,7 +39,7 @@ class MediaPlayerNotificationBuilder(
     }
 
     fun createNotification(context: Context, song: Song) {
-        createChannel(context)
+        createChannel()
         val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
         if (!areNotificationsEnabled) {
             redirectToSettings()
@@ -60,24 +56,43 @@ class MediaPlayerNotificationBuilder(
                 context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
             )
 
-        val notification = NotificationCompat.Builder(context, MEDIA_CHANNEL_ID)
+        val mediaSession = MediaSession(context, TAG)
+        val mediaStyle = Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
+
+
+        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
             .setSmallIcon(R.drawable.placeholder)
             .setContentTitle(song.name)
+            .setColorized(false)
+            .setOngoing(true)
             .setContentText("Here comes the pain")
-            .addAction(R.drawable.ic_skip_previous, context.getString(R.string.previous), null)
-            .addAction(R.drawable.ic_play, context.getString(R.string.play), null)
-            .addAction(R.drawable.ic_skip_next, context.getString(R.string.next), null)
-            .setStyle(
-                MediaStyle()
-                    .setShowCancelButton(true)
-                    .setCancelButtonIntent(
-                        MediaButtonReceiver.buildMediaButtonPendingIntent(
-                            context, PlaybackStateCompat.ACTION_STOP)))
-            .build()
-        notificationManagerCompat.notify(NOTIFICATION_ID, notification)
+            .setStyle(mediaStyle)
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_skip_previous, context.getString(R.string.previous), null
+            ).build()
+        )
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_play, context.getString(R.string.play), null
+            ).build()
+        )
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_skip_next, context.getString(R.string.next), null
+            ).build()
+        )
+
+        notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
     }
 
-    fun createChannel(context: Context) {
+    private fun createChannel() {
+        if (notificationManagerCompat.getNotificationChannel(MEDIA_CHANNEL_ID) != null)
+            return
+
         val channel = NotificationChannel(
             MEDIA_CHANNEL_ID,
             MEDIA_CHANNEL_NAME,
