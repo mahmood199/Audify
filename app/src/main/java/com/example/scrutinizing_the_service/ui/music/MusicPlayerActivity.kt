@@ -2,6 +2,7 @@ package com.example.scrutinizing_the_service.ui.music
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
@@ -11,11 +12,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaBroadcastReceiver
@@ -23,6 +26,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import com.example.scrutinizing_the_service.services.MusicPlayerService
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MusicPlayerActivity : AppCompatActivity() {
@@ -71,11 +75,14 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private fun setClickListeners() {
         with(binding) {
+/*
             btnAction.setOnClickListener {
                 if (this@MusicPlayerActivity::song.isInitialized)
                     checkPlayerState()
             }
+*/
 
+/*
             btnForward.setOnClickListener {
                 forwardSong()
             }
@@ -91,7 +98,20 @@ class MusicPlayerActivity : AppCompatActivity() {
             btnNextSong.setOnClickListener {
                 playNextSong()
             }
+*/
         }
+    }
+
+    private fun startMusicService(song: Song) {
+        startForegroundService(
+            Intent(this, MusicPlayerService::class.java).apply {
+                putExtra(BundleIdentifier.SONG_NAME, song.name)
+                putExtra(BundleIdentifier.SONG_ARTIST, song.artist)
+                putExtra(BundleIdentifier.SONG_PATH, song.path)
+                putExtra(BundleIdentifier.SONG_DURATION, song.duration)
+            }
+        )
+
     }
 
     private fun playPreviousSong() {
@@ -229,7 +249,8 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private fun setUpTheNewSong(song: Song) {
         this.song = song
-        playSong(this.song)
+        startMusicService(song)
+        //playSong(this.song)
     }
 
     @SuppressLint("SetTextI18n")

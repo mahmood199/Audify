@@ -98,6 +98,50 @@ class MediaPlayerNotificationBuilder(
         notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
     }
 
+    fun getNotification(song: Song) : Notification {
+        val intent = Intent(context, MusicPlayerActivity::class.java)
+        val pendingIntent =
+            PendingIntent.getActivity(
+                context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
+            )
+
+        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
+            .setStyle(getMediaStyle(song))
+            .setSmallIcon(R.drawable.placeholder)
+            .setColorized(true)
+            .setOngoing(true)
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_skip_previous, context.getString(R.string.previous), null
+            ).build()
+        )
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_play, context.getString(R.string.play),
+                PendingIntent.getActivity(
+                    context,
+                    REQUEST_CODE,
+                    Intent(
+                        if(mediaPlayer.isPlaying)
+                            MediaAction.PAUSE
+                        else
+                            MediaAction.PLAY),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+            ).build()
+        )
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_skip_next, context.getString(R.string.next), null
+            ).build()
+        )
+
+        return notification.build()
+    }
+
     private fun getMediaStyle(song: Song): Notification.MediaStyle {
         val mediaSession = getMediaSession(song)
         return Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
@@ -124,7 +168,7 @@ class MediaPlayerNotificationBuilder(
         }
     }
 
-    private fun createChannel() {
+    fun createChannel() {
         if (notificationManagerCompat.getNotificationChannel(MEDIA_CHANNEL_ID) != null)
             return
 
