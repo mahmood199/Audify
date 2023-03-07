@@ -1,13 +1,11 @@
 package com.example.scrutinizing_the_service.services
 
-import android.app.Notification
 import android.app.Service
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
-import android.util.Log
+import android.os.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.data.Song
@@ -37,6 +35,16 @@ class MusicPlayerService : Service() {
         MediaPlayer()
     }
 
+    private val runnable by lazy {
+        Runnable {
+            updateNotification()
+        }
+    }
+
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
     private lateinit var song: Song
 
 
@@ -54,21 +62,19 @@ class MusicPlayerService : Service() {
             songArtist = it.extras?.getString(BundleIdentifier.SONG_ARTIST) ?: ""
             songPath = it.extras?.getString(BundleIdentifier.SONG_PATH) ?: ""
             songDuration = it.extras?.getInt(BundleIdentifier.SONG_DURATION) ?: 0
-            Log.d(TAG, songName)
-            Log.d(TAG, songArtist)
-            Log.d(TAG, songPath)
-            Log.d(TAG, songDuration.toString())
             song = Song(
                 songName,
                 songArtist,
                 path = songPath,
                 duration = songDuration
             )
+            Toast.makeText(this, songName, Toast.LENGTH_SHORT).show()
             mediaPlayerNotificationBuilder.createChannel()
         }
 
         //mandatory to do this. Else app is crashing after 5 seconds
-        startForeground(1, mediaPlayerNotificationBuilder.getNotification(song))
+        startForeground(1, mediaPlayerNotificationBuilder.getNotification(song, 0))
+        playThisSong(song)
     }
 
     override fun onBind(intent: Intent?): IBinder {
@@ -84,6 +90,36 @@ class MusicPlayerService : Service() {
     fun getCurrentPlayingTime(): Pair<Int, Int> {
         return Pair(mediaPlayer.currentPosition, mediaPlayer.duration)
     }
+
+    fun playThisSong(song: Song) {
+        with(mediaPlayer) {
+            reset()
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+            setDataSource(song.path)
+            prepare()
+            start()
+            updateNotification()
+        }
+    }
+
+
+    private fun updateNotification() {
+        mediaPlayerNotificationBuilder.getNotification(song, mediaPlayer.currentPosition)
+        handler.postDelayed(runnable, 1000)
+    }
+
+    override fun onDestroy() {
+        handler.removeCallbacks(runnable)
+        super.onDestroy()
+    }
+
+
+
 
 }
 

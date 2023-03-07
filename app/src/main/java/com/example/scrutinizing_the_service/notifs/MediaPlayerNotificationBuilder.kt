@@ -43,16 +43,18 @@ class MediaPlayerNotificationBuilder(
         context.getSystemService(NotificationManager::class.java)
     }
 
-    fun createNotification(context: Context, song: Song) {
+    private var notification = Notification()
+
+    fun createNotification(context: Context, song: Song) : Notification? {
         createChannel()
         val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
         if (!areNotificationsEnabled) {
             redirectToSettings()
-            return
+            return null
         }
         if (!isChannelBlocked(MEDIA_CHANNEL_ID)) {
             redirectToNotificationChannelSettings(MEDIA_CHANNEL_ID)
-            return
+            return null
         }
 
         val intent = Intent(context, MusicPlayerActivity::class.java)
@@ -61,19 +63,19 @@ class MediaPlayerNotificationBuilder(
                 context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
             )
 
-        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
+        val notificationBuilder = Notification.Builder(context, MEDIA_CHANNEL_ID)
             .setStyle(getMediaStyle(song))
             .setSmallIcon(R.drawable.placeholder)
             .setColorized(true)
             .setOngoing(true)
 
-        notification.addAction(
+        notificationBuilder.addAction(
             Notification.Action.Builder(
                 R.drawable.ic_skip_previous, context.getString(R.string.previous), null
             ).build()
         )
 
-        notification.addAction(
+        notificationBuilder.addAction(
             Notification.Action.Builder(
                 R.drawable.ic_play, context.getString(R.string.play),
                 PendingIntent.getActivity(
@@ -89,16 +91,17 @@ class MediaPlayerNotificationBuilder(
             ).build()
         )
 
-        notification.addAction(
+        notificationBuilder.addAction(
             Notification.Action.Builder(
                 R.drawable.ic_skip_next, context.getString(R.string.next), null
             ).build()
         )
 
-        notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
+        notificationManagerCompat.notify(NOTIFICATION_ID, notificationBuilder.build())
+        return notificationBuilder.build()
     }
 
-    fun getNotification(song: Song) : Notification {
+    fun getNotification(song: Song, currentPlayingTime: Int) : Notification {
         val intent = Intent(context, MusicPlayerActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(
@@ -138,6 +141,8 @@ class MediaPlayerNotificationBuilder(
                 R.drawable.ic_skip_next, context.getString(R.string.next), null
             ).build()
         )
+
+        notification.setProgress(song.duration, currentPlayingTime, false)
 
         return notification.build()
     }
@@ -165,6 +170,13 @@ class MediaPlayerNotificationBuilder(
                 )
                 .setActions(PlaybackState.ACTION_SEEK_TO).build()
             )
+            /**There is an internal Android MediaSessions limit SESSION_CREATION_LIMIT_PER_UID = 10
+             * You should release MediaSession instances that you don't need anymore.
+             * else it'll throw the following exception
+             * [Attempt to invoke interface method 'android.media.session.ISessionController]
+             * [android.media.session.ISession.getController()' on a null object reference]
+            */
+            release()
         }
     }
 
