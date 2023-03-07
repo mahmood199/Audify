@@ -6,18 +6,23 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.MediaMetadata
+import android.media.MediaPlayer
 import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaAction
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaPlayerNotificationBuilder(
-    val context: Context
+    val context: Context,
+    val mediaPlayer: MediaPlayer
 ) {
 
     companion object {
@@ -56,17 +61,11 @@ class MediaPlayerNotificationBuilder(
                 context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
             )
 
-        val mediaSession = MediaSession(context, TAG)
-        val mediaStyle = Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
-
-
         val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
+            .setStyle(getMediaStyle(song))
             .setSmallIcon(R.drawable.placeholder)
-            .setContentTitle(song.name)
-            .setColorized(false)
+            .setColorized(true)
             .setOngoing(true)
-            .setContentText("Here comes the pain")
-            .setStyle(mediaStyle)
 
         notification.addAction(
             Notification.Action.Builder(
@@ -76,7 +75,17 @@ class MediaPlayerNotificationBuilder(
 
         notification.addAction(
             Notification.Action.Builder(
-                R.drawable.ic_play, context.getString(R.string.play), null
+                R.drawable.ic_play, context.getString(R.string.play),
+                PendingIntent.getActivity(
+                    context,
+                    REQUEST_CODE,
+                    Intent(
+                        if(mediaPlayer.isPlaying)
+                            MediaAction.PAUSE
+                        else
+                            MediaAction.PLAY),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
             ).build()
         )
 
@@ -89,6 +98,32 @@ class MediaPlayerNotificationBuilder(
         notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
     }
 
+    private fun getMediaStyle(song: Song): Notification.MediaStyle {
+        val mediaSession = getMediaSession(song)
+        return Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
+    }
+
+    private fun getMediaSession(song: Song): MediaSession {
+        return MediaSession(context, TAG).apply {
+            setMetadata(
+                MediaMetadata
+                    .Builder()
+                    .putString(MediaMetadata.METADATA_KEY_TITLE, song.name)
+                    .putString(MediaMetadata.METADATA_KEY_ARTIST, song.artist)
+                    .putLong(MediaMetadata.METADATA_KEY_DURATION, song.duration.toLong())
+                    .build()
+            )
+            setPlaybackState(PlaybackState.Builder()
+                .setState(
+                    PlaybackState.STATE_PLAYING,
+                    mediaPlayer.currentPosition.toLong(),
+                    1.0F
+                )
+                .setActions(PlaybackState.ACTION_SEEK_TO).build()
+            )
+        }
+    }
+
     private fun createChannel() {
         if (notificationManagerCompat.getNotificationChannel(MEDIA_CHANNEL_ID) != null)
             return
@@ -96,7 +131,7 @@ class MediaPlayerNotificationBuilder(
         val channel = NotificationChannel(
             MEDIA_CHANNEL_ID,
             MEDIA_CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_HIGH
+            NotificationManager.IMPORTANCE_LOW
         )
         channel.description = MEDIA_CHANNEL_DESCRIPTION
         notificationManagerCompat.createNotificationChannel(channel)

@@ -2,6 +2,7 @@ package com.example.scrutinizing_the_service.ui.music
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaBroadcastReceiver
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
@@ -36,7 +38,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private val mediaPlayerNotificationBuilder by lazy {
-        MediaPlayerNotificationBuilder(this)
+        MediaPlayerNotificationBuilder(this, mediaPlayer)
     }
 
     private lateinit var song: Song
@@ -64,6 +66,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         setAdapter()
         checkForPermission()
         setClickListeners()
+        registerReceiver(MediaBroadcastReceiver(), IntentFilter())
     }
 
     private fun setClickListeners() {
