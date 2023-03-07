@@ -15,6 +15,7 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaAction
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
@@ -74,7 +75,17 @@ class MediaPlayerNotificationBuilder(
 
         notification.addAction(
             Notification.Action.Builder(
-                R.drawable.ic_play, context.getString(R.string.play), null
+                R.drawable.ic_play, context.getString(R.string.play),
+                PendingIntent.getActivity(
+                    context,
+                    REQUEST_CODE,
+                    Intent(
+                        if(mediaPlayer.isPlaying)
+                            MediaAction.PAUSE
+                        else
+                            MediaAction.PLAY),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
             ).build()
         )
 
