@@ -57,10 +57,20 @@
             android:name=".broadcastReceivers.MediaBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="PLAY" />
-                <action android:name="PAUSE" />
-                <action android:name="NEXT" />
-                <action android:name="PREVIOUS" />
+                <action android:name="EMITTER_PLAY" />
+                <action android:name="EMITTER_PAUSE" />
+                <action android:name="EMITTER_NEXT" />
+                <action android:name="EMITTER_PREVIOUS" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".broadcastReceivers.MusicPlayerListener"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="RECEIVER_PLAY" />
+                <action android:name="RECEIVER_PAUSE" />
+                <action android:name="RECEIVER_NEXT" />
+                <action android:name="RECEIVER_PREVIOUS" />
             </intent-filter>
         </receiver>
 
