@@ -2,14 +2,20 @@ package com.example.scrutinizing_the_service.services
 
 import android.app.Service
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.*
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.scrutinizing_the_service.BundleIdentifier
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionReceiver
+import com.example.scrutinizing_the_service.broadcastReceivers.MusicPlayerListener
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MusicPlayerService : Service() {
@@ -47,9 +53,26 @@ class MusicPlayerService : Service() {
 
     private lateinit var song: Song
 
+    private lateinit var customBroadcastReceiver: MusicPlayerListener
+
+    override fun onCreate() {
+        super.onCreate()
+        customBroadcastReceiver = MusicPlayerListener()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(MediaActionReceiver.PLAY)
+        intentFilter.addAction(MediaActionReceiver.PAUSE)
+        intentFilter.addAction(MediaActionReceiver.PREVIOUS)
+        intentFilter.addAction(MediaActionReceiver.NEXT)
+        registerReceiver(customBroadcastReceiver, intentFilter)
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        intent?.let { intent ->
+            intent.action?.let {
+                Log.d(TAG, it)
+            }
+        }
 
         getArgs(intent)
 
@@ -73,7 +96,8 @@ class MusicPlayerService : Service() {
         }
 
         //mandatory to do this. Else app is crashing after 5 seconds
-        startForeground(1, mediaPlayerNotificationBuilder.getNotification(song, 0))
+        startForeground(MediaPlayerNotificationBuilder.NOTIFICATION_ID,
+            mediaPlayerNotificationBuilder.getNotification(song, 0))
         playThisSong(song)
     }
 
@@ -87,8 +111,8 @@ class MusicPlayerService : Service() {
 
     }
 
-    fun getCurrentPlayingTime(): Pair<Int, Int> {
-        return Pair(mediaPlayer.currentPosition, mediaPlayer.duration)
+    fun getCurrentPlayingTime(): Pair<Long, Long> {
+        return Pair(mediaPlayer.currentPosition.toLong(), mediaPlayer.duration.toLong())
     }
 
     fun playThisSong(song: Song) {
@@ -109,14 +133,25 @@ class MusicPlayerService : Service() {
 
 
     private fun updateNotification() {
-        mediaPlayerNotificationBuilder.getNotification(song, mediaPlayer.currentPosition)
-        handler.postDelayed(runnable, 1000)
+        mediaPlayerNotificationBuilder.createUpdatedNotification(song, mediaPlayer.currentPosition)
+        handler.postDelayed(runnable, 2000)
     }
 
     override fun onDestroy() {
         handler.removeCallbacks(runnable)
+        unregisterReceiver(customBroadcastReceiver)
         super.onDestroy()
     }
+
+    fun pauseSong() {
+        mediaPlayer.pause()
+    }
+
+    fun play() {
+        mediaPlayer.start()
+    }
+
+
 
 
 
