@@ -19,8 +19,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.TimeConverter
-import com.example.scrutinizing_the_service.broadcastReceivers.MediaAction
-import com.example.scrutinizing_the_service.broadcastReceivers.MediaBroadcastReceiver
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
@@ -92,9 +91,9 @@ class MediaPlayerNotificationBuilder(
                     REQUEST_CODE,
                     Intent(
                         if (mediaPlayer.isPlaying)
-                            MediaAction.PAUSE
+                            MediaActionEmitter.PAUSE
                         else
-                            MediaAction.PLAY
+                            MediaActionEmitter.PLAY
                     ),
                     PendingIntent.FLAG_IMMUTABLE
                 )
@@ -120,7 +119,7 @@ class MediaPlayerNotificationBuilder(
                 Notification.Action.Builder(
                     R.drawable.ic_skip_previous,
                     context.getString(R.string.previous),
-                    pendingIntentHelper.getActionBasedPendingIntent(MediaAction.PREVIOUS)
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PREVIOUS)
                 ).build()
             ).addAction(
                 Notification.Action.Builder(
@@ -133,16 +132,16 @@ class MediaPlayerNotificationBuilder(
                     else
                         context.getString(R.string.play),
                     if(mediaPlayer.isPlaying)
-                        pendingIntentHelper.getActionBasedPendingIntent(MediaAction.PAUSE)
+                        pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PAUSE)
                     else
-                        pendingIntentHelper.getActionBasedPendingIntent(MediaAction.PLAY)
+                        pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PLAY)
                 ).build()
             )
             .addAction(
                 Notification.Action.Builder(
                     R.drawable.ic_skip_next,
                     context.getString(R.string.next),
-                    pendingIntentHelper.getActionBasedPendingIntent(MediaAction.NEXT)
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.NEXT)
                 ).build()
             )
 
@@ -232,7 +231,7 @@ class MediaPlayerNotificationBuilder(
             Notification.Action.Builder(
                 R.drawable.ic_skip_previous,
                 context.getString(R.string.previous),
-                pendingIntentHelper.getActionBasedPendingIntent(MediaAction.PREVIOUS)
+                pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PREVIOUS)
             ).build()
         )
 
@@ -247,9 +246,9 @@ class MediaPlayerNotificationBuilder(
                 else
                     context.getString(R.string.play),
                 if(mediaPlayer.isPlaying)
-                    pendingIntentHelper.getActionBasedPendingIntent(MediaAction.PAUSE)
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PAUSE)
                 else
-                    pendingIntentHelper.getActionBasedPendingIntent(MediaAction.PLAY)
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PLAY)
             ).build()
         )
 
@@ -257,7 +256,7 @@ class MediaPlayerNotificationBuilder(
             Notification.Action.Builder(
                 R.drawable.ic_skip_next,
                 context.getString(R.string.next),
-                pendingIntentHelper.getActionBasedPendingIntent(MediaAction.NEXT)
+                pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.NEXT)
             ).build()
         )
 
