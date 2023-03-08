@@ -53,6 +53,17 @@
             android:exported="true" />
         <service android:name=".services.MusicPlayerService" />
 
+        <receiver
+            android:name=".broadcastReceivers.MediaBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="PLAY" />
+                <action android:name="PAUSE" />
+                <action android:name="NEXT" />
+                <action android:name="PREVIOUS" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
