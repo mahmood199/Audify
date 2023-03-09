@@ -1,6 +1,8 @@
 package com.example.scrutinizing_the_service.services
 
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioAttributes
@@ -10,9 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.scrutinizing_the_service.BundleIdentifier
-import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionReceiver
-import com.example.scrutinizing_the_service.broadcastReceivers.MusicPlayerListener
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
 
@@ -151,9 +151,34 @@ class MusicPlayerService : Service() {
         mediaPlayer.start()
     }
 
+    inner class MusicPlayerListener : BroadcastReceiver() {
 
+        private val TAG = "MusicPlayerListener"
 
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d(TAG, "Control Arrived here")
+            intent?.action?.let {
+                when (it) {
+                    MediaActionReceiver.PLAY -> {
+                        mediaPlayer.start()
+                        Log.d(TAG, "Player Started")
+                    }
+                    MediaActionReceiver.PAUSE -> {
+                        mediaPlayer.pause()
+                        Log.d(TAG, "Player paused")
+                    }
+                    MediaActionReceiver.PREVIOUS -> {
+                        Log.d(TAG, it)
+                    }
+                    MediaActionReceiver.NEXT -> {
+                        Log.d(TAG, it)
+                    }
+                    else -> {}
+                }
+            }
+        }
 
+    }
 
 
 }
