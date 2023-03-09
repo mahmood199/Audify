@@ -68,9 +68,15 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="RECEIVER_PLAY" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="RECEIVER_PAUSE" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="RECEIVER_NEXT" />
-                <action android:name="RECEIVER_PREVIOUS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_PAUSE" />
             </intent-filter>
         </receiver>
 

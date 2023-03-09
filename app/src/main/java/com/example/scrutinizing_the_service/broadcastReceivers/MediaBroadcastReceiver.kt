@@ -34,28 +34,28 @@ class MediaBroadcastReceiver : BroadcastReceiver() {
 
     private fun playMusic(context: Context?) {
         Log.d(TAG, "playMusic")
-        val playIntent = Intent(context, MusicPlayerListener::class.java)
+        val playIntent = Intent(MediaActionReceiver.PLAY)
         playIntent.action = MediaActionReceiver.PLAY
         context?.sendBroadcast(playIntent)
     }
 
     private fun pauseMusic(context: Context?) {
         Log.d(TAG, "pauseMusic")
-        val pauseIntent = Intent(context, MusicPlayerListener::class.java)
+        val pauseIntent = Intent(MediaActionReceiver.PAUSE)
         pauseIntent.action = MediaActionReceiver.PAUSE
         context?.sendBroadcast(pauseIntent)
     }
 
     private fun previousMusic(context: Context?) {
         Log.d(TAG, "previousMusic")
-        val previousMusicIntent = Intent(context, MusicPlayerListener::class.java)
+        val previousMusicIntent = Intent(MediaActionReceiver.PREVIOUS)
         previousMusicIntent.action = MediaActionReceiver.PREVIOUS
         context?.sendBroadcast(previousMusicIntent)
     }
 
     private fun nextMusic(context: Context?) {
         Log.d(TAG, "nextMusic")
-        val nextMusicIntent = Intent(context, MusicPlayerListener::class.java)
+        val nextMusicIntent = Intent(MediaActionReceiver.NEXT)
         nextMusicIntent.action = MediaActionReceiver.NEXT
         context?.sendBroadcast(nextMusicIntent)
     }
