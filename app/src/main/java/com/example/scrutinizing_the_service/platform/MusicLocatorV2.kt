@@ -66,5 +66,9 @@ object MusicLocatorV2 {
         return durationStr?.toInt()?.div(1000) ?: 1
     }
 
+    fun getSize() = audioFiles.size
+
+    fun getAudioFiles() = audioFiles
+
 
 }

@@ -6,5 +6,6 @@ object BundleIdentifier {
     const val SONG_ARTIST = "SONG_ARTIST"
     const val SONG_PATH = "SONG_PATH"
     const val SONG_DURATION = "SONG_DURATION"
+    const val SONG_POSITION = "SONG_POSITION"
 
 }
