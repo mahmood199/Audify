@@ -175,15 +175,11 @@ class MusicPlayerService : Service() {
                     }
                     MediaActionReceiver.PREVIOUS -> {
                         Log.d(TAG, it)
-                        context?.let {
-                            playPreviousSongSafely()
-                        }
+                        playPreviousSongSafely()
                     }
                     MediaActionReceiver.NEXT -> {
                         Log.d(TAG, it)
-                        context?.let {
-                            playNextSongSafely()
-                        }
+                        playNextSongSafely()
                     }
                     else -> {}
                 }
