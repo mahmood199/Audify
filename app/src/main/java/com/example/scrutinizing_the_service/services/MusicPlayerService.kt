@@ -38,6 +38,8 @@ class MusicPlayerService : Service() {
         MediaPlayerNotificationBuilder(this, mediaPlayer)
     }
 
+    private var currentSongPosition = 0
+
     private val mediaPlayer by lazy {
         MediaPlayer()
     }
@@ -86,13 +88,17 @@ class MusicPlayerService : Service() {
                 path = songPath,
                 duration = songDuration
             )
+            currentSongPosition = it.extras?.getInt(BundleIdentifier.SONG_POSITION) ?: 0
+            Log.d(TAG, currentSongPosition.toString())
             Toast.makeText(this, songName, Toast.LENGTH_SHORT).show()
             mediaPlayerNotificationBuilder.createChannel()
         }
 
         //mandatory to do this. Else app is crashing after 5 seconds
-        startForeground(MediaPlayerNotificationBuilder.NOTIFICATION_ID,
-            mediaPlayerNotificationBuilder.getNotification(song, 0))
+        startForeground(
+            MediaPlayerNotificationBuilder.NOTIFICATION_ID,
+            mediaPlayerNotificationBuilder.getNotification(song, 0)
+        )
         playThisSong(song)
     }
 
@@ -112,6 +118,7 @@ class MusicPlayerService : Service() {
 
     fun playThisSong(song: Song) {
         with(mediaPlayer) {
+            mediaPlayerNotificationBuilder.closeAllNotification()
             reset()
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -129,7 +136,7 @@ class MusicPlayerService : Service() {
 
     private fun updateNotification() {
         mediaPlayerNotificationBuilder.createUpdatedNotification(song, mediaPlayer.currentPosition)
-        handler.postDelayed(runnable, 2000)
+        handler.postDelayed(runnable, 100)
     }
 
     override fun onDestroy() {
@@ -156,7 +163,6 @@ class MusicPlayerService : Service() {
         private val TAG = "MusicPlayerListener"
 
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d(TAG, "Control Arrived here")
             intent?.action?.let {
                 when (it) {
                     MediaActionReceiver.PLAY -> {
@@ -169,15 +175,35 @@ class MusicPlayerService : Service() {
                     }
                     MediaActionReceiver.PREVIOUS -> {
                         Log.d(TAG, it)
+                        context?.let {
+                            playPreviousSongSafely()
+                        }
                     }
                     MediaActionReceiver.NEXT -> {
                         Log.d(TAG, it)
+                        context?.let {
+                            playNextSongSafely()
+                        }
                     }
                     else -> {}
                 }
             }
         }
 
+        private fun playPreviousSongSafely() {
+            currentSongPosition--
+            currentSongPosition.plus(MusicLocatorV2.getSize())
+            currentSongPosition.mod(MusicLocatorV2.getSize())
+            song = MusicLocatorV2.getAudioFiles()[currentSongPosition]
+            playThisSong(song)
+        }
+
+        private fun playNextSongSafely() {
+            currentSongPosition += 1
+            currentSongPosition.mod(MusicLocatorV2.getSize())
+            song = MusicLocatorV2.getAudioFiles()[currentSongPosition]
+            playThisSong(song)
+        }
     }
 
 

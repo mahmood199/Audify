@@ -97,12 +97,13 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun startMusicService(song: Song) {
+    private fun startMusicService(song: Song, position: Int) {
         val intent = Intent(this, MusicPlayerService::class.java).apply {
             putExtra(BundleIdentifier.SONG_NAME, song.name)
             putExtra(BundleIdentifier.SONG_ARTIST, song.artist)
             putExtra(BundleIdentifier.SONG_PATH, song.path)
             putExtra(BundleIdentifier.SONG_DURATION, song.duration)
+            putExtra(BundleIdentifier.SONG_POSITION, position)
         }
         startForegroundService(intent)
         musicPlayerService?.let {
@@ -205,16 +206,16 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun handleItemClicks(it: ItemClickListener) {
         when (it) {
             is ItemClickListener.ItemClicked -> {
-                setUpTheNewSong(it.song)
+                setUpTheNewSong(it.song, it.position)
                 songPosition = it.position
                 size = it.totalItem
             }
         }
     }
 
-    private fun setUpTheNewSong(song: Song) {
+    private fun setUpTheNewSong(song: Song, position: Int) {
         this.song = song
-        startMusicService(song)
+        startMusicService(song, position)
     }
 
     override fun onDestroy() {
