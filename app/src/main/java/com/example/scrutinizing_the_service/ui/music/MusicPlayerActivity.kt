@@ -2,27 +2,21 @@ package com.example.scrutinizing_the_service.ui.music
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
-import android.content.IntentFilter
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.View
+import android.os.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
-import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.TimeConverter
-import com.example.scrutinizing_the_service.broadcastReceivers.MediaBroadcastReceiver
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
-import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import com.example.scrutinizing_the_service.services.MusicPlayerService
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MusicPlayerActivity : AppCompatActivity() {
@@ -37,14 +31,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         ActivityMusicPlayerBinding.inflate(layoutInflater)
     }
 
-    private val mediaPlayerNotificationBuilder by lazy {
-        MediaPlayerNotificationBuilder(this, mediaPlayer)
-    }
-
     private lateinit var song: Song
-    private val mediaPlayer by lazy {
-        MediaPlayer()
-    }
 
     private val runnable by lazy {
         Runnable {
@@ -54,6 +41,23 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private val handler by lazy {
         Handler(Looper.getMainLooper())
+    }
+
+    private var musicPlayerService: MusicPlayerService? = null
+    var isBound = false
+
+    private val musicPlayerServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binderBridge = service as MusicPlayerService.MusicBinder
+            musicPlayerService = binderBridge.getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBound = false;
+            musicPlayerService = null;
+        }
+
     }
 
     private var currentPlayingTime = 0
@@ -66,7 +70,6 @@ class MusicPlayerActivity : AppCompatActivity() {
         setAdapter()
         checkForPermission()
         setClickListeners()
-        registerReceiver(MediaBroadcastReceiver(), IntentFilter())
     }
 
     private fun setClickListeners() {
@@ -94,13 +97,24 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun startMusicService(song: Song) {
+        val intent = Intent(this, MusicPlayerService::class.java).apply {
+            putExtra(BundleIdentifier.SONG_NAME, song.name)
+            putExtra(BundleIdentifier.SONG_ARTIST, song.artist)
+            putExtra(BundleIdentifier.SONG_PATH, song.path)
+            putExtra(BundleIdentifier.SONG_DURATION, song.duration)
+        }
+        startForegroundService(intent)
+        musicPlayerService?.let {
+            bindService(intent, musicPlayerServiceConnection, BIND_AUTO_CREATE)
+        }
+    }
+
     private fun playPreviousSong() {
         songPosition--
         songPosition = (songPosition + size) % size
         with(binding) {
-            playSong(
-                (rvMusicItems.adapter as SongsAdapter).getItemAtPosition(songPosition)
-            )
+            // To be decided
         }
     }
 
@@ -108,57 +122,28 @@ class MusicPlayerActivity : AppCompatActivity() {
         songPosition++
         songPosition %= size
         with(binding) {
-            playSong(
-                (rvMusicItems.adapter as SongsAdapter).getItemAtPosition(songPosition)
-            )
+            // To be decided
         }
     }
 
     private fun forwardSong() {
-        currentPlayingTime =
-            if (mediaPlayer.currentPosition + SEEK_FORWARD_TIME <= mediaPlayer.duration) {
-                mediaPlayer.currentPosition + SEEK_FORWARD_TIME
-            } else {
-                mediaPlayer.duration
-            }
-        mediaPlayer.seekTo(currentPlayingTime)
+        //Request this from service
     }
 
     private fun rewindSong() {
-        currentPlayingTime = if (mediaPlayer.currentPosition - SEEK_BACKWARD_TIME >= 0) {
-            mediaPlayer.currentPosition - SEEK_BACKWARD_TIME
-        } else {
-            0
-        }
-        mediaPlayer.seekTo(currentPlayingTime)
+        //Request this from service
     }
 
     private fun checkPlayerState() {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
-            currentPlayingTime = mediaPlayer.currentPosition
-            with(binding) {
-                btnAction.text = getString(R.string.play)
-            }
-        } else {
-            mediaPlayer.seekTo(currentPlayingTime)
-            mediaPlayer.start()
-            with(binding) {
-                btnAction.text = getString(R.string.pause)
-                pbPlayer.progress = mediaPlayer.currentPosition
-                pbPlayer.max = mediaPlayer.duration
-            }
-            updateMusicProgressBar()
-        }
+        //Request this from service
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateMusicProgressBar() {
         with(binding) {
-            tvCurrentTimeStamp.text =
-                TimeConverter.getConvertedTime(mediaPlayer.currentPosition.toLong())
-            pbPlayer.progress = mediaPlayer.currentPosition
-            pbPlayer.max = mediaPlayer.duration
+            tvCurrentTimeStamp.text = TimeConverter.getConvertedTime(
+                musicPlayerService?.getCurrentPlayingTime()?.first ?: 0L
+            )
         }
         handler.postDelayed(runnable, 1000)
     }
@@ -229,31 +214,7 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private fun setUpTheNewSong(song: Song) {
         this.song = song
-        playSong(this.song)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun playSong(it: Song) {
-        val myUri = it.path.toUri()
-        mediaPlayer.reset()
-        mediaPlayer.apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-            setDataSource(this@MusicPlayerActivity, myUri)
-            prepare()
-            start()
-            updateMusicProgressBar()
-        }
-        mediaPlayerNotificationBuilder.createNotification(this, song)
-        with(binding) {
-            player.visibility = View.VISIBLE
-            btnAction.text = getString(R.string.pause)
-            tvTotalTime.text = TimeConverter.getConvertedTime(mediaPlayer.duration.toLong())
-        }
+        startMusicService(song)
     }
 
     override fun onDestroy() {
@@ -261,12 +222,6 @@ class MusicPlayerActivity : AppCompatActivity() {
         // Because I want my music to run even though i have switched app
         // or killed this activity
         handler.removeCallbacks(runnable)
-        mediaPlayer.run {
-            pause()
-            stop()
-            reset()
-            release()
-        }
         super.onDestroy()
     }
 

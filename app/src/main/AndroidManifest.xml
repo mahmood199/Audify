@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--If I am not giving this permission, app is crashing saying that it needs this permission-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".ServiceApplication"
         android:allowBackup="true"
@@ -48,6 +51,37 @@
             android:name=".services.RussianIntentService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".services.MusicPlayerService"
+            android:stopWithTask="true" />
+
+        <receiver
+            android:name=".broadcastReceivers.MediaBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="EMITTER_PLAY" />
+                <action android:name="EMITTER_PAUSE" />
+                <action android:name="EMITTER_NEXT" />
+                <action android:name="EMITTER_PREVIOUS" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.MusicPlayerService$MusicPlayerListener"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="RECEIVER_PLAY" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_PAUSE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_NEXT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_PAUSE" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".ui.MainActivity"

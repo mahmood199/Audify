@@ -2,11 +2,9 @@ package com.example.scrutinizing_the_service.platform
 
 import android.content.Context
 import android.database.MergeCursor
-import android.media.MediaDataSource
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import com.example.scrutinizing_the_service.data.Song
 import java.io.File
 import java.util.*
@@ -46,7 +44,6 @@ object MusicLocatorV2 {
             val lastPoint = path.lastIndexOf(".")
             path = path.substring(0, lastPoint) + path.substring(lastPoint)
                 .lowercase(Locale.getDefault())
-            Log.d(TAG, path)
             val duration = getTotalDurationOfAudio(context, path)
             files.add(Song(name, artist, false, path, duration))
             cursor.moveToNext()

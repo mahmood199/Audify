@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.notifs
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,12 +11,15 @@ import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.media.session.PlaybackState.*
 import android.os.Build
 import android.provider.Settings
+import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.broadcastReceivers.MediaAction
+import com.example.scrutinizing_the_service.TimeConverter
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
@@ -43,16 +47,22 @@ class MediaPlayerNotificationBuilder(
         context.getSystemService(NotificationManager::class.java)
     }
 
-    fun createNotification(context: Context, song: Song) {
+    private val pendingIntentHelper by lazy {
+        PendingIntentHelper(context)
+    }
+
+    private var notification = Notification()
+
+    fun createNotification(context: Context, song: Song): Notification? {
         createChannel()
         val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
         if (!areNotificationsEnabled) {
             redirectToSettings()
-            return
+            return null
         }
         if (!isChannelBlocked(MEDIA_CHANNEL_ID)) {
             redirectToNotificationChannelSettings(MEDIA_CHANNEL_ID)
-            return
+            return null
         }
 
         val intent = Intent(context, MusicPlayerActivity::class.java)
@@ -61,70 +71,125 @@ class MediaPlayerNotificationBuilder(
                 context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
             )
 
-        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
-            .setStyle(getMediaStyle(song))
+        val notificationBuilder = Notification.Builder(context, MEDIA_CHANNEL_ID)
+            .setStyle(getMediaStyle(song, 0))
             .setSmallIcon(R.drawable.placeholder)
             .setColorized(true)
             .setOngoing(true)
 
-        notification.addAction(
+        notificationBuilder.addAction(
             Notification.Action.Builder(
                 R.drawable.ic_skip_previous, context.getString(R.string.previous), null
             ).build()
         )
 
-        notification.addAction(
+        notificationBuilder.addAction(
             Notification.Action.Builder(
                 R.drawable.ic_play, context.getString(R.string.play),
                 PendingIntent.getActivity(
                     context,
                     REQUEST_CODE,
                     Intent(
-                        if(mediaPlayer.isPlaying)
-                            MediaAction.PAUSE
+                        if (mediaPlayer.isPlaying)
+                            MediaActionEmitter.PAUSE
                         else
-                            MediaAction.PLAY),
+                            MediaActionEmitter.PLAY
+                    ),
                     PendingIntent.FLAG_IMMUTABLE
                 )
             ).build()
         )
 
-        notification.addAction(
+        notificationBuilder.addAction(
             Notification.Action.Builder(
                 R.drawable.ic_skip_next, context.getString(R.string.next), null
             ).build()
         )
 
-        notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
+        notificationManagerCompat.notify(NOTIFICATION_ID, notificationBuilder.build())
+        return notificationBuilder.build()
     }
 
-    private fun getMediaStyle(song: Song): Notification.MediaStyle {
-        val mediaSession = getMediaSession(song)
-        return Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
+    fun getNotification(song: Song, currentPlayingTime: Int): Notification {
+        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
+            .setStyle(getMediaStyle(song, currentPlayingTime))
+            .setSmallIcon(R.drawable.placeholder)
+            .setOngoing(true)
+            .addAction(
+                Notification.Action.Builder(
+                    R.drawable.ic_skip_previous,
+                    context.getString(R.string.previous),
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PREVIOUS)
+                ).build()
+            ).addAction(
+                Notification.Action.Builder(
+                    if(mediaPlayer.isPlaying)
+                        R.drawable.ic_pause
+                    else
+                        R.drawable.ic_play,
+                    if(mediaPlayer.isPlaying)
+                        context.getString(R.string.pause)
+                    else
+                        context.getString(R.string.play),
+                    if(mediaPlayer.isPlaying)
+                        pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PAUSE)
+                    else
+                        pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PLAY)
+                ).build()
+            )
+            .addAction(
+                Notification.Action.Builder(
+                    R.drawable.ic_skip_next,
+                    context.getString(R.string.next),
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.NEXT)
+                ).build()
+            )
+
+        return notification.build()
     }
 
-    private fun getMediaSession(song: Song): MediaSession {
+    private fun getMediaStyle(song: Song, currentPosition: Int): Notification.MediaStyle {
+        val mediaSession = getMediaSession(song, currentPosition)
+        return Notification.MediaStyle()
+            .setMediaSession(mediaSession.sessionToken).setShowActionsInCompactView(0,1,2)
+    }
+
+    private fun getMediaSession(song: Song, currentPosition: Int): MediaSession {
         return MediaSession(context, TAG).apply {
             setMetadata(
                 MediaMetadata
                     .Builder()
                     .putString(MediaMetadata.METADATA_KEY_TITLE, song.name)
                     .putString(MediaMetadata.METADATA_KEY_ARTIST, song.artist)
-                    .putLong(MediaMetadata.METADATA_KEY_DURATION, song.duration.toLong())
+                    .putLong(MediaMetadata.METADATA_KEY_DURATION, currentPosition.toLong())
                     .build()
             )
-            setPlaybackState(PlaybackState.Builder()
-                .setState(
-                    PlaybackState.STATE_PLAYING,
-                    mediaPlayer.currentPosition.toLong(),
-                    1.0F
-                )
-                .setActions(PlaybackState.ACTION_SEEK_TO).build()
+            setPlaybackState(
+                PlaybackState.Builder()
+                    .setState(
+                        STATE_PLAYING,
+                        currentPosition.toLong(),
+                        1.0F
+                    )
+                    .setActions(
+                        ACTION_PLAY or
+                                ACTION_PAUSE or
+                                ACTION_SKIP_TO_NEXT or
+                                ACTION_SKIP_TO_PREVIOUS or
+                                ACTION_SEEK_TO
+                    ).build()
             )
+            /**There is an internal Android MediaSessions limit SESSION_CREATION_LIMIT_PER_UID = 10
+             * You should release MediaSession instances that you don't need anymore.
+             * else it'll throw the following exception
+             * [Attempt to invoke interface method 'android.media.session.ISessionController]
+             * [android.media.session.ISession.getController()' on a null object reference]
+            */
+            release()
         }
     }
 
-    private fun createChannel() {
+    fun createChannel() {
         if (notificationManagerCompat.getNotificationChannel(MEDIA_CHANNEL_ID) != null)
             return
 
@@ -152,6 +217,76 @@ class MediaPlayerNotificationBuilder(
             putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
             context.startActivity(this)
         }
+    }
+
+    fun createUpdatedNotification(song: Song, currentPosition: Int) {
+
+        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
+            .setStyle(getMediaStyle(song, currentPosition))
+            .setSmallIcon(R.drawable.placeholder)
+            .setColorized(true)
+            .setOngoing(true)
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_skip_previous,
+                context.getString(R.string.previous),
+                pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PREVIOUS)
+            ).build()
+        )
+
+        notification.addAction(
+            Notification.Action.Builder(
+                if(mediaPlayer.isPlaying)
+                    R.drawable.ic_pause
+                else
+                    R.drawable.ic_play,
+                if(mediaPlayer.isPlaying)
+                    context.getString(R.string.pause)
+                else
+                    context.getString(R.string.play),
+                if(mediaPlayer.isPlaying)
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PAUSE)
+                else
+                    pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.PLAY)
+            ).build()
+        )
+
+        notification.addAction(
+            Notification.Action.Builder(
+                R.drawable.ic_skip_next,
+                context.getString(R.string.next),
+                pendingIntentHelper.getActionBasedPendingIntent(MediaActionEmitter.NEXT)
+            ).build()
+        )
+
+        notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
+    }
+
+    @SuppressLint("RemoteViewLayout")
+    fun createCustomLayoutNotification(song: Song, currentPosition: Int) {
+        val remoteViews =
+            RemoteViews(context.packageName, R.layout.layout_media_player_notification).apply {
+                setTextViewText(R.id.tv_song_name, song.name)
+                setTextViewText(R.id.tv_song_artist, song.artist)
+                setTextViewText(
+                    R.id.tv_current_time,
+                    TimeConverter.getConvertedTime(currentPosition.toLong())
+                )
+                setTextViewText(
+                    R.id.tv_total_time_notif,
+                    TimeConverter.getConvertedTime(song.duration.toLong())
+                )
+            }
+        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
+            .setSmallIcon(R.drawable.placeholder)
+            .setColorized(true)
+            .setOngoing(true)
+            .setCustomContentView(remoteViews)
+            .setCustomBigContentView(remoteViews)
+            .setCustomHeadsUpContentView(remoteViews)
+            .build()
+        notificationManagerCompat.notify(NOTIFICATION_ID, notification)
     }
 
 
