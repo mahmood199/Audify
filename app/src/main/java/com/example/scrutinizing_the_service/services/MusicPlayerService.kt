@@ -150,11 +150,11 @@ class MusicPlayerService : Service() {
         super.onDestroy()
     }
 
-    fun pauseSong() {
+    fun pauseCurrentSong() {
         mediaPlayer.pause()
     }
 
-    fun play() {
+    fun playCurrentSong() {
         mediaPlayer.start()
     }
 
@@ -166,11 +166,11 @@ class MusicPlayerService : Service() {
             intent?.action?.let {
                 when (it) {
                     MediaActionReceiver.PLAY -> {
-                        mediaPlayer.start()
+                        playCurrentSong()
                         Log.d(TAG, "Player Started")
                     }
                     MediaActionReceiver.PAUSE -> {
-                        mediaPlayer.pause()
+                        pauseCurrentSong()
                         Log.d(TAG, "Player paused")
                     }
                     MediaActionReceiver.PREVIOUS -> {
