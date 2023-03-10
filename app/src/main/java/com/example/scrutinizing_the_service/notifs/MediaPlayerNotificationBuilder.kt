@@ -263,30 +263,9 @@ class MediaPlayerNotificationBuilder(
         notificationManagerCompat.notify(NOTIFICATION_ID, notification.build())
     }
 
-    @SuppressLint("RemoteViewLayout")
-    fun createCustomLayoutNotification(song: Song, currentPosition: Int) {
-        val remoteViews =
-            RemoteViews(context.packageName, R.layout.layout_media_player_notification).apply {
-                setTextViewText(R.id.tv_song_name, song.name)
-                setTextViewText(R.id.tv_song_artist, song.artist)
-                setTextViewText(
-                    R.id.tv_current_time,
-                    TimeConverter.getConvertedTime(currentPosition.toLong())
-                )
-                setTextViewText(
-                    R.id.tv_total_time_notif,
-                    TimeConverter.getConvertedTime(song.duration.toLong())
-                )
-            }
-        val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
-            .setSmallIcon(R.drawable.placeholder)
-            .setColorized(true)
-            .setOngoing(true)
-            .setCustomContentView(remoteViews)
-            .setCustomBigContentView(remoteViews)
-            .setCustomHeadsUpContentView(remoteViews)
-            .build()
-        notificationManagerCompat.notify(NOTIFICATION_ID, notification)
+    fun closeAllNotification() {
+        actualNotificationManager.cancelAll()
+        notificationManagerCompat.cancelAll()
     }
 
 

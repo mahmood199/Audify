@@ -15,7 +15,13 @@ object MusicLocatorV2 {
 
     private const val TAG = "MusicLocatorV2"
 
-    fun getAllAudio(context: Context): List<Song> {
+    private val audioFiles = mutableListOf<Song>()
+
+    private val metadataRetriever = MediaMetadataRetriever()
+
+    fun fetchAllAudioFilesFromDevice(context: Context): List<Song> {
+        if(audioFiles.isNotEmpty())
+            return audioFiles
         val files: MutableList<Song> = ArrayList()
         val columns = arrayOf(
             MediaStore.Audio.Media.DATA,
@@ -48,11 +54,9 @@ object MusicLocatorV2 {
             files.add(Song(name, artist, false, path, duration))
             cursor.moveToNext()
         }
-
+        audioFiles.addAll(files)
         return files
     }
-
-    private val metadataRetriever = MediaMetadataRetriever()
 
     private fun getTotalDurationOfAudio(context: Context, pathStr: String): Int {
         val file = File(pathStr)
@@ -61,6 +65,10 @@ object MusicLocatorV2 {
         val durationStr = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
         return durationStr?.toInt()?.div(1000) ?: 1
     }
+
+    fun getSize() = audioFiles.size
+
+    fun getAudioFiles() = audioFiles
 
 
 }
