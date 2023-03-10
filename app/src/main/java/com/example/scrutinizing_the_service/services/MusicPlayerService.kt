@@ -31,7 +31,7 @@ class MusicPlayerService : Service() {
     private var songDuration: Int = 0
 
     private val musicBinder by lazy {
-        MusicBinder(this)
+        MusicBinder()
     }
 
     private val mediaPlayerNotificationBuilder by lazy {
@@ -106,9 +106,9 @@ class MusicPlayerService : Service() {
         return musicBinder
     }
 
-    inner class MusicBinder(private val musicPlayerService: MusicPlayerService) : Binder() {
+    inner class MusicBinder : Binder() {
 
-        fun getService() = musicPlayerService
+        fun getService() = this@MusicPlayerService
 
     }
 
@@ -146,9 +146,12 @@ class MusicPlayerService : Service() {
             stop()
             release()
         }
+        mediaPlayerNotificationBuilder.closeAllNotification()
         unregisterReceiver(customBroadcastReceiver)
         super.onDestroy()
     }
+
+    fun isPlaying() = mediaPlayer.isPlaying
 
     fun pauseCurrentSong() {
         mediaPlayer.pause()
@@ -188,15 +191,16 @@ class MusicPlayerService : Service() {
 
         private fun playPreviousSongSafely() {
             currentSongPosition--
-            currentSongPosition.plus(MusicLocatorV2.getSize())
-            currentSongPosition.mod(MusicLocatorV2.getSize())
+            if(currentSongPosition < 0)
+                currentSongPosition = MusicLocatorV2.getSize() - 1
             song = MusicLocatorV2.getAudioFiles()[currentSongPosition]
             playThisSong(song)
         }
 
         private fun playNextSongSafely() {
             currentSongPosition += 1
-            currentSongPosition.mod(MusicLocatorV2.getSize())
+            if(currentSongPosition == MusicLocatorV2.getSize())
+                currentSongPosition = 0
             song = MusicLocatorV2.getAudioFiles()[currentSongPosition]
             playThisSong(song)
         }

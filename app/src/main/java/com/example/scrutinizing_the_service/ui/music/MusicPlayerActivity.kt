@@ -7,6 +7,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.*
+import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -25,6 +27,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         const val CODE = 1
         const val SEEK_FORWARD_TIME = 5000
         const val SEEK_BACKWARD_TIME = 5000
+        const val TAG = "MusicPlayerActivity"
     }
 
     private val binding by lazy {
@@ -106,9 +109,8 @@ class MusicPlayerActivity : AppCompatActivity() {
             putExtra(BundleIdentifier.SONG_POSITION, position)
         }
         startForegroundService(intent)
-        musicPlayerService?.let {
-            bindService(intent, musicPlayerServiceConnection, BIND_AUTO_CREATE)
-        }
+        bindService(intent, musicPlayerServiceConnection, BIND_AUTO_CREATE)
+        updateMusicProgressBar()
     }
 
     private fun playPreviousSong() {
@@ -142,11 +144,27 @@ class MusicPlayerActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun updateMusicProgressBar() {
         with(binding) {
-            tvCurrentTimeStamp.text = TimeConverter.getConvertedTime(
-                musicPlayerService?.getCurrentPlayingTime()?.first ?: 0L
-            )
+            musicPlayerService?.let {
+                if(it.isPlaying()) {
+                    tvCurrentTimeStamp.text = TimeConverter.getConvertedTime(
+                        it.getCurrentPlayingTime().first
+                    )
+                    tvTotalTime.text = TimeConverter.getConvertedTime(
+                        it.getCurrentPlayingTime().second
+                    )
+                    pbPlayer.progress = ((100 * it.getCurrentPlayingTime().first) / it.getCurrentPlayingTime().second).toInt()
+                    Log.d(
+                        TAG,
+                        "FIRST" + it.getCurrentPlayingTime().first.toString()
+                    )
+                    Log.d(
+                        TAG,
+                        "SECOND" + it.getCurrentPlayingTime().second.toString()
+                    )
+                }
+            }
         }
-        handler.postDelayed(runnable, 1000)
+        handler.postDelayed(runnable, 100)
     }
 
     private fun checkForPermission() {
@@ -213,9 +231,14 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+    }
+
     private fun setUpTheNewSong(song: Song, position: Int) {
         this.song = song
         startMusicService(song, position)
+        binding.player.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {
@@ -223,6 +246,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         // Because I want my music to run even though i have switched app
         // or killed this activity
         handler.removeCallbacks(runnable)
+        unbindService(musicPlayerServiceConnection)
         super.onDestroy()
     }
 
