@@ -137,6 +137,11 @@ class MusicPlayerService : Service() {
 
     override fun onDestroy() {
         handler.removeCallbacks(runnable)
+        with(mediaPlayer) {
+            pause()
+            stop()
+            release()
+        }
         unregisterReceiver(customBroadcastReceiver)
         super.onDestroy()
     }
