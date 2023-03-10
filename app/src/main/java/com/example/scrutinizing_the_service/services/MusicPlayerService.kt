@@ -68,10 +68,8 @@ class MusicPlayerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        intent?.let { intent ->
-            intent.action?.let {
-                Log.d(TAG, it)
-            }
+        intent?.action?.let {
+            Log.d(TAG, it)
         }
 
         getArgs(intent)
