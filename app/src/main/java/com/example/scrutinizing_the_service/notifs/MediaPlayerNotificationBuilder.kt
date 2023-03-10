@@ -51,66 +51,12 @@ class MediaPlayerNotificationBuilder(
         PendingIntentHelper(context)
     }
 
-    private var notification = Notification()
-
-    fun createNotification(context: Context, song: Song): Notification? {
-        createChannel()
-        val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
-        if (!areNotificationsEnabled) {
-            redirectToSettings()
-            return null
-        }
-        if (!isChannelBlocked(MEDIA_CHANNEL_ID)) {
-            redirectToNotificationChannelSettings(MEDIA_CHANNEL_ID)
-            return null
-        }
-
-        val intent = Intent(context, MusicPlayerActivity::class.java)
-        val pendingIntent =
-            PendingIntent.getActivity(
-                context, REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
-            )
-
-        val notificationBuilder = Notification.Builder(context, MEDIA_CHANNEL_ID)
-            .setStyle(getMediaStyle(song, 0))
-            .setSmallIcon(R.drawable.placeholder)
-            .setColorized(true)
-            .setOngoing(true)
-
-        notificationBuilder.addAction(
-            Notification.Action.Builder(
-                R.drawable.ic_skip_previous, context.getString(R.string.previous), null
-            ).build()
-        )
-
-        notificationBuilder.addAction(
-            Notification.Action.Builder(
-                R.drawable.ic_play, context.getString(R.string.play),
-                PendingIntent.getActivity(
-                    context,
-                    REQUEST_CODE,
-                    Intent(
-                        if (mediaPlayer.isPlaying)
-                            MediaActionEmitter.PAUSE
-                        else
-                            MediaActionEmitter.PLAY
-                    ),
-                    PendingIntent.FLAG_IMMUTABLE
-                )
-            ).build()
-        )
-
-        notificationBuilder.addAction(
-            Notification.Action.Builder(
-                R.drawable.ic_skip_next, context.getString(R.string.next), null
-            ).build()
-        )
-
-        notificationManagerCompat.notify(NOTIFICATION_ID, notificationBuilder.build())
-        return notificationBuilder.build()
-    }
-
     fun getNotification(song: Song, currentPlayingTime: Int): Notification {
+        if(!notificationManagerCompat.areNotificationsEnabled())
+            redirectToSettings()
+        if(isChannelBlocked(MEDIA_CHANNEL_ID))
+            redirectToNotificationChannelSettings(MEDIA_CHANNEL_ID)
+
         val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
             .setStyle(getMediaStyle(song, currentPlayingTime))
             .setSmallIcon(R.drawable.placeholder)
