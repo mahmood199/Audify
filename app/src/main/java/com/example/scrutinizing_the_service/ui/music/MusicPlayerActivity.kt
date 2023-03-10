@@ -156,7 +156,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
-                MusicLocatorV2.getAllAudio(this)
+                MusicLocatorV2.fetchAllAudioFilesFromDevice(this)
             )
         } else {
             requestPermission()
@@ -187,7 +187,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CODE) {
             (binding.rvMusicItems.adapter as SongsAdapter).addNewItems(
-                MusicLocatorV2.getAllAudio(this)
+                MusicLocatorV2.fetchAllAudioFilesFromDevice(this)
             )
         } else {
 

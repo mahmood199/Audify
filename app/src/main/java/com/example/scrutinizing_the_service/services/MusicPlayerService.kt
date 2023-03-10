@@ -15,6 +15,7 @@ import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionReceiver
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
+import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -68,16 +69,12 @@ class MusicPlayerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        intent?.action?.let {
-            Log.d(TAG, it)
-        }
-
         getArgs(intent)
-
         return START_STICKY
     }
 
     private fun getArgs(intent: Intent?) {
+        Log.d(TAG, MusicLocatorV2.fetchAllAudioFilesFromDevice(this).size.toString())
         intent?.let {
             songName = it.extras?.getString(BundleIdentifier.SONG_NAME) ?: ""
             songArtist = it.extras?.getString(BundleIdentifier.SONG_ARTIST) ?: ""
