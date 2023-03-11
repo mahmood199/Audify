@@ -51,7 +51,9 @@
             android:name=".services.RussianIntentService"
             android:enabled="true"
             android:exported="true" />
-        <service android:name=".services.MusicPlayerService" />
+        <service
+            android:name=".services.MusicPlayerService"
+            android:stopWithTask="true" />
 
         <receiver
             android:name=".broadcastReceivers.MediaBroadcastReceiver"
@@ -64,13 +66,26 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".broadcastReceivers.MusicPlayerListener"
+        <receiver
+            android:name=".services.MusicPlayerService$MusicPlayerListener"
             android:exported="false">
             <intent-filter>
                 <action android:name="RECEIVER_PLAY" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="RECEIVER_PAUSE" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="RECEIVER_NEXT" />
-                <action android:name="RECEIVER_PREVIOUS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_PAUSE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_FAST_FORWARD" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_REWIND" />
             </intent-filter>
         </receiver>
 

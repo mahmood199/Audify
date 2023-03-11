@@ -98,3 +98,13 @@ OnBind is only called once to bind the service. Later calls are ignored
 *Note -* Multiple channels can be grouped under one channel group. If we don't put a channel in a group then by default it goes to other(default) channel.
 
 *Note -* For custom layout notification, refer to this video https://www.youtube.com/watch?v=axcdnRAcqLw&list=PLrnPJCHvNZuDR7-cBjRXssxYK0Y5EEKzr&index=12 
+
+<br>
+
+More references for Music Player
+https://github.com/topics/android-music-player?l=kotlin 
+
+## LLD for media player that I have made
+![image](https://user-images.githubusercontent.com/58071934/224479944-8c51d1b3-b389-4a00-be84-c2d2f65d4cbc.png)
+
+
