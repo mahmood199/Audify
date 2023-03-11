@@ -29,6 +29,12 @@ class MediaBroadcastReceiver : BroadcastReceiver() {
             MediaActionEmitter.NEXT -> {
                 nextMusic(context)
             }
+            MediaActionEmitter.FAST_FORWARD -> {
+                fastForward(context)
+            }
+            MediaActionEmitter.REWIND -> {
+                rewind(context)
+            }
         }
     }
 
@@ -57,6 +63,20 @@ class MediaBroadcastReceiver : BroadcastReceiver() {
         Log.d(TAG, "nextMusic")
         val nextMusicIntent = Intent(MediaActionReceiver.NEXT)
         nextMusicIntent.action = MediaActionReceiver.NEXT
+        context?.sendBroadcast(nextMusicIntent)
+    }
+
+    private fun fastForward(context: Context?) {
+        Log.d(TAG, "fastForward")
+        val nextMusicIntent = Intent(MediaActionReceiver.FAST_FORWARD)
+        nextMusicIntent.action = MediaActionReceiver.FAST_FORWARD
+        context?.sendBroadcast(nextMusicIntent)
+    }
+
+    private fun rewind(context: Context?) {
+        Log.d(TAG, "rewind")
+        val nextMusicIntent = Intent(MediaActionReceiver.REWIND)
+        nextMusicIntent.action = MediaActionReceiver.REWIND
         context?.sendBroadcast(nextMusicIntent)
     }
 
