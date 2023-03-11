@@ -11,14 +11,25 @@
         android:id="@+id/rv_music_items"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="12dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/pb_player"
+        app:layout_constraintBottom_toTopOf="@+id/tv_song_display_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="8"
         tools:listitem="@layout/item_music" />
+
+    <TextView
+        android:id="@+id/tv_song_display_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="6dp"
+        android:text="Song Name"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/pb_player" />
 
     <ProgressBar
         android:id="@+id/pb_player"
@@ -60,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="tv_current_time_stamp, tv_total_time, pb_player" />
+        app:constraint_referenced_ids="tv_current_time_stamp, tv_total_time, pb_player, tv_song_display_name" />
 
     <Button
         android:id="@+id/btn_rewind"
