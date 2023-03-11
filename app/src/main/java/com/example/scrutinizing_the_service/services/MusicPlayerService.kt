@@ -12,9 +12,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.scrutinizing_the_service.BundleIdentifier
+import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionReceiver
+import com.example.scrutinizing_the_service.data.MediaPlayerStatus
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
+import com.example.scrutinizing_the_service.notifs.PendingIntentHelper
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 
 
@@ -23,6 +26,9 @@ class MusicPlayerService : Service() {
 
     companion object {
         const val TAG = "MusicPlayerService"
+
+        const val FAST_FORWARD_TIME_IN_MS = 10000
+        const val REWIND_TIME_IN_MS = 10000
     }
 
     private var songName: String = ""
@@ -54,6 +60,10 @@ class MusicPlayerService : Service() {
         Handler(Looper.getMainLooper())
     }
 
+    private val pendingIntentHelper by lazy {
+        PendingIntentHelper(this)
+    }
+
     private lateinit var song: Song
 
     private lateinit var customBroadcastReceiver: MusicPlayerListener
@@ -66,6 +76,8 @@ class MusicPlayerService : Service() {
         intentFilter.addAction(MediaActionReceiver.PAUSE)
         intentFilter.addAction(MediaActionReceiver.PREVIOUS)
         intentFilter.addAction(MediaActionReceiver.NEXT)
+        intentFilter.addAction(MediaActionReceiver.FAST_FORWARD)
+        intentFilter.addAction(MediaActionReceiver.REWIND)
         registerReceiver(customBroadcastReceiver, intentFilter)
     }
 
@@ -76,23 +88,77 @@ class MusicPlayerService : Service() {
     }
 
     private fun getArgs(intent: Intent?) {
-        Log.d(TAG, MusicLocatorV2.fetchAllAudioFilesFromDevice(this).size.toString())
         intent?.let {
-            songName = it.extras?.getString(BundleIdentifier.SONG_NAME) ?: ""
-            songArtist = it.extras?.getString(BundleIdentifier.SONG_ARTIST) ?: ""
-            songPath = it.extras?.getString(BundleIdentifier.SONG_PATH) ?: ""
-            songDuration = it.extras?.getInt(BundleIdentifier.SONG_DURATION) ?: 0
-            song = Song(
-                songName,
-                songArtist,
-                path = songPath,
-                duration = songDuration
-            )
-            currentSongPosition = it.extras?.getInt(BundleIdentifier.SONG_POSITION) ?: 0
-            Log.d(TAG, currentSongPosition.toString())
-            Toast.makeText(this, songName, Toast.LENGTH_SHORT).show()
-            mediaPlayerNotificationBuilder.createChannel()
+            val action = it.extras?.getString(BundleIdentifier.BUTTON_ACTION) ?: ""
+            Log.d(TAG, action)
+            when (action) {
+                BundleIdentifier.ACTION_FIRST_PLAY -> {
+                    processArgsToPlaySong(intent)
+                }
+                BundleIdentifier.ACTION_PLAY -> {
+                    this.sendBroadcast(
+                        pendingIntentHelper.intent.apply {
+                            this.action = MediaActionEmitter.PLAY
+                        }
+                    )
+                }
+                BundleIdentifier.ACTION_PAUSE -> {
+                    this.sendBroadcast(
+                        pendingIntentHelper.intent.apply {
+                            this.action = MediaActionEmitter.PAUSE
+                        }
+                    )
+                }
+                BundleIdentifier.ACTION_NEXT -> {
+                    this.sendBroadcast(
+                        pendingIntentHelper.intent.apply {
+                            this.action = MediaActionEmitter.NEXT
+                        }
+                    )
+                }
+                BundleIdentifier.ACTION_PREVIOUS -> {
+                    this.sendBroadcast(
+                        pendingIntentHelper.intent.apply {
+                            this.action = MediaActionEmitter.PREVIOUS
+                        }
+                    )
+                }
+                BundleIdentifier.ACTION_FAST_FORWARD -> {
+                    this.sendBroadcast(
+                        pendingIntentHelper.intent.apply {
+                            this.action = MediaActionEmitter.FAST_FORWARD
+                        }
+                    )
+                }
+                BundleIdentifier.ACTION_REWIND -> {
+                    this.sendBroadcast(
+                        pendingIntentHelper.intent.apply {
+                            this.action = MediaActionEmitter.REWIND
+                        }
+                    )
+                }
+                else -> {
+                    throw Exception("Invalid media player action")
+                }
+            }
         }
+    }
+
+    private fun processArgsToPlaySong(it: Intent) {
+        songName = it.extras?.getString(BundleIdentifier.SONG_NAME) ?: ""
+        songArtist = it.extras?.getString(BundleIdentifier.SONG_ARTIST) ?: ""
+        songPath = it.extras?.getString(BundleIdentifier.SONG_PATH) ?: ""
+        songDuration = it.extras?.getInt(BundleIdentifier.SONG_DURATION) ?: 0
+        song = Song(
+            songName,
+            songArtist,
+            path = songPath,
+            duration = songDuration
+        )
+        currentSongPosition = it.extras?.getInt(BundleIdentifier.SONG_POSITION) ?: 0
+        Toast.makeText(this, songName, Toast.LENGTH_SHORT).show()
+        mediaPlayerNotificationBuilder.createChannel()
+
 
         //mandatory to do this. Else app is crashing after 5 seconds
         startForeground(
@@ -112,8 +178,13 @@ class MusicPlayerService : Service() {
 
     }
 
-    fun getCurrentPlayingTime(): Pair<Long, Long> {
-        return Pair(mediaPlayer.currentPosition.toLong(), mediaPlayer.duration.toLong())
+    fun getMediaPlayerStatus(): MediaPlayerStatus {
+        return MediaPlayerStatus(
+            mediaPlayer.currentPosition.toLong(),
+            mediaPlayer.duration.toLong(),
+            song,
+            mediaPlayer.isPlaying
+        )
     }
 
     fun playThisSong(song: Song) {
@@ -135,7 +206,11 @@ class MusicPlayerService : Service() {
 
 
     private fun updateNotification() {
-        mediaPlayerNotificationBuilder.createUpdatedNotification(song, mediaPlayer.currentPosition)
+        mediaPlayerNotificationBuilder.createUpdatedNotification(
+            song,
+            mediaPlayer.currentPosition,
+            mediaPlayer.isPlaying
+        )
         handler.postDelayed(runnable, 100)
     }
 
@@ -184,6 +259,14 @@ class MusicPlayerService : Service() {
                         Log.d(TAG, it)
                         playNextSongSafely()
                     }
+                    MediaActionReceiver.FAST_FORWARD -> {
+                        Log.d(TAG, it)
+                        fastForwardPlayer()
+                    }
+                    MediaActionReceiver.REWIND -> {
+                        Log.d(TAG, it)
+                        rewindSong()
+                    }
                     else -> {}
                 }
             }
@@ -191,7 +274,7 @@ class MusicPlayerService : Service() {
 
         private fun playPreviousSongSafely() {
             currentSongPosition--
-            if(currentSongPosition < 0)
+            if (currentSongPosition < 0)
                 currentSongPosition = MusicLocatorV2.getSize() - 1
             song = MusicLocatorV2.getAudioFiles()[currentSongPosition]
             playThisSong(song)
@@ -199,11 +282,31 @@ class MusicPlayerService : Service() {
 
         private fun playNextSongSafely() {
             currentSongPosition += 1
-            if(currentSongPosition == MusicLocatorV2.getSize())
+            if (currentSongPosition == MusicLocatorV2.getSize())
                 currentSongPosition = 0
             song = MusicLocatorV2.getAudioFiles()[currentSongPosition]
             playThisSong(song)
         }
+
+        private fun fastForwardPlayer() {
+            mediaPlayer.seekTo(
+                minOf(
+                    mediaPlayer.currentPosition + FAST_FORWARD_TIME_IN_MS,
+                    mediaPlayer.duration
+                )
+            )
+        }
+
+        private fun rewindSong() {
+            mediaPlayer.seekTo(
+                maxOf(
+                    mediaPlayer.currentPosition - REWIND_TIME_IN_MS,
+                    0
+                )
+            )
+        }
+
+
     }
 
 

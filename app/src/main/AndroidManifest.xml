@@ -81,6 +81,12 @@
             <intent-filter>
                 <action android:name="RECEIVER_PAUSE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_FAST_FORWARD" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="RECEIVER_REWIND" />
+            </intent-filter>
         </receiver>
 
         <activity
