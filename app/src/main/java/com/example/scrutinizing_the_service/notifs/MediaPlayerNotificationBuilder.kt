@@ -1,10 +1,8 @@
 package com.example.scrutinizing_the_service.notifs
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.MediaMetadata
@@ -14,14 +12,11 @@ import android.media.session.PlaybackState
 import android.media.session.PlaybackState.*
 import android.os.Build
 import android.provider.Settings
-import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.data.Song
-import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaPlayerNotificationBuilder(
@@ -54,7 +49,7 @@ class MediaPlayerNotificationBuilder(
     fun getNotification(song: Song, currentPlayingTime: Int): Notification {
         if(!notificationManagerCompat.areNotificationsEnabled())
             redirectToSettings()
-        if(isChannelBlocked(MEDIA_CHANNEL_ID))
+        if(!isChannelBlocked(MEDIA_CHANNEL_ID))
             redirectToNotificationChannelSettings(MEDIA_CHANNEL_ID)
 
         val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
@@ -161,17 +156,18 @@ class MediaPlayerNotificationBuilder(
         Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
             putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
             putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(this)
         }
     }
 
-    fun createUpdatedNotification(song: Song, currentPosition: Int) {
+    fun createUpdatedNotification(song: Song, currentPosition: Int, playing: Boolean) {
 
         val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)
             .setStyle(getMediaStyle(song, currentPosition))
             .setSmallIcon(R.drawable.placeholder)
-            .setColorized(true)
-            .setOngoing(true)
+            .setColorized(playing)
+            .setOngoing(playing)
 
         notification.addAction(
             Notification.Action.Builder(
