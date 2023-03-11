@@ -6,7 +6,7 @@ object MediaActionEmitter {
     const val PAUSE = "EMITTER_PAUSE"
     const val NEXT = "EMITTER_NEXT"
     const val PREVIOUS = "EMITTER_PREVIOUS"
-    const val FAST_FORWARD = "FAST_FORWARD"
-    const val REWIND = "REWIND"
+    const val FAST_FORWARD = "EMITTER_FAST_FORWARD"
+    const val REWIND = "EMITTER_REWIND"
 
 }
