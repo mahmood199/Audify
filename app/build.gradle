@@ -50,11 +50,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-service:$lifecycle_version")
 
+/*
     def exoplayer_version = '2.18.4'
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayer_version")
     implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayer_version")
     implementation("com.google.android.exoplayer:extension-mediasession:$exoplayer_version")
     implementation("com.google.android.exoplayer:extension-cast:$exoplayer_version")
+*/
 
     def androidx_media_version = '1.0.1'
     implementation("androidx.media:media:$androidx_media_version")

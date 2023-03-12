@@ -3,8 +3,10 @@ package com.example.scrutinizing_the_service.ui.exo_music
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -12,11 +14,11 @@ import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityAudioPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
-import com.example.scrutinizing_the_service.services.MusicPlayerServiceV2
+import com.example.scrutinizing_the_service.services.ExoPlayerAudioService
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
-import com.google.android.exoplayer2.util.Util
 
-class AudioPlayerActivity : AppCompatActivity() {
+@RequiresApi(Build.VERSION_CODES.O)
+class ExoPlayerActivity : AppCompatActivity() {
 
     companion object {
         const val CODE = 1
@@ -54,7 +56,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun startMusicPlayerService(song: Song, position: Int) {
         Toast.makeText(this, "$song $position", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, MusicPlayerServiceV2::class.java).apply {
+        val intent = Intent(this, ExoPlayerAudioService::class.java).apply {
             putExtra(BundleIdentifier.BUTTON_ACTION, BundleIdentifier.ACTION_FIRST_PLAY)
             putExtra(BundleIdentifier.SONG_NAME, song.name)
             putExtra(BundleIdentifier.SONG_ARTIST, song.artist)
@@ -62,7 +64,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             putExtra(BundleIdentifier.SONG_DURATION, song.duration)
             putExtra(BundleIdentifier.SONG_POSITION, position)
         }
-        Util.startForegroundService(this, intent)
+        startForegroundService(intent)
 
     }
 
@@ -82,7 +84,8 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
