@@ -1,4 +1,5 @@
 # Future of the project
+0) Media player using exo player
 1) UI/UX improvement of media list screen.
 2) UI/UX improvement of media player screen.
 3) Adding support for music streaming.
