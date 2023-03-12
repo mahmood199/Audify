@@ -65,6 +65,9 @@
         <service
             android:name=".services.MusicPlayerService"
             android:stopWithTask="true" />
+        <service
+            android:name=".services.MusicPlayerServiceV2"
+            android:stopWithTask="true" />
 
         <receiver
             android:name=".broadcastReceivers.MediaBroadcastReceiver"
