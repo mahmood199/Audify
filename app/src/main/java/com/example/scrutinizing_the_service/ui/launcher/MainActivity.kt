@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.ui
+package com.example.scrutinizing_the_service.ui.launcher
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
@@ -13,6 +13,7 @@ import com.example.scrutinizing_the_service.databinding.ActivityMainBinding
 import com.example.scrutinizing_the_service.services.BinderImpl
 import com.example.scrutinizing_the_service.services.SmartServices
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
+import com.example.scrutinizing_the_service.ui.notif.NotificationActivity
 
 class MainActivity : AppCompatActivity() {
 
