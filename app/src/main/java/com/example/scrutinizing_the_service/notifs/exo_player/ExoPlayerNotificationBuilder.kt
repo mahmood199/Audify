@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.notifs
+package com.example.scrutinizing_the_service.notifs.exo_player
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -15,8 +15,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerNotificationManager
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ExoPlayerNotificationBuilder(
@@ -42,9 +42,6 @@ class ExoPlayerNotificationBuilder(
         context.getSystemService(NotificationManager::class.java)
     }
 
-    private val pendingIntentHelper by lazy {
-        PendingIntentHelper(context)
-    }
 
 
     private fun getMediaStyle(song: MediaItem): Notification.MediaStyle {

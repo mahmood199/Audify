@@ -14,7 +14,7 @@ import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityAudioPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
-import com.example.scrutinizing_the_service.services.ExoPlayerAudioService
+import com.example.scrutinizing_the_service.services.exo_player.ExoPlayerAudioService
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -54,7 +54,7 @@
             android:name=".services.MusicPlayerService"
             android:stopWithTask="true" />
         <service
-            android:name=".services.ExoPlayerAudioService"
+            android:name=".services.exo_player.ExoPlayerAudioService"
             android:stopWithTask="true" />
 
         <receiver
