@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- If I am not giving this permission, app is crashing saying that it needs this permission -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".ServiceApplication"
@@ -21,24 +22,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScrutinizingTheService"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <activity
             android:name=".ui.job_intent.JobIntentActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.music.MusicPlayerActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.notif.NotificationActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -59,10 +60,12 @@
         <service
             android:name=".services.MusicPlayerService"
             android:stopWithTask="true" />
+        <service
+            android:name=".services.FirstJIService" />
 
         <receiver
             android:name=".broadcastReceivers.MediaBroadcastReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="EMITTER_PLAY" />
                 <action android:name="EMITTER_PAUSE" />
@@ -72,7 +75,7 @@
         </receiver>
         <receiver
             android:name=".services.MusicPlayerService$MusicPlayerListener"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="RECEIVER_PLAY" />
             </intent-filter>
@@ -95,7 +98,7 @@
 
         <activity
             android:name=".ui.launcher.MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
