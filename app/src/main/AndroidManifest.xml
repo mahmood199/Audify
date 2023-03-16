@@ -54,6 +54,7 @@
         <service
             android:name=".services.MusicPlayerService"
             android:stopWithTask="true" />
+        <service android:name=".services.JobServiceDemo" />
 
         <receiver
             android:name=".broadcastReceivers.MediaBroadcastReceiver"
