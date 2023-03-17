@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.scrutinizing_the_service.databinding.ActivityMainBinding
 import com.example.scrutinizing_the_service.services.BinderImpl
 import com.example.scrutinizing_the_service.services.SmartServices
+import com.example.scrutinizing_the_service.ui.exo_music.ExoPlayerActivity
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
 
 class MainActivity : AppCompatActivity() {
@@ -76,6 +77,9 @@ class MainActivity : AppCompatActivity() {
             }
             btnGoToSongsScreen.setOnClickListener {
                 startActivity(Intent(this@MainActivity, MusicPlayerActivity::class.java))
+            }
+            btnGoToExoPlayerScreen.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ExoPlayerActivity::class.java))
             }
         }
     }
