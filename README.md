@@ -129,4 +129,13 @@ https://github.com/topics/android-music-player?l=kotlin
 2. https://stacktips.com/articles/android-service-interview-questions
 3. https://www.interviewbit.com/android-interview-questions/
 
+## LLD - 1 for media player from UAMP project
+![image](https://user-images.githubusercontent.com/58071934/226140618-293291cb-687d-4ec3-91c5-88b5d22e399b.png)
+
+<br>
+<br>
+
+## LLD - 2 for media player from UAMP project
+![image](https://user-images.githubusercontent.com/58071934/226140654-376cd7b9-5091-404d-b98f-5ede3c06b596.png)
+
 
