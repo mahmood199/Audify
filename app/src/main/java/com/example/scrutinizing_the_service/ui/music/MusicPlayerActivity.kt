@@ -12,9 +12,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.scrutinizing_the_service.BundleIdentifier
+import com.example.scrutinizing_the_service.util.BundleIdentifier
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.TimeConverter
+import com.example.scrutinizing_the_service.util.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.databinding.ActivityMusicPlayerBinding
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2

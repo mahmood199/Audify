@@ -11,7 +11,7 @@ import android.os.*
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.example.scrutinizing_the_service.BundleIdentifier
+import com.example.scrutinizing_the_service.util.BundleIdentifier
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionReceiver
 import com.example.scrutinizing_the_service.data.MediaPlayerStatus
