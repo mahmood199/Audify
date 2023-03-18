@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service
+package com.example.scrutinizing_the_service.util
 
 object BundleIdentifier {
 
