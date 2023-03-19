@@ -16,8 +16,9 @@
         android:textColor="@color/black"
         android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_start_service"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.242" />
@@ -27,7 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_service"
+        app:layout_constraintBottom_toTopOf="@+id/btn_stop_service"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -35,9 +38,10 @@
         android:id="@+id/btn_stop_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/stop_service"
+        app:layout_constraintBottom_toTopOf="@+id/btn_bind_service"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_start_service" />
 
@@ -45,9 +49,10 @@
         android:id="@+id/btn_bind_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/bind_service"
+        app:layout_constraintBottom_toTopOf="@+id/btn_unbind_service"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_stop_service" />
 
@@ -55,9 +60,10 @@
         android:id="@+id/btn_unbind_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/unbind_service"
+        app:layout_constraintBottom_toTopOf="@+id/btn_get_random_number"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_bind_service" />
 
@@ -65,9 +71,10 @@
         android:id="@+id/btn_get_random_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/get_current_value"
+        app:layout_constraintBottom_toTopOf="@+id/btn_go_to_songs_screen"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_unbind_service" />
 
@@ -78,6 +85,7 @@
         android:text="@string/go_to_songs_screen"
         app:layout_constraintBottom_toTopOf="@+id/btn_go_to_notif_screen"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_get_random_number" />
 
@@ -86,9 +94,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/go_to_notification_screen"
+        app:layout_constraintBottom_toTopOf="@+id/btn_go_to_exo_player_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_go_to_songs_screen" />
+
+    <Button
+        android:id="@+id/btn_go_to_exo_player_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exo_player_music_service"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_get_random_number" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
