@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.ui.exo_player
+package com.example.scrutinizing_the_service.exo_player
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
