@@ -50,4 +50,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
+    def media_version = "1.6.0"
+    implementation "androidx.media:media:$media_version"
 }
