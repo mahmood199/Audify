@@ -1,12 +1,18 @@
 package com.example.scrutinizing_the_service.exo_player.service
 
+import android.media.session.MediaSession
+import android.media.session.MediaSession.Token
+import android.media.session.PlaybackState
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.annotation.RequiresApi
 import androidx.media.MediaBrowserServiceCompat
 import com.example.scrutinizing_the_service.util.PackageAccessValidator
 
+@RequiresApi(Build.VERSION_CODES.O)
 class MusicPlayerService : MediaBrowserServiceCompat() {
 
     companion object {
@@ -15,8 +21,15 @@ class MusicPlayerService : MediaBrowserServiceCompat() {
         private const val MY_EMPTY_MEDIA_ROOT_ID = "empty_root_id"
     }
 
-    private lateinit var mediaSession: MediaSessionCompat
-    private lateinit var stateBuilder: PlaybackStateCompat.Builder
+    private lateinit var mediaSession: MediaSession
+    private lateinit var stateBuilder: PlaybackState.Builder
+
+    private val notificationBuilder by lazy {
+        MusicNotificationBuilder(
+            this,
+            mediaSession
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -24,21 +37,21 @@ class MusicPlayerService : MediaBrowserServiceCompat() {
     }
 
     private fun initializeMediaSession() {
-        mediaSession = MediaSessionCompat(baseContext, TAG).apply {
+        mediaSession = MediaSession(baseContext, TAG).apply {
             setFlags(
-                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or
-                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
+                MediaSession.FLAG_HANDLES_MEDIA_BUTTONS or
+                        MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
             )
 
-            stateBuilder = PlaybackStateCompat.Builder().setActions(
-                PlaybackStateCompat.ACTION_PLAY or
-                        PlaybackStateCompat.ACTION_PLAY_PAUSE
+            stateBuilder = PlaybackState.Builder().setActions(
+                PlaybackState.ACTION_PLAY or
+                        PlaybackState.ACTION_PLAY_PAUSE
             )
             setPlaybackState(stateBuilder.build())
 
             setCallback(MusicSessionCallback())
 
-            setSessionToken(sessionToken)
+            setSessionToken(MediaSessionCompat.Token.fromToken("1234"))
         }
     }
 
