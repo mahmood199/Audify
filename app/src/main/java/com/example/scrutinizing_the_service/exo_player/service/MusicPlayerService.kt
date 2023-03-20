@@ -71,7 +71,24 @@ class MusicPlayerService : MediaBrowserServiceCompat() {
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>
     ) {
-        TODO("Not yet implemented")
+        if(MY_EMPTY_MEDIA_ROOT_ID == parentId) {
+            result.sendResult(null)
+            return
+        } else {
+            val mediaItems = mutableListOf<MediaBrowserCompat.MediaItem>()
+            if(MY_MEDIA_ROOT_ID == parentId) {
+                /**
+                 * Build the MediaItem objects for the top level,
+                 * and put them in the mediaItems list...
+                 */
+            } else {
+                /**
+                 * Examine the passed parentMediaId to see which submenu we're at,
+                 * and put the children of that menu in the mediaItems list...
+                 */
+            }
+            result.sendResult(mediaItems)
+        }
     }
 
 }
