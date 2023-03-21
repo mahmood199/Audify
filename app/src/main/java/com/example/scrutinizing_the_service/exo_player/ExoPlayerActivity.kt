@@ -1,6 +1,7 @@
 package com.example.scrutinizing_the_service.exo_player
 
 import android.content.ComponentName
+import android.content.Intent
 import android.media.AudioManager
 import android.media.browse.MediaBrowser
 import android.media.session.MediaController
@@ -39,6 +40,9 @@ class ExoPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.btnPlayPause.setOnClickListener {
+            startService(Intent(this, MusicPlayerService::class.java))
+        }
     }
 
     override fun onStart() {

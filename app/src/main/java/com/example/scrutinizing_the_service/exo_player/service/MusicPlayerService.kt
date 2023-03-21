@@ -1,15 +1,15 @@
 package com.example.scrutinizing_the_service.exo_player.service
 
-import android.media.session.MediaSession
-import android.media.session.MediaSession.Token
-import android.media.session.PlaybackState
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import androidx.media.MediaBrowserServiceCompat
+import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 import com.example.scrutinizing_the_service.util.PackageAccessValidator
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -89,17 +89,22 @@ class MusicPlayerService : MediaBrowserServiceCompat() {
             return
         } else {
             val mediaItems = mutableListOf<MediaBrowserCompat.MediaItem>()
-            if(MY_MEDIA_ROOT_ID == parentId) {
-                /**
-                 * Build the MediaItem objects for the top level,
-                 * and put them in the mediaItems list...
-                 */
-            } else {
-                /**
-                 * Examine the passed parentMediaId to see which submenu we're at,
-                 * and put the children of that menu in the mediaItems list...
-                 */
+            val mediaDescriptionCompats = MusicLocatorV2.fetchAllAudioFilesFromDevice(this).map { song ->
+                MediaDescriptionCompat.Builder().apply {
+                    setMediaUri(song.path.toUri())
+                    setTitle(song.name)
+                    setDescription(song.artist)
+                }.build()
             }
+
+            val mediaBrowserCompatItems = mediaDescriptionCompats.map {
+                MediaBrowserCompat.MediaItem(
+                    it,
+                    MediaBrowserCompat.MediaItem.FLAG_PLAYABLE
+                )
+            }
+
+            mediaItems.addAll(mediaBrowserCompatItems)
             result.sendResult(mediaItems)
         }
     }
