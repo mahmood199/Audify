@@ -21,8 +21,8 @@ class MusicPlayerService : MediaBrowserServiceCompat() {
         private const val MY_EMPTY_MEDIA_ROOT_ID = "empty_root_id"
     }
 
-    private lateinit var mediaSession: MediaSession
-    private lateinit var stateBuilder: PlaybackState.Builder
+    private lateinit var mediaSession: MediaSessionCompat
+    private lateinit var stateBuilder: PlaybackStateCompat.Builder
 
     private val notificationBuilder by lazy {
         MusicNotificationBuilder(
@@ -37,21 +37,21 @@ class MusicPlayerService : MediaBrowserServiceCompat() {
     }
 
     private fun initializeMediaSession() {
-        mediaSession = MediaSession(baseContext, TAG).apply {
+        mediaSession = MediaSessionCompat(baseContext, TAG).apply {
             setFlags(
-                MediaSession.FLAG_HANDLES_MEDIA_BUTTONS or
-                        MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or
+                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
             )
 
-            stateBuilder = PlaybackState.Builder().setActions(
-                PlaybackState.ACTION_PLAY or
-                        PlaybackState.ACTION_PLAY_PAUSE
+            stateBuilder = PlaybackStateCompat.Builder().setActions(
+                PlaybackStateCompat.ACTION_PLAY or
+                        PlaybackStateCompat.ACTION_PLAY_PAUSE
             )
             setPlaybackState(stateBuilder.build())
 
             setCallback(MusicSessionCallback())
 
-            setSessionToken(MediaSessionCompat.Token.fromToken("1234"))
+            setSessionToken(sessionToken)
         }
     }
 

@@ -1,9 +1,10 @@
 package com.example.scrutinizing_the_service.exo_player.service
 
 import android.media.session.MediaSession
+import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
 
-class MusicSessionCallback: MediaSession.Callback() {
+class MusicSessionCallback: MediaSessionCompat.Callback() {
 
     companion object {
         const val TAG = "MusicSessionCallback"
