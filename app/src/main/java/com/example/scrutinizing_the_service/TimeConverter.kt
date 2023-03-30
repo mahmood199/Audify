@@ -1,0 +1,16 @@
+package com.example.scrutinizing_the_service
+
+import java.util.concurrent.TimeUnit
+
+object TimeConverter {
+
+    fun getConvertedTime(duration : Long) : String {
+        return String.format(
+            "%02d:%02d",
+            TimeUnit.MILLISECONDS.toMinutes(duration),
+            TimeUnit.MILLISECONDS.toSeconds(duration) -
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
+        )
+    }
+
+}
