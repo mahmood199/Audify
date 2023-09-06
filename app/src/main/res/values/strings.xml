@@ -15,4 +15,5 @@
     <string name="rewind">Rewind</string>
     <string name="forward">Forward</string>
     <string name="go_to_songs_screen">Go to Songs screen</string>
+    <string name="title_activity_audio_player">AudioPlayerActivity</string>
 </resources>
