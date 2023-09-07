@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -13,6 +14,7 @@ import com.example.scrutinizing_the_service.databinding.ActivityMainBinding
 import com.example.scrutinizing_the_service.services.BinderImpl
 import com.example.scrutinizing_the_service.services.SmartServices
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
+import com.example.scrutinizing_the_service.v2.AudioPlayerActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -72,10 +74,31 @@ class MainActivity : AppCompatActivity() {
                 setRandomNumber()
             }
             btnGoToNotifScreen.setOnClickListener {
-                startActivity(Intent(this@MainActivity, NotificationActivity::class.java))
+                startActivity(
+                    Intent(
+                        this@MainActivity,
+                        NotificationActivity::class.java
+                    ).setAction("your.custom.action")
+                )
             }
             btnGoToSongsScreen.setOnClickListener {
-                startActivity(Intent(this@MainActivity, MusicPlayerActivity::class.java))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            MusicPlayerActivity::class.java
+                        ).setAction("your.custom.action")
+                    )
+                }
+            }
+            btnGoToComposeAudioScreen.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@MainActivity,
+                        AudioPlayerActivity::class.java
+                    )
+                        .setAction("your.custom.action")
+                )
             }
         }
     }
