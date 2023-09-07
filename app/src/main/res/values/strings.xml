@@ -8,6 +8,7 @@
     <string name="show_notification">Show Notification</string>
     <string name="create_channel">Create Channel</string>
     <string name="go_to_notification_screen">Go to Notification screen</string>
+    <string name="go_to_compose_screen">Go to Compose Player screen</string>
     <string name="previous">Previous</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
