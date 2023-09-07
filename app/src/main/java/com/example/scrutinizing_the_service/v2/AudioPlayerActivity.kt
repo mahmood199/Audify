@@ -17,7 +17,11 @@ class AudioPlayerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ScrutinizingTheServiceTheme {
-                NavigationCentral()
+                NavigationCentral(
+                    backPress = {
+                        finish()
+                    }
+                )
             }
         }
     }
@@ -28,6 +32,7 @@ class AudioPlayerActivity : ComponentActivity() {
 fun NavigationCentralPreview() {
     ScrutinizingTheServiceTheme {
         NavigationCentral(
+            backPress = {},
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surface
             )

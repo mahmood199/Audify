@@ -1,8 +1,8 @@
 package com.example.scrutinizing_the_service.v2.list
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -46,6 +47,7 @@ import com.example.scrutinizing_the_service.v2.common.AppBar
 
 @Composable
 fun MusicListUI(
+    backPress: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
@@ -56,27 +58,27 @@ fun MusicListUI(
         }
     }
 
-    val loading by viewModel.loading.collectAsState()
+    BackHandler {
+        backPress()
+    }
 
-    val slideInProgress = animateFloatAsState(
-        targetValue = 1.0f,
-        label = "Target"
-    )
+    val loading by viewModel.loading.collectAsState()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(Color.White)
     ) {
         Scaffold(
             topBar = {
                 AppBar(
                     imageVector = Icons.Default.ArrowBack,
                     title = "Catalog",
-                    backPressAction = { },
+                    backPressAction = backPress,
                 )
             },
             modifier = modifier
+                .background(Color.White)
                 .fillMaxSize()
         ) { paddingValues ->
             MusicListContent(
@@ -151,8 +153,7 @@ fun MusicList(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(all = 12.dp),
         modifier = modifier
-            .fillMaxSize()
-            .background(Color.LightGray),
+            .fillMaxSize(),
         state = lazyListState
     ) {
         itemsIndexed(items = songs, key = { index: Int, item: Song ->
@@ -167,17 +168,19 @@ fun MusicList(
 fun SongUI(item: Song) {
     Column(
         modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
             .clip(RoundedCornerShape(12.dp))
             .padding(all = 6.dp)
     ) {
         Text(
             text = item.name,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSecondary,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
             text = item.artist,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSecondary,
             style = MaterialTheme.typography.titleSmall
         )
         val duration = remember {
@@ -185,30 +188,8 @@ fun SongUI(item: Song) {
         }
         Text(
             text = duration,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSecondary,
             style = MaterialTheme.typography.bodySmall
         )
     }
-}
-
-@Composable
-private fun LazyListState.isScrollingUp(): Boolean {
-    var previousIndex by remember(this) {
-        mutableIntStateOf(firstVisibleItemIndex)
-    }
-    var previousScrollOffset by remember(this) {
-        mutableIntStateOf(firstVisibleItemScrollOffset)
-    }
-    return remember(this) {
-        derivedStateOf {
-            if (previousIndex != firstVisibleItemIndex) {
-                previousIndex > firstVisibleItemIndex
-            } else {
-                previousScrollOffset >= firstVisibleItemScrollOffset
-            }.also {
-                previousIndex = firstVisibleItemIndex
-                previousScrollOffset = firstVisibleItemScrollOffset
-            }
-        }
-    }.value
 }
