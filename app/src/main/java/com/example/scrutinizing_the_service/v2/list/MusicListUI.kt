@@ -3,6 +3,7 @@ package com.example.scrutinizing_the_service.v2.list
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.common.AppBar
+import com.example.scrutinizing_the_service.v2.common.BottomPlayer
 
 @Composable
 fun MusicListUI(
@@ -75,6 +78,13 @@ fun MusicListUI(
                     backPressAction = backPress,
                 )
             },
+            bottomBar = {
+                AnimatedBottomPlayer(isShown)
+            },
+            floatingActionButtonPosition = FabPosition.End,
+            floatingActionButton = {
+                AnimatedFAB(isShown)
+            },
             modifier = modifier
                 .background(Color.White)
                 .fillMaxSize()
@@ -90,26 +100,44 @@ fun MusicListUI(
                     )
             )
         }
+    }
+}
 
+@Composable
+fun AnimatedBottomPlayer(isShown: Boolean) {
+    AnimatedVisibility(
+        visible = isShown,
+        enter = slideIn(initialOffset = { IntOffset(0, 100) }),
+        exit = slideOut(targetOffset = { IntOffset(0, 200) }),
+    ) {
+        BottomPlayer(
+            progress = 0.8f,
+            songName = "Some Very Long Name of the song Some Very Long Name of the song",
+            artist = "Some Artist Name"
+        )
+    }
+}
 
-        AnimatedVisibility(
-            visible = isShown,
-            enter = slideIn(initialOffset = { IntOffset(100, 0) }),
-            exit = slideOut(targetOffset = { IntOffset(200, 0) }),
+@Composable
+fun AnimatedFAB(
+    isShown: Boolean,
+    modifier: Modifier = Modifier
+) {
+    AnimatedVisibility(
+        visible = isShown,
+        enter = slideIn(initialOffset = { IntOffset(100, 0) }),
+        exit = slideOut(targetOffset = { IntOffset(200, 0) }),
+        modifier = modifier
+    ) {
+        FloatingActionButton(
+            onClick = { /*TODO*/ },
             modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.BottomEnd)
+                .clip(RoundedCornerShape(25))
         ) {
-            FloatingActionButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(25))
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search Song Button"
-                )
-            }
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search Song Button"
+            )
         }
     }
 }
