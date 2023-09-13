@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import com.example.scrutinizing_the_service.v2.common.BottomPlayer
 
 @Composable
 fun MusicListUI(
+    playMusic: (Song, Int) -> Unit,
     backPress: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MusicListViewModel = hiltViewModel()
@@ -92,6 +94,7 @@ fun MusicListUI(
                 isLoading = loading,
                 songs = viewModel.songs,
                 lazyListState = listState,
+                playMusic = playMusic,
                 modifier = Modifier
                     .padding(
                         top = paddingValues.calculateTopPadding(),
@@ -146,6 +149,7 @@ fun MusicListContent(
     isLoading: Boolean,
     songs: List<Song>,
     lazyListState: LazyListState,
+    playMusic: (Song, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimatedContent(
@@ -163,6 +167,7 @@ fun MusicListContent(
             MusicList(
                 songs = songs,
                 lazyListState = lazyListState,
+                playMusic = playMusic
             )
         }
     }
@@ -172,6 +177,7 @@ fun MusicListContent(
 fun MusicList(
     songs: List<Song>,
     lazyListState: LazyListState,
+    playMusic: (Song, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -183,16 +189,24 @@ fun MusicList(
     ) {
         itemsIndexed(items = songs, key = { index: Int, item: Song ->
             item.name + index
-        }) { _, item ->
-            SongUI(item)
+        }) { index, item ->
+            SongUI(
+                item = item,
+                modifier = Modifier.clickable {
+                    playMusic(item, index)
+                }
+            )
         }
     }
 }
 
 @Composable
-fun SongUI(item: Song) {
+fun SongUI(
+    item: Song,
+    modifier : Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Color.White)
             .clip(RoundedCornerShape(12.dp))

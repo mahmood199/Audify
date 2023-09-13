@@ -7,10 +7,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.list.MusicListUI
 
 @Composable
 fun NavigationCentral(
+    playMusic: (Song, Int) -> Unit,
     backPress: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -22,7 +24,10 @@ fun NavigationCentral(
         modifier = modifier.background(Color.White)
     ) {
         composable(ScreenName.AUDIO_LIST) {
-            MusicListUI(backPress)
+            MusicListUI(
+                playMusic = playMusic,
+                backPress = backPress
+            )
         }
     }
 }

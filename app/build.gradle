@@ -86,4 +86,34 @@ dependencies {
 
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
+    // Media3 ExoPlayer
+
+    def media3_version = "1.1.1"
+
+    // For media playback using ExoPlayer
+    implementation "androidx.media3:media3-exoplayer:$media3_version"
+
+    // For DASH playback support with ExoPlayer
+    implementation "androidx.media3:media3-exoplayer-dash:$media3_version"
+    // For HLS playback support with ExoPlayer
+    implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
+    // For RTSP playback support with ExoPlayer
+    implementation "androidx.media3:media3-exoplayer-rtsp:$media3_version"
+
+    implementation "androidx.media3:media3-ui:$media3_version"
+    // For building media playback UIs for Android TV using the Jetpack Leanback library
+    implementation "androidx.media3:media3-ui-leanback:$media3_version"
+
+    // For exposing and controlling media sessions
+    implementation "androidx.media3:media3-session:$media3_version"
+
+    // For extracting data from media containers
+    implementation "androidx.media3:media3-extractor:$media3_version"
+
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+
 }
