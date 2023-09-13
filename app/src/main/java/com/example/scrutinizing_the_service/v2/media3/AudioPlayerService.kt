@@ -146,7 +146,14 @@ class AudioPlayerService : MediaSessionService() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onDestroy() {
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        clearResources()
+        stopSelf()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun clearResources() {
         mediaSession.release()
         player.stop()
         player.release()
@@ -154,6 +161,11 @@ class AudioPlayerService : MediaSessionService() {
             notificationManager.cancel()
         }
         coroutineScope = null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onDestroy() {
+        clearResources()
         super.onDestroy()
     }
 
