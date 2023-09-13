@@ -38,14 +38,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.TimeConverter
+import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.common.AppBar
 import com.example.scrutinizing_the_service.v2.common.BottomPlayer
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MusicListUI(
     playMusic: (Song, Int) -> Unit,
@@ -54,6 +61,9 @@ fun MusicListUI(
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
     val listState = rememberLazyListState()
+    val permissionState = rememberPermissionState(
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    )
     val isShown by remember {
         derivedStateOf {
             (listState.firstVisibleItemIndex + 1) < listState.layoutInfo.visibleItemsInfo.count() / 2
@@ -90,7 +100,9 @@ fun MusicListUI(
                 .background(Color.White)
                 .fillMaxSize()
         ) { paddingValues ->
-            MusicListContent(
+
+            PermissionRequired(
+                permissionState = permissionState,
                 isLoading = loading,
                 songs = viewModel.songs,
                 lazyListState = listState,
@@ -99,8 +111,62 @@ fun MusicListUI(
                     .padding(
                         top = paddingValues.calculateTopPadding(),
                         bottom = paddingValues.calculateBottomPadding()
-                    )
+                    ),
+                permissionGranted = {
+                    viewModel.getDeviceAudios()
+                }
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun PermissionRequired(
+    isLoading: Boolean,
+    songs: List<Song>,
+    lazyListState: LazyListState,
+    playMusic: (Song, Int) -> Unit,
+    permissionGranted: () -> Unit,
+    permissionState: PermissionState,
+    modifier: Modifier = Modifier
+) {
+    SaveableLaunchedEffect(Unit) {
+        permissionState.launchPermissionRequest()
+    }
+    val result = permissionState.status
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+    ) {
+        when (result) {
+            is PermissionStatus.Denied -> {
+                if (result.shouldShowRationale) {
+                    Text(
+                        text = "I need permission to access audio on this device",
+                        modifier = Modifier.fillMaxSize(),
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    Text(
+                        text = "Looks like you permanently denied permission. Please provide in Settings",
+                        modifier = Modifier.fillMaxSize(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
+            PermissionStatus.Granted -> {
+                SaveableLaunchedEffect(Unit) {
+                    permissionGranted()
+                }
+                MusicListContent(
+                    isLoading = isLoading,
+                    songs = songs,
+                    lazyListState = lazyListState,
+                    playMusic = playMusic,
+                )
+            }
         }
     }
 }
@@ -203,7 +269,7 @@ fun MusicList(
 @Composable
 fun SongUI(
     item: Song,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier

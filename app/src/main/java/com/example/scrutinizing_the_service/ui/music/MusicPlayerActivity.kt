@@ -1,6 +1,8 @@
 package com.example.scrutinizing_the_service.ui.music
 
-import android.Manifest.permission.*
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.Manifest.permission.CAMERA
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
@@ -57,8 +59,8 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            isBound = false;
-            musicPlayerService = null;
+            isBound = false
+            musicPlayerService = null
         }
 
     }
