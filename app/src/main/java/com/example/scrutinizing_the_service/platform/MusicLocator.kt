@@ -79,6 +79,7 @@ object MusicLocator {
                             Song(
                                 name = songName,
                                 isFavourite = false,
+                                album = album,
                                 artist = artist,
                             )
                         tempAudioList.add(audioModel)

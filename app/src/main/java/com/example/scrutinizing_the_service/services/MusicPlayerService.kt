@@ -35,6 +35,7 @@ class MusicPlayerService : Service() {
     private var songPath: String = ""
     private var songArtist: String = ""
     private var songDuration: Int = 0
+    private var album: String = ""
 
     private val musicBinder by lazy {
         MusicBinder()
@@ -147,11 +148,13 @@ class MusicPlayerService : Service() {
     private fun processArgsToPlaySong(it: Intent) {
         songName = it.extras?.getString(BundleIdentifier.SONG_NAME) ?: ""
         songArtist = it.extras?.getString(BundleIdentifier.SONG_ARTIST) ?: ""
+        album = it.extras?.getString(BundleIdentifier.SONG_ALBUM) ?: ""
         songPath = it.extras?.getString(BundleIdentifier.SONG_PATH) ?: ""
         songDuration = it.extras?.getInt(BundleIdentifier.SONG_DURATION) ?: 0
         song = Song(
             songName,
             songArtist,
+            album = album,
             path = songPath,
             duration = songDuration
         )

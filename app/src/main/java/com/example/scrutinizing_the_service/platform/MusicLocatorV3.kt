@@ -99,6 +99,7 @@ object MusicLocatorV3 {
                         Song(
                             title,
                             artist,
+                            album,
                             false,
                             path
                         )

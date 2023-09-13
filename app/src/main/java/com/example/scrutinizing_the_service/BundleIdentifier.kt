@@ -7,6 +7,7 @@ object BundleIdentifier {
     const val SONG_PATH = "SONG_PATH"
     const val SONG_DURATION = "SONG_DURATION"
     const val SONG_POSITION = "SONG_POSITION"
+    const val SONG_ALBUM = "SONG_ALBUM"
 
 
     //Media Player Actions
