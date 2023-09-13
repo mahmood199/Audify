@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,17 +16,13 @@ class MusicListViewModel @Inject constructor(
     private val musicRepository: MusicRepository
 ) : ViewModel() {
 
-    lateinit var songs: List<Song>
+    var songs: List<Song> = mutableListOf()
 
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
 
-    init {
-        getDeviceAudios()
-    }
-
-    private fun getDeviceAudios() {
-        viewModelScope.launch {
+    fun getDeviceAudios() {
+        viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
             songs = musicRepository.getMusic()
             _loading.value = false
