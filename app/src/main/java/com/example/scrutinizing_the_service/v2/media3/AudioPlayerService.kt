@@ -7,7 +7,6 @@ import androidx.annotation.RequiresApi
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.ForwardingPlayer
-import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -16,6 +15,10 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.data.Song
+import com.example.scrutinizing_the_service.data.ToMediaItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
 
 @UnstableApi
 class AudioPlayerService : MediaSessionService() {
@@ -23,6 +26,7 @@ class AudioPlayerService : MediaSessionService() {
     private lateinit var mediaSession: MediaSession
     private lateinit var player: Player
     private lateinit var notificationManager: SimpleMediaNotificationManager
+    private var coroutineScope: CoroutineScope? = CoroutineScope(EmptyCoroutineContext)
 
     override fun onGetSession(
         controllerInfo: MediaSession.ControllerInfo
@@ -64,6 +68,16 @@ class AudioPlayerService : MediaSessionService() {
                 setId(packageName)
             }
             .build()
+
+        addMediaItemsToPlayer()
+    }
+
+    private fun addMediaItemsToPlayer() {
+        coroutineScope?.launch(AppCoroutineDispatchers.main) {
+            if (player.mediaItemCount == 0) {
+                player.addMediaItems(Controller.getMediaItems())
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -94,11 +108,13 @@ class AudioPlayerService : MediaSessionService() {
     private fun processArgsToPlaySong(it: Intent) {
         val songName = it.extras?.getString(BundleIdentifier.SONG_NAME) ?: ""
         val songArtist = it.extras?.getString(BundleIdentifier.SONG_ARTIST) ?: ""
+        val songAlbum = it.extras?.getString(BundleIdentifier.SONG_ALBUM) ?: ""
         val songPath = it.extras?.getString(BundleIdentifier.SONG_PATH) ?: ""
         val songDuration = it.extras?.getInt(BundleIdentifier.SONG_DURATION) ?: 0
         val song = Song(
             name = songName,
             artist = songArtist,
+            album = songAlbum,
             path = songPath,
             duration = songDuration
         )
@@ -115,24 +131,41 @@ class AudioPlayerService : MediaSessionService() {
     }
 
     private fun playThisSong(song: Song) {
-        val media = MediaItem.fromUri(song.path)
-        player.run {
-            setMediaItem(
-                media
-            )
+        val mediaItem = song.ToMediaItem()
+        with(player) {
+            val media = Controller.getMediaItems().find { it.mediaId == song.name }
+            if(media != null) {
+                setMediaItem(media)
+            } else {
+                val index = Controller.getMediaItems().indexOf(mediaItem)
+                setMediaItem(Controller.getMediaItems()[index])
+            }
             prepare()
             play()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onDestroy() {
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        clearResources()
+        stopSelf()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun clearResources() {
         mediaSession.release()
         player.stop()
         player.release()
         if (::notificationManager.isInitialized) {
             notificationManager.cancel()
         }
+        coroutineScope = null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onDestroy() {
+        clearResources()
         super.onDestroy()
     }
 

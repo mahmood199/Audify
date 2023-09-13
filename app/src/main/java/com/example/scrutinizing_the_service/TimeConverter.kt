@@ -1,16 +1,15 @@
 package com.example.scrutinizing_the_service
 
-import java.util.concurrent.TimeUnit
-
 object TimeConverter {
 
-    fun getConvertedTime(duration : Long) : String {
-        return String.format(
-            "%02d:%02d",
-            TimeUnit.MILLISECONDS.toMinutes(duration),
-            TimeUnit.MILLISECONDS.toSeconds(duration) -
-                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
-        )
+    fun getConvertedTime(seconds : Long) : String {
+        val minutes = seconds / 60
+        val remainingSeconds = seconds % 60
+
+        val formattedMinutes = if (minutes < 10) "0$minutes" else "$minutes"
+        val formattedSeconds = if (remainingSeconds < 10) "0$remainingSeconds" else "$remainingSeconds"
+
+        return "$formattedMinutes:$formattedSeconds"
     }
 
 }

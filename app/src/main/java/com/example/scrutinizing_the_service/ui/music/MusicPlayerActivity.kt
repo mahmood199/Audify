@@ -110,6 +110,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             putExtra(BundleIdentifier.SONG_PATH, song.path)
             putExtra(BundleIdentifier.SONG_DURATION, song.duration)
             putExtra(BundleIdentifier.SONG_POSITION, position)
+            putExtra(BundleIdentifier.SONG_ALBUM, song.album)
         }
         startForegroundService(intent)
         bindService(intent, musicPlayerServiceConnection, BIND_AUTO_CREATE)
