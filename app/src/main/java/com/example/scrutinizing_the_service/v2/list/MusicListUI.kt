@@ -61,20 +61,24 @@ fun MusicListUI(
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
     val listState = rememberLazyListState()
+
     val permissionState = rememberPermissionState(
         android.Manifest.permission.READ_EXTERNAL_STORAGE
     )
+
+    val state by viewModel.state.collectAsState()
+
     val isShown by remember {
         derivedStateOf {
             (listState.firstVisibleItemIndex + 1) < listState.layoutInfo.visibleItemsInfo.count() / 2
         }
     }
 
+    val songs = viewModel.songs
+
     BackHandler {
         backPress()
     }
-
-    val loading by viewModel.loading.collectAsState()
 
     Box(
         modifier = Modifier
@@ -90,7 +94,11 @@ fun MusicListUI(
                 )
             },
             bottomBar = {
-                AnimatedBottomPlayer(isShown)
+                AnimatedBottomPlayer(
+                    state = state,
+                    isShown = true,
+                    sendUiEvent = viewModel::sendUIEvent
+                )
             },
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
@@ -102,19 +110,20 @@ fun MusicListUI(
         ) { paddingValues ->
 
             PermissionRequired(
-                permissionState = permissionState,
-                isLoading = loading,
-                songs = viewModel.songs,
+                isLoading = state.loading,
+                songs = songs,
                 lazyListState = listState,
+                permissionState = permissionState,
+                permissionGranted = {
+                    viewModel.getDeviceAudios()
+                },
+                sendUiEvent = viewModel::sendUIEvent,
                 playMusic = playMusic,
                 modifier = Modifier
                     .padding(
                         top = paddingValues.calculateTopPadding(),
                         bottom = paddingValues.calculateBottomPadding()
-                    ),
-                permissionGranted = {
-                    viewModel.getDeviceAudios()
-                }
+                    )
             )
         }
     }
@@ -126,9 +135,10 @@ fun PermissionRequired(
     isLoading: Boolean,
     songs: List<Song>,
     lazyListState: LazyListState,
-    playMusic: (Song, Int) -> Unit,
-    permissionGranted: () -> Unit,
     permissionState: PermissionState,
+    permissionGranted: () -> Unit,
+    sendUiEvent: (MusicListUiEvent) -> Unit,
+    playMusic: (Song, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SaveableLaunchedEffect(Unit) {
@@ -165,6 +175,7 @@ fun PermissionRequired(
                     songs = songs,
                     lazyListState = lazyListState,
                     playMusic = playMusic,
+                    sendUiEvent = sendUiEvent
                 )
             }
         }
@@ -172,16 +183,36 @@ fun PermissionRequired(
 }
 
 @Composable
-fun AnimatedBottomPlayer(isShown: Boolean) {
+fun AnimatedBottomPlayer(
+    state: MusicListViewState,
+    isShown: Boolean,
+    sendUiEvent: (MusicListUiEvent) -> Unit,
+) {
     AnimatedVisibility(
         visible = isShown,
         enter = slideIn(initialOffset = { IntOffset(0, 100) }),
         exit = slideOut(targetOffset = { IntOffset(0, 200) }),
     ) {
         BottomPlayer(
-            progress = 0.8f,
-            songName = "Some Very Long Name of the song Some Very Long Name of the song",
-            artist = "Some Artist Name"
+            progress = state.progress,
+            songName = state.currentSong?.name ?: "Error",
+            artist = state.currentSong?.artist ?: "Error",
+            isPlaying = state.isPlaying,
+            onPlayPauseClicked = {
+                sendUiEvent(MusicListUiEvent.PlayPause)
+            },
+            onRewindClicked = {
+                sendUiEvent(MusicListUiEvent.Rewind)
+            },
+            onFastForwardClicked = {
+                sendUiEvent(MusicListUiEvent.FastForward)
+            },
+            onPlayPreviousClicked = {
+                sendUiEvent(MusicListUiEvent.PlayPreviousItem)
+            },
+            onPlayNextClicked = {
+                sendUiEvent(MusicListUiEvent.PlayNextItem)
+            }
         )
     }
 }
@@ -216,6 +247,7 @@ fun MusicListContent(
     songs: List<Song>,
     lazyListState: LazyListState,
     playMusic: (Song, Int) -> Unit,
+    sendUiEvent: (MusicListUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimatedContent(
@@ -233,7 +265,8 @@ fun MusicListContent(
             MusicList(
                 songs = songs,
                 lazyListState = lazyListState,
-                playMusic = playMusic
+                playMusic = playMusic,
+                sendUiEvent = sendUiEvent
             )
         }
     }
@@ -244,6 +277,7 @@ fun MusicList(
     songs: List<Song>,
     lazyListState: LazyListState,
     playMusic: (Song, Int) -> Unit,
+    sendUiEvent: (MusicListUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
