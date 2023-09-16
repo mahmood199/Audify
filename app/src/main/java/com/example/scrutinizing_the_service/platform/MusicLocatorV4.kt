@@ -10,9 +10,7 @@ import com.example.scrutinizing_the_service.data.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class MusicLocatorV4 @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+object MusicLocatorV4 {
 
     private var mCursor: Cursor? = null
 
@@ -33,11 +31,11 @@ class MusicLocatorV4 @Inject constructor(
     private val sortOrder = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC"
 
     @WorkerThread
-    fun getAudioData(): List<Song> {
-        return getCursorData()
+    fun getAudioData(context: Context): List<Song> {
+        return getCursorData(context)
     }
 
-    private fun getCursorData(): MutableList<Song> {
+    private fun getCursorData(context: Context): MutableList<Song> {
         val audioList = mutableListOf<Song>()
 
         mCursor = context.contentResolver.query(
