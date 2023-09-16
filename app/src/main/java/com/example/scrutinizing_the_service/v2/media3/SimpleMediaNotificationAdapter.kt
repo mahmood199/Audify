@@ -17,17 +17,15 @@ import com.example.scrutinizing_the_service.data.Song
 class SimpleMediaNotificationAdapter(
     private val context: Context,
     private val pendingIntent: PendingIntent?,
-    private val song: Song
 ) : PlayerNotificationManager.MediaDescriptionAdapter {
 
     override fun getCurrentContentTitle(player: Player): CharSequence =
-        song.name
+        player.mediaMetadata.displayTitle ?: "Unknown"
 
-    override fun createCurrentContentIntent(player: Player): PendingIntent? =
-        pendingIntent
+    override fun createCurrentContentIntent(player: Player): PendingIntent? = pendingIntent
 
     override fun getCurrentContentText(player: Player): CharSequence =
-        song.artist
+        player.mediaMetadata.albumTitle ?: "Unknown"
 
     override fun getCurrentLargeIcon(
         player: Player,
