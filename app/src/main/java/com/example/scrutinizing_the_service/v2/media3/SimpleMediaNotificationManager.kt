@@ -25,8 +25,7 @@ private const val NOTIFICATION_CHANNEL_ID = "notification channel id 1"
 @RequiresApi(Build.VERSION_CODES.O)
 class SimpleMediaNotificationManager(
     private val context: Context,
-    private val player: Player,
-    private val mediaSession: MediaSession
+    private val player: Player
 ) {
 
     private var notificationManager = NotificationManagerCompat.from(context)
@@ -39,21 +38,19 @@ class SimpleMediaNotificationManager(
     fun startNotificationService(
         mediaSessionService: MediaSessionService,
         mediaSession: MediaSession,
-        song: Song
     ) {
-        buildNotification(mediaSession, song)
+        buildNotification(mediaSession)
         startForegroundNotification(mediaSessionService)
     }
 
     @UnstableApi
-    private fun buildNotification(mediaSession: MediaSession, song: Song) {
+    private fun buildNotification(mediaSession: MediaSession) {
         val playerNotificationManager = PlayerNotificationManager
             .Builder(context, NOTIFICATION_ID, NOTIFICATION_CHANNEL_ID)
             .setMediaDescriptionAdapter(
                 SimpleMediaNotificationAdapter(
                     context = context,
                     pendingIntent = mediaSession.sessionActivity,
-                    song = song
                 )
             )
             .setSmallIconResourceId(R.drawable.ic_launcher_foreground)
@@ -63,9 +60,9 @@ class SimpleMediaNotificationManager(
             setMediaSessionToken(mediaSession.sessionCompatToken)
 
             setUseFastForwardActionInCompactView(true)
-            setUsePlayPauseActions(true)
             setUseRewindActionInCompactView(true)
             setUseNextActionInCompactView(true)
+
             setPriority(NotificationCompat.PRIORITY_LOW)
 
             setPlayer(player)
@@ -75,6 +72,7 @@ class SimpleMediaNotificationManager(
     private fun startForegroundNotification(mediaSessionService: MediaSessionService) {
         val notification = Notification.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setCategory(Notification.CATEGORY_SERVICE)
+            .setOngoing(false)
             .build()
         mediaSessionService.startForeground(NOTIFICATION_ID, notification)
     }

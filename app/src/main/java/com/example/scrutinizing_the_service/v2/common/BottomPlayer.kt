@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +22,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -33,11 +36,19 @@ fun BottomPlayer(
     progress: Float,
     songName: String,
     artist: String,
+    isPlaying: Boolean,
+    onPlayPauseClicked: () -> Unit,
+    onRewindClicked: () -> Unit,
+    onFastForwardClicked: () -> Unit,
+    onPlayPreviousClicked: () -> Unit,
+    onPlayNextClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         LinearProgressIndicator(
             progress = progress,
+            trackColor = Color.Red,
+            color = Color.Cyan,
             modifier = Modifier.fillMaxWidth()
         )
         Row(
@@ -71,27 +82,42 @@ fun BottomPlayer(
                 )
             }
             Icon(
-                imageVector = Icons.Default.PlayArrow,
+                imageVector = ImageVector.vectorResource(R.drawable.ic_rewind),
                 contentDescription = "",
                 modifier = Modifier
                     .padding(4.dp)
                     .border(width = 2.dp, color = Color.Black, CircleShape)
+                    .padding(2.dp)
+                    .clickable {
+                        onRewindClicked()
+                    }
             )
             Icon(
-                imageVector = Icons.Default.PlayArrow,
+                imageVector = ImageVector.vectorResource(
+                    if (isPlaying)
+                        R.drawable.ic_pause
+                    else
+                        R.drawable.ic_play
+                ),
                 contentDescription = "",
                 modifier = Modifier
                     .border(width = 2.dp, color = Color.Black, CircleShape)
-                    .padding(4.dp)
+                    .padding(8.dp)
+                    .clickable {
+                        onPlayPauseClicked()
+                    }
             )
             Icon(
-                imageVector = Icons.Default.PlayArrow,
+                imageVector = ImageVector.vectorResource(R.drawable.ic_fast_forward),
                 contentDescription = "",
                 modifier = Modifier
                     .padding(4.dp)
                     .border(width = 2.dp, color = Color.Black, CircleShape)
+                    .padding(2.dp)
+                    .clickable {
+                        onFastForwardClicked()
+                    }
             )
-
         }
     }
 }
@@ -104,7 +130,13 @@ fun BottomPlayerPreview() {
         BottomPlayer(
             progress = 0.7f,
             songName = "Some Random Long Name Song",
-            artist = "Some Artist"
+            artist = "Some Artist",
+            isPlaying = true,
+            onPlayNextClicked = {},
+            onPlayPauseClicked = {},
+            onFastForwardClicked = {},
+            onPlayPreviousClicked = {},
+            onRewindClicked = {}
         )
     }
 }

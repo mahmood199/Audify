@@ -27,3 +27,14 @@ fun Song.ToMediaItem(): MediaItem {
                 .build()
         ).build()
 }
+
+fun MediaItem.toSong(): Song {
+    return Song(
+        name = mediaMetadata.displayTitle.toString(),
+        artist = mediaMetadata.artist.toString(),
+        album = mediaMetadata.albumTitle.toString(),
+        isFavourite = false,
+        path = mediaMetadata.artworkUri.toString(),
+        duration = 0
+    )
+}
