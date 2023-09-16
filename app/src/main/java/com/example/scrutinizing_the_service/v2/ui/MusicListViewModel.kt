@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.list
+package com.example.scrutinizing_the_service.v2.ui
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle

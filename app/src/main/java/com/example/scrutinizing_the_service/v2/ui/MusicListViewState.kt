@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.list
+package com.example.scrutinizing_the_service.v2.ui
 
 import com.example.scrutinizing_the_service.data.Song
 
