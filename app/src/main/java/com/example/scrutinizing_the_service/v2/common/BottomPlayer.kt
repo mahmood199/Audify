@@ -8,9 +8,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -71,53 +73,95 @@ fun BottomPlayer(
                     text = songName,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    color = Color.Black,
                     modifier = Modifier.basicMarquee(300),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     text = artist,
                     maxLines = 1,
+                    color = Color.Black,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_rewind),
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(4.dp)
-                    .border(width = 2.dp, color = Color.Black, CircleShape)
-                    .padding(2.dp)
-                    .clickable {
-                        onRewindClicked()
-                    }
-            )
-            Icon(
-                imageVector = ImageVector.vectorResource(
-                    if (isPlaying)
-                        R.drawable.ic_pause
-                    else
-                        R.drawable.ic_play
-                ),
-                contentDescription = "",
-                modifier = Modifier
-                    .border(width = 2.dp, color = Color.Black, CircleShape)
-                    .padding(8.dp)
-                    .clickable {
-                        onPlayPauseClicked()
-                    }
-            )
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_fast_forward),
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(4.dp)
-                    .border(width = 2.dp, color = Color.Black, CircleShape)
-                    .padding(2.dp)
-                    .clickable {
-                        onFastForwardClicked()
-                    }
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.width(IntrinsicSize.Max)
+            ) {
+                Row {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_rewind),
+                        contentDescription = "",
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .border(width = 2.dp, color = Color.Black, CircleShape)
+                            .padding(2.dp)
+                            .clickable {
+                                onRewindClicked()
+                            }
+                    )
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            if (isPlaying)
+                                R.drawable.ic_pause
+                            else
+                                R.drawable.ic_play
+                        ),
+                        contentDescription = "",
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .border(width = 2.dp, color = Color.Black, CircleShape)
+                            .padding(8.dp)
+                            .clickable {
+                                onPlayPauseClicked()
+                            }
+                    )
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_fast_forward),
+                        contentDescription = "",
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .border(width = 2.dp, color = Color.Black, CircleShape)
+                            .padding(2.dp)
+                            .clickable {
+                                onFastForwardClicked()
+                            }
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_skip_previous),
+                        contentDescription = "",
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .border(width = 2.dp, color = Color.Black, CircleShape)
+                            .padding(2.dp)
+                            .clickable {
+                                onPlayPreviousClicked()
+                            }
+                    )
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
+                        contentDescription = "",
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .border(width = 2.dp, color = Color.Black, CircleShape)
+                            .padding(2.dp)
+                            .clickable {
+                                onPlayNextClicked()
+                            }
+                    )
+                }
+            }
         }
     }
 }

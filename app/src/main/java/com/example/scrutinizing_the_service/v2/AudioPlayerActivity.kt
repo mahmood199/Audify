@@ -15,18 +15,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.media3.common.util.UnstableApi
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.list.MusicListViewModel
-import com.example.scrutinizing_the_service.v2.list.MusicListUiEvent
+import com.example.scrutinizing_the_service.v2.ui.MusicListViewModel
+import com.example.scrutinizing_the_service.v2.ui.MusicListUiEvent
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import dagger.hilt.android.AndroidEntryPoint
+
+
+var isServiceRunning = false
 
 @UnstableApi
 @AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
 class AudioPlayerActivity : ComponentActivity() {
-
     private val viewModel: MusicListViewModel by viewModels()
-    private var isServiceRunning = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.scrutinizing_the_service.data.Song
-import com.example.scrutinizing_the_service.v2.list.MusicListUI
+import com.example.scrutinizing_the_service.v2.ui.MusicListUI
 
 @Composable
 fun NavigationCentral(
