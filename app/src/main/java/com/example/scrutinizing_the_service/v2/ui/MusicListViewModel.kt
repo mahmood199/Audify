@@ -11,7 +11,7 @@ import androidx.media3.common.MediaMetadata
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.data.toSong
-import com.example.scrutinizing_the_service.v2.data.MusicRepository
+import com.example.scrutinizing_the_service.v2.data.repo.implementations.MusicRepositoryImpl
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @OptIn(SavedStateHandleSaveableApi::class)
 @HiltViewModel
 class MusicListViewModel @Inject constructor(
-    private val musicRepository: MusicRepository,
+    private val musicRepository: MusicRepositoryImpl,
     private val playerController: PlayerController,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -70,6 +70,10 @@ class MusicListViewModel @Inject constructor(
                     }
                 }
             }
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            musicRepository.fetchSongFromRemote()
         }
     }
 
