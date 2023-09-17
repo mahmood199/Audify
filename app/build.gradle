@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -49,6 +50,10 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            exclude 'META-INF/kotlinx-io.kotlin_module'
+            exclude 'META-INF/atomicfu.kotlin_module'
+            exclude 'META-INF/kotlinx-coroutines-io.kotlin_module'
+            exclude 'META-INF/kotlinx-coroutines-core.kotlin_module'
         }
     }
     kapt {
@@ -118,5 +123,16 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.16.0'
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+
+
+    implementation "io.ktor:ktor-client-core:2.1.2"
+    implementation "io.ktor:ktor-client-android:2.1.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+    implementation "io.ktor:ktor-client-logging:2.1.2"
+    implementation "io.ktor:ktor-gson:1.5.0"
+    implementation "io.ktor:ktor-client-serialization:2.1.2"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:2.1.2"
+    implementation "io.ktor:ktor-client-content-negotiation:2.1.2"
+
 
 }
