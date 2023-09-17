@@ -32,8 +32,11 @@ class PlayerController @Inject constructor(
     }
 
     fun addItems(mediaItems: List<MediaItem>) {
-        player.setMediaItems(mediaItems)
-        player.prepare()
+        if (player.mediaItemCount == 0) {
+            player.playlistMetadata
+            player.setMediaItems(mediaItems)
+            player.prepare()
+        }
     }
 
     suspend fun onPlayerEvents(
