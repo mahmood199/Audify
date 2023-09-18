@@ -73,7 +73,7 @@ class MusicListViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            musicRepository.fetchSongFromRemote()
+            val result = musicRepository.fetchSongFromRemote()
         }
     }
 

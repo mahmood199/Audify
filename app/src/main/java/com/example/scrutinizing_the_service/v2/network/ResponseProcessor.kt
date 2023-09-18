@@ -1,0 +1,35 @@
+package com.example.scrutinizing_the_service.v2.network
+
+import com.google.gson.Gson
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
+import javax.inject.Inject
+
+class ResponseProcessor @Inject constructor() {
+
+    inline fun <reified T> deserializeToClass(gson: Gson, response: String): T {
+        return gson.fromJson(response, T::class.java)
+    }
+
+    suspend inline fun <reified R : Any> getResultFromResponse(
+        gson: Gson,
+        output: HttpResponse
+    ): NetworkResult<R> {
+        return when (val code = output.status.value) {
+            in 200..201 -> NetworkResult.Success(
+                data = deserializeToClass(gson, output.body<String>())
+            )
+
+            in 300..320 -> NetworkResult.RedirectError(code = code, message = "Error Redirect")
+
+            in 400..420 -> NetworkResult.UnAuthorised(code = code, message = "UnAuthorised Access")
+
+            in 500..520 -> NetworkResult.ServerError(code = code, message = "Server Error")
+
+            else -> {
+                NetworkResult.Exception(Exception())
+            }
+        }
+    }
+
+}
