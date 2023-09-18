@@ -2,6 +2,7 @@ package com.example.scrutinizing_the_service.v2.network
 
 import android.util.Log
 import com.example.scrutinizing_the_service.BuildConfig
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +19,9 @@ import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.client.request.HttpSendPipeline
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.request
+import io.ktor.gson.GsonConverter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
@@ -43,6 +47,7 @@ class NetworkModule {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    allowStructuredMapKeys = true
                 })
             }
 
@@ -53,7 +58,11 @@ class NetworkModule {
 
             install(ResponseObserver) {
                 onResponse { response ->
+                    Log.d("Header:", response.headers.toString())
+                    Log.d("Url:", response.request.url.toString())
+                    Log.d("Request:", response.request.toString())
                     Log.d("HTTP status:", "${response.status.value}")
+                    Log.d("Response1:", response.bodyAsText())
                 }
             }
 
@@ -74,6 +83,18 @@ class NetworkModule {
                 context.parameter("format", "json")
             }
         }
+    }
+
+    @Provides
+    @Singleton
+    fun providesGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun providesGsonConverter(gson: Gson): GsonConverter {
+        return GsonConverter(gson)
     }
 
 }
