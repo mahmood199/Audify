@@ -6,8 +6,8 @@ import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 import com.example.scrutinizing_the_service.platform.MusicLocatorV4
 import com.example.scrutinizing_the_service.v2.data.models.response.AlbumListResponse
 import com.example.scrutinizing_the_service.v2.data.remote.DemoRemoteDataSource
+import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import dagger.hilt.android.qualifiers.ApplicationContext
-import io.ktor.client.statement.HttpResponse
 import javax.inject.Inject
 
 
@@ -24,7 +24,7 @@ class MusicRepositoryImpl @Inject constructor(
         return MusicLocatorV4.getAudioData(context)
     }
 
-    suspend fun fetchSongFromRemote(): AlbumListResponse {
+    suspend fun fetchSongFromRemote(): NetworkResult<AlbumListResponse> {
         return demoRemoteDataSource.getTopAlbums()
     }
 

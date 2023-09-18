@@ -60,16 +60,24 @@ class NetworkModule {
                 onResponse { response ->
                     Log.d("Header:", response.headers.toString())
                     Log.d("Url:", response.request.url.toString())
-                    Log.d("Request:", response.request.toString())
+                    Log.d("Method", response.request.method.value)
+                    Log.d("Request:", response.request.content.toString())
                     Log.d("HTTP status:", "${response.status.value}")
                     Log.d("Response1:", response.bodyAsText())
                 }
             }
 
-            Logging {
+            install(Logging) {
                 logger = Logger.DEFAULT
                 level = LogLevel.ALL
             }
+
+            /*
+                        Logging {
+                            logger = Logger.DEFAULT
+                            level = LogLevel.ALL
+                        }
+            */
 
             install(DefaultRequest) {
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
