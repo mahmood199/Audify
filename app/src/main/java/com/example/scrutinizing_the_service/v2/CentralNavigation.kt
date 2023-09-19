@@ -17,7 +17,6 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.search.SearchUI
 
-const val NAVIGATION_DURATION = 500
 const val OFFSET = 500
 
 @Composable
@@ -36,10 +35,10 @@ fun NavigationCentral(
         composable(
             route = ScreenName.AUDIO_LIST,
             exitTransition = {
-                slideOutHorizontally { -OFFSET } + fadeOut()
+                slideOutHorizontally { -OFFSET }
             },
             popEnterTransition = {
-                slideInHorizontally { -OFFSET } + fadeIn()
+                slideInHorizontally { -OFFSET }
             }
         ) {
             MusicListUI(
@@ -53,12 +52,12 @@ fun NavigationCentral(
         composable(
             route = ScreenName.SEARCH,
             enterTransition = {
-                slideInHorizontally { OFFSET } + fadeIn()
+                slideInHorizontally { OFFSET }
             },
             exitTransition = {
-                slideOutHorizontally { -OFFSET } + fadeOut()
+                slideOutHorizontally { OFFSET }
             }, popExitTransition = {
-                slideOutHorizontally { -OFFSET } + fadeOut()
+                slideOutHorizontally { OFFSET }
             }
         ) {
             SearchUI(backPress = {
