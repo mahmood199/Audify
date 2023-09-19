@@ -57,6 +57,8 @@ fun SearchUI(
         mutableStateOf(false)
     }
 
+    val searchQuery by viewModel.uiQuery.collectAsState("")
+
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
@@ -79,7 +81,7 @@ fun SearchUI(
                 )
 
                 OutlinedTextField(
-                    value = state.query, onValueChange = {
+                    value = searchQuery, onValueChange = {
                         viewModel.updateSearchQuery(it)
                     },
                     leadingIcon = {
