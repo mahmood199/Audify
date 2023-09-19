@@ -5,7 +5,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 import com.example.scrutinizing_the_service.platform.MusicLocatorV4
 import com.example.scrutinizing_the_service.v2.data.models.response.AlbumListResponse
-import com.example.scrutinizing_the_service.v2.data.remote.DemoRemoteDataSource
+import com.example.scrutinizing_the_service.v2.data.remote.AlbumRemoteDataSource
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class MusicRepositoryImpl @Inject constructor(
     @ApplicationContext val context: Context,
-    private val demoRemoteDataSource: DemoRemoteDataSource
+    private val albumRemoteDataSource: AlbumRemoteDataSource,
 ) {
 
     fun getMusicV2(): List<Song> {
@@ -25,7 +25,7 @@ class MusicRepositoryImpl @Inject constructor(
     }
 
     suspend fun fetchSongFromRemote(): NetworkResult<AlbumListResponse> {
-        return demoRemoteDataSource.getTopAlbums()
+        return albumRemoteDataSource.getTopAlbums()
     }
 
 }

@@ -63,7 +63,7 @@ class NetworkModule {
                     Log.d("Method", response.request.method.value)
                     Log.d("Request:", response.request.content.toString())
                     Log.d("HTTP status:", "${response.status.value}")
-                    Log.d("Response1:", response.bodyAsText())
+                    Log.d("Response:", response.bodyAsText())
                 }
             }
 
