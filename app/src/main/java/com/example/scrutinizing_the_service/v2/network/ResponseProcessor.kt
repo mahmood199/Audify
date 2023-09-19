@@ -15,6 +15,9 @@ class ResponseProcessor @Inject constructor() {
         gson: Gson,
         output: HttpResponse
     ): NetworkResult<R> {
+        // Handle null case here. Suppose the response is 200 but the content is null or
+        // invalid parsing class is specified
+
         return when (val code = output.status.value) {
             in 200..201 -> NetworkResult.Success(
                 data = deserializeToClass(gson, output.body<String>())

@@ -30,7 +30,7 @@ fun AppBar(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
@@ -41,7 +41,7 @@ fun AppBar(
             contentDescription = "Back Navigation Button",
             tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
-                .size(24.dp)
+                .size(28.dp)
                 .clickable {
                     backPressAction()
                 }

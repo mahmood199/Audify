@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui
+package com.example.scrutinizing_the_service.v2.ui.catalog
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -57,6 +57,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun MusicListUI(
     playMusic: (Song, Int) -> Unit,
     backPress: () -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
@@ -102,7 +103,7 @@ fun MusicListUI(
             },
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
-                AnimatedFAB(isShown)
+                AnimatedFAB(isShown, navigateToSearch)
             },
             modifier = modifier
                 .background(Color.White)
@@ -220,6 +221,7 @@ fun AnimatedBottomPlayer(
 @Composable
 fun AnimatedFAB(
     isShown: Boolean,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
@@ -229,7 +231,7 @@ fun AnimatedFAB(
         modifier = modifier
     ) {
         FloatingActionButton(
-            onClick = { /*TODO*/ },
+            onClick = { navigateToSearch() },
             modifier = Modifier
                 .clip(RoundedCornerShape(25))
         ) {

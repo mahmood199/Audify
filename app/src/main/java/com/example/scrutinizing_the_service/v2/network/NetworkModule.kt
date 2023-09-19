@@ -47,6 +47,7 @@ class NetworkModule {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                     allowStructuredMapKeys = true
                 })
             }
@@ -72,17 +73,9 @@ class NetworkModule {
                 level = LogLevel.ALL
             }
 
-            /*
-                        Logging {
-                            logger = Logger.DEFAULT
-                            level = LogLevel.ALL
-                        }
-            */
-
             install(DefaultRequest) {
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
-
 
         }.apply {
             sendPipeline.intercept(HttpSendPipeline.State) {
