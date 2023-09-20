@@ -1,0 +1,127 @@
+package com.example.scrutinizing_the_service.v2.ui.search_result
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.common.vertical
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
+
+@Composable
+fun SideNavigationBar(
+    headers: PersistentList<Pair<String, ImageVector>>
+) {
+    var selectedIndex by remember {
+        mutableIntStateOf(0)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(Color.LightGray)
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(36.dp)
+    ) {
+        headers.forEachIndexed { index, it ->
+            Header(
+                it = it,
+                isSelected = index == selectedIndex,
+                onSelected = {
+                    selectedIndex = index
+
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun Header(
+    it: Pair<String, ImageVector>,
+    isSelected: Boolean,
+    onSelected: () -> Unit,
+    modifier: Modifier = Modifier,
+    defaultContentColor: Color = Color.Black,
+    defaultScale: Float = 1f
+) {
+    val animatedScale: Float by animateFloatAsState(
+        targetValue = 1.25f,
+        animationSpec = TweenSpec(
+            durationMillis = 1000,
+            easing = FastOutSlowInEasing
+        ), label = "Scale Animation"
+    )
+    val animatedColor by animateColorAsState(
+        targetValue = Color.White,
+        animationSpec = TweenSpec(
+            durationMillis = 1000,
+            easing = FastOutSlowInEasing
+        ), label = "Color Animation"
+    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = modifier
+            .vertical()
+            .rotate(-90f)
+            .clickable(onClick = onSelected)
+            .scale(
+                if (isSelected) animatedScale else defaultScale
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = it.second,
+            contentDescription = it.first,
+            tint = if (isSelected) animatedColor else defaultContentColor,
+        )
+        Text(
+            text = it.first,
+            color = if (isSelected) animatedColor else defaultContentColor
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun SideNavigationBarUI() {
+    ScrutinizingTheServiceTheme {
+        SideNavigationBar(
+            listOf(
+                Pair("Track", Icons.Default.Search),
+                Pair("Album", Icons.Default.Search),
+                Pair("Artist", Icons.Default.Search),
+                Pair("Tag", Icons.Default.Search),
+                Pair("Something", Icons.Default.Search),
+                Pair("Something Odd", Icons.Default.Search),
+                Pair("Something Odd", Icons.Default.Search),
+                Pair("Something Never", Icons.Default.Search),
+            ).toPersistentList()
+        )
+    }
+}
