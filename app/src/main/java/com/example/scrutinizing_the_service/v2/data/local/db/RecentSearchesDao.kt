@@ -14,20 +14,19 @@ interface RecentSearchesDao {
     @Query("Select * from recent_searches")
     fun getAll1() : Flow<List<RecentSearch>>
 
-
     @Query("Select * from recent_searches")
     suspend fun getAll2() : List<RecentSearch>
 
     @Query("Select * from recent_searches where search Like '%' || :word  || '%'")
-    fun getByText(word: String): List<RecentSearch>
+    suspend fun getByText(word: String): List<RecentSearch>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(recentSearch: RecentSearch): Long
+    suspend fun insert(recentSearch: RecentSearch): Long
 
     @Query("Delete from recent_searches where id=:id")
-    fun deleteById(id: Int): Int
+    suspend fun deleteById(id: Int): Int
 
     @Delete
-    fun delete(recentSearch: RecentSearch): Int
+    suspend fun delete(recentSearch: RecentSearch): Int
 
 }

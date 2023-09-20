@@ -17,5 +17,20 @@ class RecentSearchLocalDataSource @Inject constructor(
         return dao.getAll2()
     }
 
+    suspend fun getByText(word: String): List<RecentSearch> {
+        return dao.getByText(word)
+    }
+
+    suspend fun insert(recentSearch: RecentSearch): Long {
+        return dao.insert(recentSearch)
+    }
+
+    suspend fun deleteById(id: Int): Int {
+        return dao.deleteById(id)
+    }
+
+    suspend fun delete(recentSearch: RecentSearch): Int {
+        return dao.delete(recentSearch)
+    }
 
 }
