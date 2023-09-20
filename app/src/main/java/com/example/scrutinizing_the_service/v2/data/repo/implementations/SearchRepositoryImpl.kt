@@ -1,8 +1,8 @@
 package com.example.scrutinizing_the_service.v2.data.repo.implementations
 
-import com.example.scrutinizing_the_service.v2.data.models.response.AlbumListResponse
-import com.example.scrutinizing_the_service.v2.data.models.response.ArtistListResponse
-import com.example.scrutinizing_the_service.v2.data.models.response.TrackListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.AlbumListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.ArtistListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.TrackListResponse
 import com.example.scrutinizing_the_service.v2.data.remote.SearchRemoteDataSource
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SearchRepository
 import com.example.scrutinizing_the_service.v2.network.NetworkResult

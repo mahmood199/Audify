@@ -1,7 +1,7 @@
 package com.example.scrutinizing_the_service.v2.data.remote
 
-import com.example.scrutinizing_the_service.v2.data.models.response.TagListResponse
-import com.example.scrutinizing_the_service.v2.data.models.response.TagResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.TagListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.TagResponse
 import com.example.scrutinizing_the_service.v2.network.NetworkModule
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import com.example.scrutinizing_the_service.v2.network.ResponseProcessor
