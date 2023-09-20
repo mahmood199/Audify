@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search
+package com.example.scrutinizing_the_service.v2.ui.search_history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -27,29 +29,38 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.v2.common.AppBar
-import kotlinx.collections.immutable.toPersistentList
+import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchUI(
+fun SearchHistoryUI(
     backPress: () -> Unit,
+    navigateToSearchResult: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: SearchHistoryViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -64,12 +75,21 @@ fun SearchUI(
 
     var openAlertDialog by remember { mutableStateOf(false) }
 
+    val controller = LocalSoftwareKeyboardController.current
+
+    val searches by viewModel.books.collectAsState(emptyList())
+
     AlertDialogWrapper(
         openAlertDialog = openAlertDialog,
         hideDialog = {
             openAlertDialog = false
         }
     )
+
+    LaunchedEffect(Unit) {
+        controller?.show()
+        focusRequester.requestFocus()
+    }
 
     Scaffold(
         topBar = {
@@ -105,6 +125,14 @@ fun SearchUI(
                             )
                         }
                     },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            focusManager.clearFocus()
+                            viewModel.addToSearchHistory(searchQuery)
+                            navigateToSearchResult(searchQuery)
+                        }
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -138,22 +166,8 @@ fun SearchUI(
                 )
                 .padding(horizontal = 12.dp),
         ) {
-            if (isEditMode) {
-                RecentSearchList {
-                    openAlertDialog = true
-                }
-            } else {
-                for (i in 1..6) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Text("Header${i}", style = MaterialTheme.typography.titleLarge)
-                        Text("Description${i}", style = MaterialTheme.typography.bodySmall)
-                    }
-                }
+            RecentSearchList(searches = searches) {
+                viewModel.deleteSearch(it)
             }
         }
     }
@@ -210,11 +224,9 @@ fun AlertDialogWrapper(
 
 @Composable
 fun RecentSearchList(
-    removeSearch: (String) -> Unit
+    searches: List<RecentSearch>,
+    removeSearch: (RecentSearch) -> Unit
 ) {
-    val items = remember {
-        listOf("Search1", "Search2", "Search3", "Search4", "Search5").toPersistentList()
-    }
     LazyColumn(
         contentPadding = PaddingValues(
             vertical = 12.dp,
@@ -222,26 +234,39 @@ fun RecentSearchList(
         ),
         modifier = Modifier
     ) {
-        items.forEachIndexed { index, s ->
-            item {
-                RecentSearch(s, index, removeSearch)
+        searches.forEachIndexed { index, search ->
+            item(key = "${search.query}${search.timeStamp}") {
+                RecentlySearchedItem(search, index, removeSearch)
             }
         }
     }
 }
 
 @Composable
-fun RecentSearch(
-    s: String,
+fun RecentlySearchedItem(
+    s: RecentSearch,
     index: Int,
-    removeSearch: (String) -> Unit
+    removeSearch: (RecentSearch) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp)
+            .padding(vertical = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(text = s, modifier = Modifier.weight(1f))
+        Icon(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_redirect),
+            contentDescription = "Redirect recent $index",
+            modifier = Modifier.clickable {
+
+            },
+            tint = Color.White
+        )
+        Text(text = s.query, modifier = Modifier
+            .weight(1f)
+            .clickable {
+
+            })
         Icon(
             imageVector = Icons.Default.Close, contentDescription = "Remove recent $index",
             modifier = Modifier.clickable {
@@ -254,7 +279,9 @@ fun RecentSearch(
 @Preview
 @Composable
 fun SearchUIPreview() {
-    SearchUI(backPress = {
+    SearchHistoryUI(backPress = {
+
+    }, navigateToSearchResult = {
 
     })
 }

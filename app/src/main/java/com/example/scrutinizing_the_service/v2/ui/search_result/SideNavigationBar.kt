@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search
+package com.example.scrutinizing_the_service.v2.ui.search_result
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing

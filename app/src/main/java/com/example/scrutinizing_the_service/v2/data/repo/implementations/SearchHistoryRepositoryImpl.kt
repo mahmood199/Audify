@@ -10,7 +10,7 @@ class SearchHistoryRepositoryImpl @Inject constructor(
     private val localDataSource: RecentSearchLocalDataSource
 ) : SearchHistoryRepository {
 
-    override suspend fun getAll1(): Flow<List<RecentSearch>> {
+    override fun getAll1(): Flow<List<RecentSearch>> {
         return localDataSource.getAll1()
     }
 

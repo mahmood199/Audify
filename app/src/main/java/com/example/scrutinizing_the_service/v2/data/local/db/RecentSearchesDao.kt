@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecentSearchesDao {
 
-    @Query("Select * from recent_searches")
+    @Query("Select * from recent_searches order by time_stamp DESC")
     fun getAll1() : Flow<List<RecentSearch>>
 
     @Query("Select * from recent_searches")

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchHistoryRepository {
 
-    suspend fun getAll1(): Flow<List<RecentSearch>>
+    fun getAll1(): Flow<List<RecentSearch>>
 
     suspend fun getAll2(): List<RecentSearch>
 

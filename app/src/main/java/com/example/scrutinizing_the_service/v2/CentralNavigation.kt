@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
-import com.example.scrutinizing_the_service.v2.ui.search.SearchUI
+import com.example.scrutinizing_the_service.v2.ui.search_history.SearchHistoryUI
 
 const val OFFSET = 500
 
@@ -60,8 +60,10 @@ fun NavigationCentral(
                 slideOutHorizontally { OFFSET }
             }
         ) {
-            SearchUI(backPress = {
+            SearchHistoryUI(backPress = {
                 navController.popBackStack()
+            }, navigateToSearchResult = {
+
             })
         }
         composable(
