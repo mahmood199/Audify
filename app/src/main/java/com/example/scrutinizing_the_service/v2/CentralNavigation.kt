@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.search_history.SearchHistoryUI
+import com.example.scrutinizing_the_service.v2.ui.search_result.SearchResultUI
 
 const val OFFSET = 500
 
@@ -45,12 +46,12 @@ fun NavigationCentral(
                 playMusic = playMusic,
                 backPress = backPress,
                 navigateToSearch = {
-                    navController.navigate(ScreenName.SEARCH)
+                    navController.navigate(ScreenName.SEARCH_HISTORY)
                 }
             )
         }
         composable(
-            route = ScreenName.SEARCH,
+            route = ScreenName.SEARCH_HISTORY,
             enterTransition = {
                 slideInHorizontally { OFFSET }
             },
@@ -63,9 +64,23 @@ fun NavigationCentral(
             SearchHistoryUI(backPress = {
                 navController.popBackStack()
             }, navigateToSearchResult = {
-
+                navController.navigate(ScreenName.SEARCH_RESULT)
             })
         }
+        composable(
+            route = ScreenName.SEARCH_RESULT,
+            enterTransition = {
+                slideInHorizontally { OFFSET }
+            },
+            exitTransition = {
+                slideOutHorizontally { OFFSET }
+            }, popExitTransition = {
+                slideOutHorizontally { OFFSET }
+            }
+        ) {
+            SearchResultUI()
+        }
+
         composable(
             route = ScreenName.AUDIO_PLAYER,
             enterTransition = {

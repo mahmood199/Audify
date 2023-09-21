@@ -110,6 +110,7 @@ fun SearchHistoryUI(
                             contentDescription = "Search Leading Icon"
                         )
                     },
+                    maxLines = 1,
                     trailingIcon = {
                         if (state.query.isNotBlank()) {
                             Icon(
@@ -129,8 +130,8 @@ fun SearchHistoryUI(
                     keyboardActions = KeyboardActions(
                         onSearch = {
                             focusManager.clearFocus()
-                            viewModel.addToSearchHistory(searchQuery)
                             navigateToSearchResult(searchQuery)
+                            viewModel.addToSearchHistory(searchQuery)
                         }
                     ),
                     modifier = Modifier
@@ -166,9 +167,18 @@ fun SearchHistoryUI(
                 )
                 .padding(horizontal = 12.dp),
         ) {
-            RecentSearchList(searches = searches) {
-                viewModel.deleteSearch(it)
-            }
+            RecentSearchList(
+                searches = searches,
+                onSearchSelected = {
+                    viewModel.updateSearchQuery(it)
+                    focusManager.clearFocus()
+                    navigateToSearchResult(searchQuery)
+                    viewModel.addToSearchHistory(searchQuery)
+                },
+                removeSearch = {
+                    viewModel.deleteSearch(it)
+                }
+            )
         }
     }
 }
@@ -225,6 +235,7 @@ fun AlertDialogWrapper(
 @Composable
 fun RecentSearchList(
     searches: List<RecentSearch>,
+    onSearchSelected: (String) -> Unit,
     removeSearch: (RecentSearch) -> Unit
 ) {
     LazyColumn(
@@ -236,7 +247,12 @@ fun RecentSearchList(
     ) {
         searches.forEachIndexed { index, search ->
             item(key = "${search.query}${search.timeStamp}") {
-                RecentlySearchedItem(search, index, removeSearch)
+                RecentlySearchedItem(
+                    recentSearch = search,
+                    index = index,
+                    onSearchSelected = onSearchSelected,
+                    removeSearch = removeSearch
+                )
             }
         }
     }
@@ -244,13 +260,17 @@ fun RecentSearchList(
 
 @Composable
 fun RecentlySearchedItem(
-    s: RecentSearch,
+    recentSearch: RecentSearch,
     index: Int,
-    removeSearch: (RecentSearch) -> Unit
+    onSearchSelected: (String) -> Unit,
+    removeSearch: (RecentSearch) -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                onSearchSelected(recentSearch.query)
+            }
             .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -262,15 +282,15 @@ fun RecentlySearchedItem(
             },
             tint = Color.White
         )
-        Text(text = s.query, modifier = Modifier
+        Text(text = recentSearch.query, modifier = Modifier
             .weight(1f)
             .clickable {
-
+                onSearchSelected(recentSearch.query)
             })
         Icon(
             imageVector = Icons.Default.Close, contentDescription = "Remove recent $index",
             modifier = Modifier.clickable {
-                removeSearch(s)
+                removeSearch(recentSearch)
             }
         )
     }
