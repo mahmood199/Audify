@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.common
+package com.example.scrutinizing_the_service.v2.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

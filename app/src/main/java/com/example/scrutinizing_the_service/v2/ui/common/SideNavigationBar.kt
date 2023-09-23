@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search_result
+package com.example.scrutinizing_the_service.v2.ui.common
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -6,6 +6,7 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,9 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -28,18 +27,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.common.vertical
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun SideNavigationBar(
-    headers: PersistentList<Pair<String, ImageVector>>
+    headers: PersistentList<Pair<String, ImageVector>>,
+    selectedIndex: Int,
+    onItemSelected: (Int) -> Unit
 ) {
-    var selectedIndex by remember {
-        mutableIntStateOf(0)
-    }
-
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -52,8 +48,7 @@ fun SideNavigationBar(
                 it = it,
                 isSelected = index == selectedIndex,
                 onSelected = {
-                    selectedIndex = index
-
+                    onItemSelected(index)
                 }
             )
         }
@@ -88,7 +83,12 @@ fun Header(
         modifier = modifier
             .vertical()
             .rotate(-90f)
-            .clickable(onClick = onSelected)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                onSelected()
+            }
             .scale(
                 if (isSelected) animatedScale else defaultScale
             ),
@@ -121,7 +121,7 @@ fun SideNavigationBarUI() {
                 Pair("Something Odd", Icons.Default.Search),
                 Pair("Something Odd", Icons.Default.Search),
                 Pair("Something Never", Icons.Default.Search),
-            ).toPersistentList()
-        )
+            ).toPersistentList(), 0
+        ) {}
     }
 }
