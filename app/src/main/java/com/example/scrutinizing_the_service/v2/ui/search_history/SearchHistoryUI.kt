@@ -51,7 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.common.AppBar
+import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
 
 @OptIn(ExperimentalComposeUiApi::class)

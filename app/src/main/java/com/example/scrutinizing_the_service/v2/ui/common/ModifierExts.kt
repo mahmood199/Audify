@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.common
+package com.example.scrutinizing_the_service.v2.ui.common
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout

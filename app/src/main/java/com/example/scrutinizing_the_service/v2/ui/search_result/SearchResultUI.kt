@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -25,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.common.SideNavigationBar
+import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -33,6 +35,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchResultUI(
+    query: String,
     viewModel: SearchResultViewModel = hiltViewModel()
 ) {
 
@@ -48,48 +51,42 @@ fun SearchResultUI(
 
     val coroutineScope = rememberCoroutineScope()
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.padding(12.dp)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.fillMaxSize()
     ) {
-        SideNavigationBar(
-            headers = headers,
-            selectedIndex = selectedIndex
+        Text(text = query, modifier = Modifier.fillMaxWidth())
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(12.dp)
         ) {
-            selectedIndex = it
-            coroutineScope.launch {
-                pagerState.animateScrollToPage(it)
+            SideNavigationBar(
+                headers = headers,
+                selectedIndex = selectedIndex
+            ) {
+                selectedIndex = it
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(it)
+                }
             }
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            VerticalPager(
-                state = pagerState,
-                userScrollEnabled = false
-            ) { currentPage ->
-                when (currentPage) {
-                    0 -> Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.LightGray)
-                    )
+            Column(modifier = Modifier.weight(1f)) {
+                VerticalPager(
+                    state = pagerState,
+                    userScrollEnabled = false
+                ) { currentPage ->
+                    when (currentPage) {
+                        0 -> SearchTrackUI()
 
-                    1 -> Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Gray)
-                    )
+                        1 -> SearchAlbumUI()
 
-                    2 -> Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.DarkGray)
-                    )
+                        2 -> SearchArtistUI()
 
-                    else -> Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Red)
-                    )
+                        else -> Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Red)
+                        )
+                    }
                 }
             }
         }
@@ -111,6 +108,6 @@ fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
 @Composable
 fun SearchResultUIPreview() {
     ScrutinizingTheServiceTheme {
-        SearchResultUI()
+        SearchResultUI("")
     }
 }

@@ -25,7 +25,7 @@ class SearchResultViewModel @Inject constructor(
 
     val state = _state.asStateFlow()
 
-    val searchQuery = savedStateHandle.get<String>("Query") ?: "NULL"
+    val searchQuery = savedStateHandle.get<String>("query") ?: "NULL"
 
     val _albums = mutableStateListOf<Album>()
     val album = _albums.toList()

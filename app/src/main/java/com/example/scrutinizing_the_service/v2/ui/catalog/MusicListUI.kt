@@ -45,8 +45,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
-import com.example.scrutinizing_the_service.v2.common.AppBar
-import com.example.scrutinizing_the_service.v2.common.BottomPlayer
+import com.example.scrutinizing_the_service.v2.ui.common.AppBar
+import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.PermissionStatus
