@@ -17,4 +17,6 @@ data class OffsetAttribute(
     val tag: String,
     @SerializedName("totalPages")
     val totalPages: String,
+    @SerializedName("for")
+    val query: String,
 )

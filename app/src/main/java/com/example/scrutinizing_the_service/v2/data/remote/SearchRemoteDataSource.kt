@@ -23,7 +23,7 @@ class SearchRemoteDataSource @Inject constructor(
             parameter("method", "album.search")
             parameter("album", album)
         }
-        val result =  responseProcessor.getResultFromResponse<AlbumListResponse>(gson, response)
+        val result = responseProcessor.getResultFromResponse<AlbumListResponse>(gson, response)
         return result
     }
 

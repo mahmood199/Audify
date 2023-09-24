@@ -1,10 +1,7 @@
 package com.example.scrutinizing_the_service.v2.data.models.remote
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Tag(
     @SerializedName("count")
     val count: Int = 0,
@@ -16,4 +13,4 @@ data class Tag(
     val wiki: Wiki? = null,
     @SerializedName("url")
     val url: String? = ""
-) : Parcelable
+)
