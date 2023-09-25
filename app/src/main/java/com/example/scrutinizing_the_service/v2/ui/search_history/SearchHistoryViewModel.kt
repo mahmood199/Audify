@@ -61,12 +61,14 @@ class SearchHistoryViewModel @Inject constructor(
 
     fun addToSearchHistory(searchQuery: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            searchHistoryRepository.insert(
-                RecentSearch(
-                    query = searchQuery,
-                    timeStamp = System.currentTimeMillis()
+            if (searchQuery.isNotBlank()) {
+                searchHistoryRepository.insert(
+                    RecentSearch(
+                        query = searchQuery,
+                        timeStamp = System.currentTimeMillis()
+                    )
                 )
-            )
+            }
         }
     }
 

@@ -32,11 +32,11 @@ fun NavigationCentral(
 
     NavHost(
         navController = navController,
-        startDestination = ScreenName.AUDIO_LIST,
+        startDestination = Screen.AudioList.name,
         modifier = modifier.background(Color.White),
     ) {
         composable(
-            route = ScreenName.AUDIO_LIST,
+            route = Screen.AudioList.name,
             exitTransition = {
                 slideOutHorizontally { -OFFSET }
             },
@@ -48,12 +48,12 @@ fun NavigationCentral(
                 playMusic = playMusic,
                 backPress = backPress,
                 navigateToSearch = {
-                    navController.navigate(ScreenName.SEARCH_HISTORY)
+                    navController.navigate(Screen.SearchHistory.name)
                 }
             )
         }
         composable(
-            route = ScreenName.SEARCH_HISTORY,
+            route = Screen.SearchHistory.name,
             enterTransition = {
                 slideInHorizontally { OFFSET }
             },
@@ -63,14 +63,17 @@ fun NavigationCentral(
                 slideOutHorizontally { OFFSET }
             }
         ) {
-            SearchHistoryUI(backPress = {
-                navController.popBackStack()
-            }, navigateToSearchResult = {
-                navController.navigate(ScreenName.SEARCH_RESULT.plus("/{$it}"))
-            })
+            SearchHistoryUI(
+                backPress = {
+                    navController.popBackStack()
+                }, navigateToSearchResult = {
+                    navController.navigate(Screen.SearchResult.name.plus("/${it}"))
+                }
+            )
         }
+
         composable(
-            route = ScreenName.SEARCH_RESULT + "/{query}",
+            route = Screen.SearchResult.name + "/{query}",
             arguments = listOf(navArgument("query") {
                 type = NavType.StringType
             }),
@@ -84,11 +87,16 @@ fun NavigationCentral(
             }
         ) { navBackStackEntry ->
             val query = navBackStackEntry.arguments?.getString("query") ?: ""
-            SearchResultUI(query)
+            SearchResultUI(
+                query = query,
+                backPress = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(
-            route = ScreenName.AUDIO_PLAYER,
+            route = Screen.AudioPlayer.name,
             enterTransition = {
                 slideInHorizontally { OFFSET } + fadeIn()
             },
@@ -106,8 +114,9 @@ fun NavigationCentral(
 
             }
         }
+
         composable(
-            route = ScreenName.MAIN,
+            route = Screen.Main.name,
             enterTransition = {
                 slideInHorizontally { OFFSET } + fadeIn()
             },

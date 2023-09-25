@@ -20,7 +20,7 @@ interface RecentSearchesDao {
     @Query("Select * from recent_searches where search Like '%' || :word  || '%'")
     suspend fun getByText(word: String): List<RecentSearch>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(recentSearch: RecentSearch): Long
 
     @Query("Delete from recent_searches where id=:id")

@@ -4,7 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -39,8 +38,7 @@ fun SideNavigationBar(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .background(Color.LightGray)
-            .padding(12.dp),
+            .padding(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
         headers.forEachIndexed { index, it ->

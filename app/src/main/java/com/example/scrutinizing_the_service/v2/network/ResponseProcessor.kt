@@ -23,11 +23,23 @@ class ResponseProcessor @Inject constructor() {
                 data = deserializeToClass(gson, output.body<String>())
             )
 
-            in 300..320 -> NetworkResult.RedirectError(code = code, message = "Error Redirect")
+            in 300..320 -> NetworkResult.RedirectError(
+                e = Exception("Error Redirect"),
+                code = code,
+                message = "Error Redirect"
+            )
 
-            in 400..420 -> NetworkResult.UnAuthorised(code = code, message = "UnAuthorised Access")
+            in 400..420 -> NetworkResult.UnAuthorised(
+                e = Exception("Error Authentication"),
+                code = code,
+                message = "UnAuthorised Access"
+            )
 
-            in 500..520 -> NetworkResult.ServerError(code = code, message = "Server Error")
+            in 500..520 -> NetworkResult.ServerError(
+                e = Exception("Server Error"),
+                code = code,
+                message = "Server Error"
+            )
 
             else -> {
                 NetworkResult.Exception(Exception())

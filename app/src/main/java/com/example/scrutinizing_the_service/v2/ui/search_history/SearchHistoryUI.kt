@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.search_history
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -51,8 +52,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
+import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -101,7 +102,8 @@ fun SearchHistoryUI(
                 )
 
                 OutlinedTextField(
-                    value = searchQuery, onValueChange = {
+                    value = searchQuery,
+                    onValueChange = {
                         viewModel.updateSearchQuery(it)
                     },
                     leadingIcon = {
@@ -129,9 +131,9 @@ fun SearchHistoryUI(
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(
                         onSearch = {
+                            viewModel.addToSearchHistory(searchQuery)
                             focusManager.clearFocus()
                             navigateToSearchResult(searchQuery)
-                            viewModel.addToSearchHistory(searchQuery)
                         }
                     ),
                     modifier = Modifier
@@ -169,11 +171,11 @@ fun SearchHistoryUI(
         ) {
             RecentSearchList(
                 searches = searches,
-                onSearchSelected = {
-                    viewModel.updateSearchQuery(it)
+                onSearchSelected = { selectedQuery ->
+                    viewModel.updateSearchQuery(selectedQuery)
+                    viewModel.addToSearchHistory(selectedQuery)
                     focusManager.clearFocus()
-                    navigateToSearchResult(searchQuery)
-                    viewModel.addToSearchHistory(searchQuery)
+                    navigateToSearchResult(selectedQuery)
                 },
                 removeSearch = {
                     viewModel.deleteSearch(it)
@@ -271,7 +273,8 @@ fun RecentlySearchedItem(
             .clickable {
                 onSearchSelected(recentSearch.query)
             }
-            .padding(vertical = 6.dp),
+            .padding(vertical = 6.dp)
+            .animateContentSize(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Icon(
