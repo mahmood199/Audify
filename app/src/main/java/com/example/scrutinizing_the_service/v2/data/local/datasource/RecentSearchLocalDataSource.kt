@@ -22,7 +22,12 @@ class RecentSearchLocalDataSource @Inject constructor(
     }
 
     suspend fun insert(recentSearch: RecentSearch): Long {
-        return dao.insert(recentSearch)
+        val item = getByText(recentSearch.query)
+        return if(item.isEmpty()) {
+            dao.insert(recentSearch)
+        } else {
+            -2
+        }
     }
 
     suspend fun deleteById(id: Int): Int {

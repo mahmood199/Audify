@@ -45,4 +45,44 @@ class SearchRemoteDataSource @Inject constructor(
         return result
     }
 
+    suspend fun searchForAlbum(
+        album: String,
+        nextPageNumber: Int
+    ): NetworkResult<AlbumListResponse> {
+        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+            parameter("method", "album.search")
+            parameter("album", album)
+            parameter("page", nextPageNumber)
+        }
+        val result = responseProcessor.getResultFromResponse<AlbumListResponse>(gson, response)
+        return result
+    }
+
+    suspend fun searchForArtist(
+        album: String,
+        nextPageNumber: Int
+    ): NetworkResult<ArtistListResponse> {
+        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+            parameter("method", "artist.search")
+            parameter("artist", album)
+            parameter("page", nextPageNumber)
+        }
+        val result = responseProcessor.getResultFromResponse<ArtistListResponse>(gson, response)
+        return result
+    }
+
+    suspend fun searchForTrack(
+        track: String,
+        nextPageNumber: Int
+    ): NetworkResult<TrackListResponse> {
+        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+            parameter("method", "track.search")
+            parameter("track", track)
+            parameter("page", nextPageNumber)
+        }
+        val result = responseProcessor.getResultFromResponse<TrackListResponse>(gson, response)
+        return result
+    }
+
+
 }
