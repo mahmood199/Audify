@@ -15,6 +15,8 @@ data class Artist(
     val image: List<Image> = listOf(),
     @SerializedName("streamable")
     val streamable: String = "",
+    @SerializedName("listeners")
+    val listeners: String,
     @SerializedName("bio")
     val bio: Bio = Bio(),
     @SerializedName("ontour")

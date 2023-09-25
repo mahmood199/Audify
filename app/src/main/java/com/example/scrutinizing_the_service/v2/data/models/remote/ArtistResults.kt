@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ArtistResults(
     @SerializedName("@attr")
-    val attr: OffsetAttribute,
+    val attr: OffsetAttribute?,
     @SerializedName("artistmatches")
     val artistMatchesList: ArtistMatchesList
 )

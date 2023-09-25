@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class TrackMatchesList(
     @SerializedName("track")
-    val albums: List<Track>
+    val tracks: List<Track>
 )
