@@ -8,3 +8,12 @@ object ScreenName {
     const val SEARCH_HISTORY = "search_history"
     const val SEARCH_RESULT = "search_result"
 }
+
+
+sealed class Screen(val name: String) {
+    data object AudioList : Screen(name = ScreenName.AUDIO_LIST)
+    data object AudioPlayer : Screen(name = ScreenName.AUDIO_PLAYER)
+    data object Main : Screen(name = ScreenName.MAIN)
+    data object SearchHistory : Screen(name = ScreenName.SEARCH_HISTORY)
+    data object SearchResult : Screen(name = ScreenName.SEARCH_RESULT)
+}

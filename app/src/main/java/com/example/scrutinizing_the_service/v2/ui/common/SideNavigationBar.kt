@@ -39,8 +39,7 @@ fun SideNavigationBar(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .background(Color.LightGray)
-            .padding(12.dp),
+            .padding(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
         headers.forEachIndexed { index, it ->
