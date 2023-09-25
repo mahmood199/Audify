@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.search_result
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,6 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchResultUI(
     query: String,
+    backPress: () -> Unit,
     viewModel: SearchResultViewModel = hiltViewModel()
 ) {
 
@@ -49,48 +54,72 @@ fun SearchResultUI(
         headers.size
     }
 
+    BackHandler {
+        backPress()
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(text = query, modifier = Modifier.fillMaxWidth())
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(12.dp)
+    Scaffold(
+        topBar = {
+            Text(
+                text = query,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 12.dp)
+            )
+        },
+        modifier = Modifier.background(Color.Gray)
+    ) { paddingValues ->
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .padding(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
+                .fillMaxSize()
         ) {
-            SideNavigationBar(
-                headers = headers,
-                selectedIndex = selectedIndex
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(12.dp)
             ) {
-                selectedIndex = it
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(it)
+                SideNavigationBar(
+                    headers = headers,
+                    selectedIndex = selectedIndex
+                ) {
+                    selectedIndex = it
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(it)
+                    }
                 }
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                VerticalPager(
-                    state = pagerState,
-                    userScrollEnabled = false
-                ) { currentPage ->
-                    when (currentPage) {
-                        0 -> SearchTrackUI()
+                Column(modifier = Modifier.weight(1f)) {
+                    VerticalPager(
+                        state = pagerState,
+                        userScrollEnabled = false
+                    ) { currentPage ->
+                        when (currentPage) {
+                            0 -> SearchTrackUI()
 
-                        1 -> SearchAlbumUI()
+                            1 -> SearchAlbumUI()
 
-                        2 -> SearchArtistUI()
+                            2 -> SearchArtistUI()
 
-                        else -> Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Red)
-                        )
+                            else -> Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(Color.Red)
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 
 }
 
@@ -108,6 +137,11 @@ fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
 @Composable
 fun SearchResultUIPreview() {
     ScrutinizingTheServiceTheme {
-        SearchResultUI("")
+        SearchResultUI(
+            query = "",
+            backPress = {
+
+            }
+        )
     }
 }
