@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.media3.common.util.UnstableApi
+import com.example.scrutinizing_the_service.ServiceApplication
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
@@ -60,6 +61,11 @@ class AudioPlayerActivity : ComponentActivity() {
             }
             isServiceRunning = true
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (this.applicationContext as ServiceApplication).shutDownResources()
     }
 }
 
