@@ -33,10 +33,8 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        private val TIME_OUT = 60_000
-        private const val API_KEY = "9f0d1f4e45452f005252775976e4274c"
-        private val SHARED_KEY = "8e9162fd6f5930584a1adfa06507c3bb"
-        val BASE_URL = "https://ws.audioscrobbler.com/"
+        private const val TIME_OUT = 60_000
+        val BASE_URL = BuildConfig.LAST_FM_BASE_URL
     }
 
     @Singleton
@@ -80,7 +78,7 @@ class NetworkModule {
         }.apply {
             sendPipeline.intercept(HttpSendPipeline.State) {
                 context.headers.append("AppVersion", BuildConfig.VERSION_NAME)
-                context.parameter("api_key", API_KEY)
+                context.parameter("api_key", BuildConfig.LAST_FM_API_KEY)
                 context.parameter("format", "json")
             }
         }

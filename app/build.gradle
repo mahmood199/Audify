@@ -23,6 +23,10 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "LAST_FM_API_KEY", project.API_KEY
+        buildConfigField "String", "SHARED_API_KEY", project.SHARED_KEY
+        buildConfigField "String", "LAST_FM_BASE_URL", project.LAST_FM_BASE_URL
     }
 
     buildTypes {
