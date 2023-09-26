@@ -15,7 +15,7 @@ sealed interface PlayerEvent {
 sealed interface PlayerState {
     data object Initial : PlayerState
     data class Ready(val duration: Long) : PlayerState
-    data class Progress(val progress: Long, val duration: Long) : PlayerState
+    data class Progress(val progress: Long, val duration: Long, val mediaItem: MediaItem?) : PlayerState
     data class Buffering(val progress: Long, val duration: Long) : PlayerState
     data class Playing(val isPlaying: Boolean) : PlayerState
     data class CurrentPlaying(val mediaItem: MediaItem?, val duration: Long) : PlayerState

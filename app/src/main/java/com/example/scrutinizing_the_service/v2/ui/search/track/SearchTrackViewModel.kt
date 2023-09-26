@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search_result
+package com.example.scrutinizing_the_service.v2.ui.search.track
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
@@ -7,33 +7,33 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.example.scrutinizing_the_service.v2.paging.AlbumPagingRepository
+import com.example.scrutinizing_the_service.v2.paging.TrackPagingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchAlbumViewModel @Inject constructor(
-    private val repository: AlbumPagingRepository,
+class SearchTrackViewModel @Inject constructor(
+    private val trackPagingRepository: TrackPagingRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val searchQuery = savedStateHandle.get<String>("query") ?: "NULL"
 
     init {
-        Log.d("SearchSearch1", searchQuery)
+        Log.d("SearchSearch3", searchQuery)
         initiateSearch(query = searchQuery)
     }
 
-    val albums = Pager(
+    val tracks = Pager(
         config = PagingConfig(pageSize = 10, prefetchDistance = 20),
         pagingSourceFactory = {
-            repository.remoteDataSource
+            trackPagingRepository.remoteDataSource
         }
     ).flow
         .cachedIn(viewModelScope)
 
     fun initiateSearch(query: String) {
-        repository.setQuery(query)
+        trackPagingRepository.setQuery(query)
     }
 
 }

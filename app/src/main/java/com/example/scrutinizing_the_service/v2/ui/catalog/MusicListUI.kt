@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -133,7 +132,7 @@ fun MusicListUI(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PermissionRequired(
+private fun PermissionRequired(
     isLoading: Boolean,
     songs: List<Song>,
     lazyListState: LazyListState,
@@ -185,7 +184,7 @@ fun PermissionRequired(
 }
 
 @Composable
-fun AnimatedBottomPlayer(
+private fun AnimatedBottomPlayer(
     state: MusicListViewState,
     isShown: Boolean,
     sendUiEvent: (MusicListUiEvent) -> Unit,
@@ -220,7 +219,7 @@ fun AnimatedBottomPlayer(
 }
 
 @Composable
-fun AnimatedFAB(
+private fun AnimatedFAB(
     isShown: Boolean,
     navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
@@ -245,7 +244,7 @@ fun AnimatedFAB(
 }
 
 @Composable
-fun MusicListContent(
+private fun MusicListContent(
     isLoading: Boolean,
     songs: List<Song>,
     lazyListState: LazyListState,
@@ -275,9 +274,8 @@ fun MusicListContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MusicList(
+private fun MusicList(
     songs: List<Song>,
     lazyListState: LazyListState,
     playMusic: (Song, Int) -> Unit,
@@ -305,7 +303,7 @@ fun MusicList(
 }
 
 @Composable
-fun SongUI(
+private fun SongUI(
     item: Song,
     modifier: Modifier = Modifier
 ) {

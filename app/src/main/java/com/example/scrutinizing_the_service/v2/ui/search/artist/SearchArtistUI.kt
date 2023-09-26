@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search_result
+package com.example.scrutinizing_the_service.v2.ui.search.artist
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -39,6 +39,7 @@ import com.example.scrutinizing_the_service.v2.data.models.remote.Artist
 import com.example.scrutinizing_the_service.v2.paging.isAppending
 import com.example.scrutinizing_the_service.v2.paging.isEmpty
 import com.example.scrutinizing_the_service.v2.paging.isFirstLoad
+import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 

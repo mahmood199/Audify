@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search_history
+package com.example.scrutinizing_the_service.v2.ui.search.history
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
