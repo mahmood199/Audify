@@ -64,7 +64,7 @@ class SearchHistoryViewModel @Inject constructor(
             if (searchQuery.isNotBlank()) {
                 searchHistoryRepository.insert(
                     RecentSearch(
-                        query = searchQuery,
+                        query = searchQuery.trim(),
                         timeStamp = System.currentTimeMillis()
                     )
                 )
