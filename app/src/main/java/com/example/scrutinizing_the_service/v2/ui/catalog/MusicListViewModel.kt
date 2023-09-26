@@ -71,10 +71,6 @@ class MusicListViewModel @Inject constructor(
                 }
             }
         }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = musicRepository.fetchSongFromRemote()
-        }
     }
 
     fun getDeviceAudios() {
@@ -154,4 +150,5 @@ class MusicListViewModel @Inject constructor(
             }
         }
     }
+
 }
