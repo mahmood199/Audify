@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search_result
+package com.example.scrutinizing_the_service.v2.ui.search.result
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -38,6 +38,9 @@ import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
+import com.example.scrutinizing_the_service.v2.ui.search.album.SearchAlbumUI
+import com.example.scrutinizing_the_service.v2.ui.search.artist.SearchArtistUI
+import com.example.scrutinizing_the_service.v2.ui.search.track.SearchTrackUI
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -58,7 +61,7 @@ fun SearchResultUI(
         mutableIntStateOf(0)
     }
 
-    val pagerState = rememberPagerState(0, 0f) {
+    val pagerState = rememberPagerState(TRACK_PAGE_INDEX, 0f) {
         headers.size
     }
 
@@ -83,6 +86,7 @@ fun SearchResultUI(
         bottomBar = {
             AnimatedBottomPlayer(
                 state = state,
+                selectedPage = selectedIndex,
                 sendUiEvent = viewModel::sendUIEvent
             )
         },
@@ -116,11 +120,11 @@ fun SearchResultUI(
                         userScrollEnabled = false
                     ) { currentPage ->
                         when (currentPage) {
-                            0 -> SearchTrackUI()
+                            TRACK_PAGE_INDEX -> SearchTrackUI()
 
-                            1 -> SearchAlbumUI()
+                            ALBUM_PAGE_INDEX -> SearchAlbumUI()
 
-                            2 -> SearchArtistUI()
+                            ARTIST_PAGE_INDEX -> SearchArtistUI()
 
                             else -> Box(
                                 modifier = Modifier
@@ -133,17 +137,20 @@ fun SearchResultUI(
             }
         }
     }
-
-
 }
+
+const val TRACK_PAGE_INDEX = 0
+const val ALBUM_PAGE_INDEX = 1
+const val ARTIST_PAGE_INDEX = 2
 
 @Composable
 private fun AnimatedBottomPlayer(
     state: SearchResultViewState,
+    selectedPage: Int,
     sendUiEvent: (SearchResultUiEvent) -> Unit,
 ) {
     AnimatedVisibility(
-        visible = state.isPlaying,
+        visible = state.isPlaying && selectedPage == TRACK_PAGE_INDEX,
         enter = slideIn(initialOffset = { IntOffset(0, 100) }),
         exit = slideOut(targetOffset = { IntOffset(0, 200) }),
     ) {

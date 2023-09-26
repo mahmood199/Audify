@@ -17,8 +17,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
-import com.example.scrutinizing_the_service.v2.ui.search_history.SearchHistoryUI
-import com.example.scrutinizing_the_service.v2.ui.search_result.SearchResultUI
+import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
+import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
 
 const val OFFSET = 500
 

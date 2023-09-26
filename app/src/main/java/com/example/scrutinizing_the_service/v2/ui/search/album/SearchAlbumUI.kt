@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.search_result
+package com.example.scrutinizing_the_service.v2.ui.search.album
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -35,19 +35,20 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.data.models.remote.Track
+import com.example.scrutinizing_the_service.v2.data.models.remote.Album
 import com.example.scrutinizing_the_service.v2.paging.isAppending
 import com.example.scrutinizing_the_service.v2.paging.isEmpty
 import com.example.scrutinizing_the_service.v2.paging.isFirstLoad
+import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun SearchTrackUI(
+fun SearchAlbumUI(
     modifier: Modifier = Modifier,
-    viewModel: SearchTrackViewModel = hiltViewModel()
+    viewModel: SearchAlbumViewModel = hiltViewModel()
 ) {
-    val items = viewModel.tracks.collectAsLazyPagingItems()
+    val items = viewModel.albums.collectAsLazyPagingItems()
 
     val loadTargetState: SearchResultState by remember {
         derivedStateOf {
@@ -63,7 +64,7 @@ fun SearchTrackUI(
 
     Crossfade(
         targetState = loadTargetState,
-        label = "Track Search transition",
+        label = "Album Search transition",
         modifier = modifier.fillMaxSize()
     ) {
         when (it) {
@@ -93,11 +94,11 @@ fun SearchTrackUI(
                                 }
                                 key(it)
                             },
-                            contentType = items.itemContentType { "tracks" },
+                            contentType = items.itemContentType { "albums" },
                         ) { index ->
                             val item = items[index]
                             if (item != null) {
-                                TrackUI(item)
+                                AlbumUI(item)
                             }
                         }
 
@@ -119,14 +120,14 @@ fun SearchTrackUI(
 }
 
 @Composable
-fun TrackUI(item: Track) {
+fun AlbumUI(item: Album) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         GlideImage(
             imageModel = {
-                item.image[1].text
+                item.images[1].text
             },
             imageOptions = ImageOptions(
                 contentScale = ContentScale.FillBounds
@@ -166,11 +167,10 @@ fun TrackUI(item: Track) {
     }
 }
 
-
 @Preview
 @Composable
-fun SearchTrackUIPreview() {
+fun SearchAlbumUIPreview() {
     ScrutinizingTheServiceTheme {
-        SearchTrackUI()
+        SearchAlbumUI()
     }
 }
