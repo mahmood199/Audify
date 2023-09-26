@@ -1,6 +1,9 @@
 package com.example.scrutinizing_the_service.v2.ui.search_result
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +31,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
+import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewState
+import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
@@ -43,6 +51,8 @@ fun SearchResultUI(
     backPress: () -> Unit,
     viewModel: SearchResultViewModel = hiltViewModel()
 ) {
+
+    val state by viewModel.state.collectAsState()
 
     val headers = getHeaders()
 
@@ -70,6 +80,12 @@ fun SearchResultUI(
                     .fillMaxWidth()
                     .padding(top = 12.dp)
                     .padding(horizontal = 12.dp)
+            )
+        },
+        bottomBar = {
+            AnimatedBottomPlayer(
+                state = state,
+                sendUiEvent = viewModel::sendUIEvent
             )
         },
         modifier = Modifier.background(Color.Gray)
@@ -122,6 +138,41 @@ fun SearchResultUI(
 
 
 }
+
+@Composable
+private fun AnimatedBottomPlayer(
+    state: SearchResultViewState,
+    sendUiEvent: (SearchResultUiEvent) -> Unit,
+) {
+    AnimatedVisibility(
+        visible = state.isPlaying,
+        enter = slideIn(initialOffset = { IntOffset(0, 100) }),
+        exit = slideOut(targetOffset = { IntOffset(0, 200) }),
+    ) {
+        BottomPlayer(
+            progress = state.progress,
+            songName = state.currentSong?.name ?: "Error",
+            artist = state.currentSong?.artist ?: "Error",
+            isPlaying = state.isPlaying,
+            onPlayPauseClicked = {
+                sendUiEvent(SearchResultUiEvent.PlayPause)
+            },
+            onRewindClicked = {
+                sendUiEvent(SearchResultUiEvent.Rewind)
+            },
+            onFastForwardClicked = {
+                sendUiEvent(SearchResultUiEvent.FastForward)
+            },
+            onPlayPreviousClicked = {
+                sendUiEvent(SearchResultUiEvent.PlayPreviousItem)
+            },
+            onPlayNextClicked = {
+                sendUiEvent(SearchResultUiEvent.PlayNextItem)
+            }
+        )
+    }
+}
+
 
 @Composable
 fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
