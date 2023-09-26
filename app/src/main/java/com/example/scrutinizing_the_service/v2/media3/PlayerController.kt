@@ -54,7 +54,7 @@ class PlayerController @Inject constructor(
                         seekTo(playerEvent.index, 0)
                         playWhenReady = true
                         _audioState.value = PlayerState.Playing(
-                            isPlaying = true
+                            isPlaying = true,
                         )
                     }
                     startProgressUpdate()
@@ -99,7 +99,9 @@ class PlayerController @Inject constructor(
     }
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
-        _audioState.value = PlayerState.Playing(isPlaying = isPlaying)
+        _audioState.value = PlayerState.Playing(
+            isPlaying = isPlaying,
+        )
         _audioState.value = PlayerState.CurrentPlaying(
             mediaItem = player.currentMediaItem,
             duration = player.duration
@@ -120,7 +122,7 @@ class PlayerController @Inject constructor(
         } else {
             player.play()
             _audioState.value = PlayerState.Playing(
-                isPlaying = true
+                isPlaying = true,
             )
             startProgressUpdate()
         }
@@ -131,7 +133,8 @@ class PlayerController @Inject constructor(
             delay(500)
             _audioState.value = PlayerState.Progress(
                 progress = player.currentPosition,
-                duration = player.duration
+                duration = player.duration,
+                mediaItem = player.currentMediaItem
             )
         }
     }
@@ -139,7 +142,9 @@ class PlayerController @Inject constructor(
     private fun stopProgressUpdate() {
         job?.cancel()
         coroutineScope.cancel()
-        _audioState.value = PlayerState.Playing(isPlaying = false)
+        _audioState.value = PlayerState.Playing(
+            isPlaying = false,
+        )
     }
 
 }
