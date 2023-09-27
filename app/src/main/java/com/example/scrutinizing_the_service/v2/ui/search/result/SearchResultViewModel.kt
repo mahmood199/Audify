@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.toSong
+import com.example.scrutinizing_the_service.v2.data.models.local.SearchPreference
+import com.example.scrutinizing_the_service.v2.data.repo.contracts.UserPreferenceRepository
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
     private val playerController: PlayerController,
+    private val preferenceRepository: UserPreferenceRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -28,8 +31,8 @@ class SearchResultViewModel @Inject constructor(
 
     init {
         val playerState = playerController.audioState.value
-        if(playerState is PlayerState.Progress) {
-            if(playerState.mediaItem != null) {
+        if (playerState is PlayerState.Progress) {
+            if (playerState.mediaItem != null) {
                 _state.value.currentSong = playerState.mediaItem.toSong()
                 _state.value.isPlaying = true
             } else {
@@ -71,6 +74,32 @@ class SearchResultViewModel @Inject constructor(
                         _state.value = _state.value.copy(duration = playerState.duration)
                     }
                 }
+            }
+        }
+
+        viewModelScope.launch {
+            preferenceRepository.getSearchPreference().collectLatest {
+                when(it.searchPreference) {
+                    SearchPreference.Track -> {
+                        _state.value = _state.value.copy(userSelectedPage = 0)
+                    }
+                    SearchPreference.Album -> {
+                        _state.value = _state.value.copy(userSelectedPage = 1)
+                    }
+                    SearchPreference.Artist -> {
+                        _state.value = _state.value.copy(userSelectedPage = 2)
+                    }
+                }
+            }
+        }
+    }
+
+    fun setPreference(page: Int) {
+        viewModelScope.launch {
+            when(page) {
+                0 -> preferenceRepository.setSearchPreference(SearchPreference.Track)
+                1 -> preferenceRepository.setSearchPreference(SearchPreference.Album)
+                2 -> preferenceRepository.setSearchPreference(SearchPreference.Artist)
             }
         }
     }

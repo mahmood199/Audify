@@ -58,10 +58,13 @@ fun SearchResultUI(
     val headers = getHeaders()
 
     var selectedIndex by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(value = state.userSelectedPage)
     }
 
-    val pagerState = rememberPagerState(TRACK_PAGE_INDEX, 0f) {
+    val pagerState = rememberPagerState(
+        initialPage = state.userSelectedPage,
+        initialPageOffsetFraction = 0f
+    ) {
         headers.size
     }
 
@@ -110,6 +113,7 @@ fun SearchResultUI(
                     selectedIndex = selectedIndex
                 ) {
                     selectedIndex = it
+                    viewModel.setPreference(selectedIndex)
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(it)
                     }

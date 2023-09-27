@@ -8,5 +8,6 @@ data class SearchResultViewState(
     var duration: Long = 1L,
     var progressString: String = "00:00",
     var currentSong: Song? = null,
-    var isPlaying: Boolean = false
+    var isPlaying: Boolean = false,
+    var userSelectedPage: Int = 0
 )

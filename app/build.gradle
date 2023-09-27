@@ -156,5 +156,7 @@ dependencies {
     def glide_version = "2.2.8"
     implementation "com.github.skydoves:landscapist-glide:$glide_version"
 
+    def dataStore_version = "1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$dataStore_version"
 
 }
