@@ -61,7 +61,10 @@ fun SearchResultUI(
         mutableIntStateOf(value = state.userSelectedPage)
     }
 
-    val pagerState = rememberPagerState(TRACK_PAGE_INDEX, 0f) {
+    val pagerState = rememberPagerState(
+        initialPage = state.userSelectedPage,
+        initialPageOffsetFraction = 0f
+    ) {
         headers.size
     }
 

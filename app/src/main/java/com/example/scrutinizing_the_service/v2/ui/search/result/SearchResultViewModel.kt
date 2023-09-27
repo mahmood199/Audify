@@ -79,15 +79,15 @@ class SearchResultViewModel @Inject constructor(
 
         viewModelScope.launch {
             preferenceRepository.getSearchPreference().collectLatest {
-                when(it) {
-                    SearchPreference.Track.name -> {
-                        _state.value.userSelectedPage = 0
+                when(it.searchPreference) {
+                    SearchPreference.Track -> {
+                        _state.value = _state.value.copy(userSelectedPage = 0)
                     }
-                    SearchPreference.Album.name -> {
-                        _state.value.userSelectedPage = 1
+                    SearchPreference.Album -> {
+                        _state.value = _state.value.copy(userSelectedPage = 1)
                     }
-                    SearchPreference.Artist.name -> {
-                        _state.value.userSelectedPage = 2
+                    SearchPreference.Artist -> {
+                        _state.value = _state.value.copy(userSelectedPage = 2)
                     }
                 }
             }
