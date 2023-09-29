@@ -44,9 +44,15 @@ fun BottomPlayer(
     onFastForwardClicked: () -> Unit,
     onPlayPreviousClicked: () -> Unit,
     onPlayNextClicked: () -> Unit,
+    navigateToPlayer: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .clickable {
+            navigateToPlayer()
+        }
+    ) {
         LinearProgressIndicator(
             progress = progress,
             trackColor = Color.Red,
@@ -176,11 +182,12 @@ fun BottomPlayerPreview() {
             songName = "Some Random Long Name Song",
             artist = "Some Artist",
             isPlaying = true,
-            onPlayNextClicked = {},
             onPlayPauseClicked = {},
+            onRewindClicked = {},
             onFastForwardClicked = {},
             onPlayPreviousClicked = {},
-            onRewindClicked = {}
+            onPlayNextClicked = {},
+            navigateToPlayer = {}
         )
     }
 }
