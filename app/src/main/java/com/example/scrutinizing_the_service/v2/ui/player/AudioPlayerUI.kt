@@ -1,5 +1,7 @@
 package com.example.scrutinizing_the_service.v2.ui.player
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,18 +43,25 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
+import com.example.scrutinizing_the_service.v2.ui.common.AudioPlayerProgressUI
 import com.linc.audiowaveform.AudioWaveform
+import com.linc.audiowaveform.infiniteLinearGradient
 import kotlinx.collections.immutable.toPersistentList
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -147,7 +158,32 @@ fun AudioPlayerUI(
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(10))
                     .background(Color.DarkGray)
-            )
+            ) {
+                var waveformProgress by remember(Unit) { mutableFloatStateOf(0F) }
+
+                val animatedGradientBrush = Brush.infiniteLinearGradient(
+                    colors = listOf(Color(0xff22c1c3), Color(0xfffdbb2d)),
+                    animation = tween(durationMillis = 6000, easing = LinearEasing),
+                    width = 128F
+                )
+
+                val configuration = LocalConfiguration.current
+                val numberOfWaves = remember(configuration.screenWidthDp) {
+                    (configuration.screenWidthDp / 5f).roundToInt()
+                }
+
+                AudioWaveform(
+                    progress = waveformProgress,
+                    progressBrush = animatedGradientBrush,
+                    amplitudes = List(numberOfWaves) {
+                        Random.nextInt(from = 1, until = 100)
+                    },
+                    onProgressChange = { waveformProgress = it },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center)
+                )
+            }
 
             Text(
                 text = "Hey there",
@@ -174,49 +210,30 @@ fun AudioPlayerState(
             .padding(vertical = 6.dp, horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .drawBehind {
-                    drawLine(
-                        color = Color.Magenta,
-                        start = Offset(size.width, 0f),
-                        end = Offset(size.width, state.progress),
-                        strokeWidth = size.height
-                    )
-                },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val random = remember {
-                Random.Default
-            }
-            val bars = remember {
-                List(25) {
-                    random.nextInt(15, 61)
-                }.toPersistentList()
-            }
 
-            bars.forEach {
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(it.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(
-                            Color.Red
-                        ),
-                ) {
+        val width = LocalConfiguration.current.screenWidthDp
+        val height = LocalConfiguration.current.screenHeightDp / 10
 
-                }
-            }
-        }
+        AudioPlayerProgressUI(
+            progress = state.progress,
+            widgetWidth = width.dp,
+            widgetHeight = height.dp,
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(text = state.progressString, modifier = Modifier.align(Alignment.CenterStart))
-            Text(text = "${state.duration}", modifier = Modifier.align(Alignment.CenterEnd))
+            Text(
+                text = state.progressString,
+                modifier = Modifier.align(Alignment.CenterStart),
+                color = Color.Black
+            )
+            Text(
+                text = "${state.duration}",
+                modifier = Modifier.align(Alignment.CenterEnd),
+                color = Color.Black
+            )
         }
     }
 }

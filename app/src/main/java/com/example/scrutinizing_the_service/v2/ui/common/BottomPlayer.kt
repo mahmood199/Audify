@@ -1,5 +1,8 @@
 package com.example.scrutinizing_the_service.v2.ui.common
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +24,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,12 +57,20 @@ fun BottomPlayer(
             navigateToPlayer()
         }
     ) {
+
+        val animatedProgress by animateFloatAsState(
+            targetValue = progress,
+            animationSpec = tween(500, easing = LinearEasing),
+            label = "Seek bar progress"
+        )
+
         LinearProgressIndicator(
-            progress = progress,
+            progress = animatedProgress,
             trackColor = Color.Red,
             color = Color.Cyan,
             modifier = Modifier.fillMaxWidth()
         )
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
