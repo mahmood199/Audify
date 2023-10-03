@@ -61,7 +61,7 @@ fun AudioPlayerProgressUI(
         val heights = remember {
             buildList {
                 for (i in 0..barsCount) {
-                    add(element = screenHeight * (random.nextFloat() * 0.5f + 0.1f))
+                    add(element = screenHeight * (random.nextFloat() * 0.5f + 0.2f))
                 }
             }.toPersistentList()
         }
@@ -71,7 +71,7 @@ fun AudioPlayerProgressUI(
         }.value
 
         var startX = remember {
-            0f
+            space
         }
 
         val path = remember {
