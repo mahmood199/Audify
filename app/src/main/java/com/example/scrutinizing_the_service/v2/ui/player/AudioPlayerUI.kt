@@ -211,13 +211,11 @@ fun AudioPlayerState(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        val width = LocalConfiguration.current.screenWidthDp
-        val height = LocalConfiguration.current.screenHeightDp / 10
-
         AudioPlayerProgressUI(
             progress = state.progress,
-            widgetWidth = width.dp,
-            widgetHeight = height.dp,
+            backGroundColor = Color.Blue,
+            progressColor = Color.Red,
+            modifier = Modifier.fillMaxHeight(0.1f)
         )
 
         Box(

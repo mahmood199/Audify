@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ext
 
+import android.content.Context
 import com.example.scrutinizing_the_service.TimeConverter
 
 fun calculateProgressValue(currentProgress: Long, duration: Long): Pair<Float, String> {
@@ -9,4 +10,12 @@ fun calculateProgressValue(currentProgress: Long, duration: Long): Pair<Float, S
         first = progress,
         second = TimeConverter.getConvertedTime(currentProgress),
     )
+}
+
+fun Int.px(context: Context): Float {
+    return this * context.resources.displayMetrics.density
+}
+
+fun Float.px(context: Context): Float {
+    return this * context.resources.displayMetrics.density
 }
