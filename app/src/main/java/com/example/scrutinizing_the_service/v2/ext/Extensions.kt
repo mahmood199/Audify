@@ -8,7 +8,7 @@ fun calculateProgressValue(currentProgress: Long, duration: Long): Pair<Float, S
     else 0f
     return Pair(
         first = progress,
-        second = TimeConverter.getConvertedTime(currentProgress),
+        second = TimeConverter.getConvertedTime(currentProgress / 1000),
     )
 }
 

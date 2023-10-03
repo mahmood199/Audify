@@ -2,6 +2,7 @@ package com.example.scrutinizing_the_service.v2.ui.player
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.toSong
 import com.example.scrutinizing_the_service.v2.ext.calculateProgressValue
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
@@ -69,12 +70,15 @@ class AudioPlayerViewModel @Inject constructor(
                         )
                         _state.value = _state.value.copy(
                             progress = result.first,
-                            progressString = result.second
+                            progressString = result.second,
+                            duration = TimeConverter.getConvertedTime(seconds = playerState.duration / 1000)
                         )
                     }
 
                     is PlayerState.Ready -> {
-                        _state.value = _state.value.copy(duration = playerState.duration)
+                        _state.value = _state.value.copy(
+                            duration = TimeConverter.getConvertedTime(seconds = playerState.duration / 1000)
+                        )
                     }
                 }
             }
