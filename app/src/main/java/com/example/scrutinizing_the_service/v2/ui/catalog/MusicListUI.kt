@@ -58,6 +58,7 @@ fun MusicListUI(
     playMusic: (Song, Int) -> Unit,
     backPress: () -> Unit,
     navigateToSearch: () -> Unit,
+    navigateToPlayer: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
@@ -98,7 +99,8 @@ fun MusicListUI(
                 AnimatedBottomPlayer(
                     state = state,
                     isShown = true,
-                    sendUiEvent = viewModel::sendUIEvent
+                    sendUiEvent = viewModel::sendUIEvent,
+                    navigateToPlayer = navigateToPlayer
                 )
             },
             floatingActionButtonPosition = FabPosition.End,
@@ -188,6 +190,7 @@ private fun AnimatedBottomPlayer(
     state: MusicListViewState,
     isShown: Boolean,
     sendUiEvent: (MusicListUiEvent) -> Unit,
+    navigateToPlayer: () -> Unit
 ) {
     AnimatedVisibility(
         visible = isShown,
@@ -213,6 +216,9 @@ private fun AnimatedBottomPlayer(
             },
             onPlayNextClicked = {
                 sendUiEvent(MusicListUiEvent.PlayNextItem)
+            },
+            navigateToPlayer = {
+                navigateToPlayer()
             }
         )
     }

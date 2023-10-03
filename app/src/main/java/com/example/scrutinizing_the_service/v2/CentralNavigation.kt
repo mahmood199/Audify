@@ -3,10 +3,10 @@ package com.example.scrutinizing_the_service.v2
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
+import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
 
@@ -49,6 +50,9 @@ fun NavigationCentral(
                 backPress = backPress,
                 navigateToSearch = {
                     navController.navigate(Screen.SearchHistory.name)
+                },
+                navigateToPlayer = {
+                    navController.navigate(Screen.AudioPlayer.name)
                 }
             )
         }
@@ -91,28 +95,21 @@ fun NavigationCentral(
                 query = query,
                 backPress = {
                     navController.popBackStack()
+                },
+                navigateToPlayer = {
+                    navController.navigate(Screen.AudioPlayer.name)
                 }
             )
         }
 
         composable(
             route = Screen.AudioPlayer.name,
-            enterTransition = {
-                slideInHorizontally { OFFSET } + fadeIn()
-            },
-            exitTransition = {
-                slideOutHorizontally { -OFFSET } + fadeOut()
-            }, popExitTransition = {
-                slideOutHorizontally { -OFFSET } + fadeOut()
-            }
         ) {
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .background(Color.Cyan)
-            ) {
-
-            }
+            AudioPlayerUI(
+                backPress = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(

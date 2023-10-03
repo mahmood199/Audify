@@ -50,6 +50,7 @@ import kotlinx.coroutines.launch
 fun SearchResultUI(
     query: String,
     backPress: () -> Unit,
+    navigateToPlayer: () -> Unit,
     viewModel: SearchResultViewModel = hiltViewModel()
 ) {
 
@@ -90,7 +91,8 @@ fun SearchResultUI(
             AnimatedBottomPlayer(
                 state = state,
                 selectedPage = selectedIndex,
-                sendUiEvent = viewModel::sendUIEvent
+                sendUiEvent = viewModel::sendUIEvent,
+                navigateToPlayer = navigateToPlayer
             )
         },
         modifier = Modifier.background(Color.Gray)
@@ -152,6 +154,7 @@ private fun AnimatedBottomPlayer(
     state: SearchResultViewState,
     selectedPage: Int,
     sendUiEvent: (SearchResultUiEvent) -> Unit,
+    navigateToPlayer: () -> Unit
 ) {
     AnimatedVisibility(
         visible = state.isPlaying && selectedPage == TRACK_PAGE_INDEX,
@@ -177,6 +180,9 @@ private fun AnimatedBottomPlayer(
             },
             onPlayNextClicked = {
                 sendUiEvent(SearchResultUiEvent.PlayNextItem)
+            },
+            navigateToPlayer = {
+                navigateToPlayer()
             }
         )
     }
@@ -199,6 +205,7 @@ fun SearchResultUIPreview() {
     ScrutinizingTheServiceTheme {
         SearchResultUI(
             query = "",
+            navigateToPlayer = {},
             backPress = {
 
             }

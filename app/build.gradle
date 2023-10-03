@@ -159,4 +159,7 @@ dependencies {
     def dataStore_version = "1.0.0"
     implementation "androidx.datastore:datastore-preferences:$dataStore_version"
 
+    def compose_audio_wave_form = "1.1.1"
+    implementation "com.github.lincollincol:compose-audiowaveform:$compose_audio_wave_form"
+
 }
