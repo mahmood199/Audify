@@ -74,15 +74,6 @@ fun AudioPlayerUI(
 
     val state by viewModel.state.collectAsState()
 
-
-    val currentPlayingTime by remember {
-        mutableLongStateOf(30L)
-    }
-
-    val duration by remember {
-        mutableLongStateOf(100L)
-    }
-
     Scaffold(
         topBar = {
             AppBar(
@@ -228,7 +219,7 @@ fun AudioPlayerState(
                 color = Color.Black
             )
             Text(
-                text = "${state.duration}",
+                text = state.duration,
                 modifier = Modifier.align(Alignment.CenterEnd),
                 color = Color.Black
             )

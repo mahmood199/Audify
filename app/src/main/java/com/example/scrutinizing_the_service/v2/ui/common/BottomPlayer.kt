@@ -22,6 +22,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +51,7 @@ fun BottomPlayer(
     onPlayPreviousClicked: () -> Unit,
     onPlayNextClicked: () -> Unit,
     navigateToPlayer: () -> Unit,
+    seekToPosition: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier
@@ -60,8 +63,20 @@ fun BottomPlayer(
 
         val animatedProgress by animateFloatAsState(
             targetValue = progress,
-            animationSpec = tween(500, easing = LinearEasing),
+            animationSpec = tween(250, easing = LinearEasing),
             label = "Seek bar progress"
+        )
+
+        Slider(
+            value = animatedProgress,
+            onValueChange = { updatedProgress ->
+                seekToPosition(updatedProgress)
+            },
+            colors = SliderDefaults.colors(
+                thumbColor = Color.Red,
+                activeTrackColor = Color.Blue,
+                inactiveTrackColor = Color.Green,
+            )
         )
 
         LinearProgressIndicator(
@@ -199,7 +214,8 @@ fun BottomPlayerPreview() {
             onFastForwardClicked = {},
             onPlayPreviousClicked = {},
             onPlayNextClicked = {},
-            navigateToPlayer = {}
+            navigateToPlayer = {},
+            seekToPosition = {}
         )
     }
 }
