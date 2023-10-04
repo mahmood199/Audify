@@ -143,7 +143,7 @@ class SearchResultViewModel @Inject constructor(
                 is SearchResultUiEvent.UpdateProgress -> {
                     playerController.onPlayerEvents(
                         PlayerEvent.UpdateProgress(
-                            uiEvent.newProgress
+                            newProgress = uiEvent.newProgress
                         )
                     )
                     _state.value.progress = uiEvent.newProgress

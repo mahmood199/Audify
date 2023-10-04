@@ -116,7 +116,7 @@ class AudioPlayerViewModel @Inject constructor(
                 is PlayerUiEvent.UpdateProgress -> {
                     playerController.onPlayerEvents(
                         PlayerEvent.UpdateProgress(
-                            playerUiEvent.newProgress
+                            newProgress = playerUiEvent.newProgress
                         )
                     )
                     _state.value.progress = playerUiEvent.newProgress
