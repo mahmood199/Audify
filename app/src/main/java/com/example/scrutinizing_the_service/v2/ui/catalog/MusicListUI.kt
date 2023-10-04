@@ -222,7 +222,9 @@ private fun AnimatedBottomPlayer(
             },
             seekToPosition = {
                 sendUiEvent(MusicListUiEvent.UpdateProgress(it))
-            }
+            },
+            modifier = Modifier
+                .background(Color.Transparent)
         )
     }
 }
