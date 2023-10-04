@@ -10,6 +10,7 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -20,8 +21,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,9 +31,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
@@ -49,26 +53,23 @@ fun BottomPlayer(
     onPlayPreviousClicked: () -> Unit,
     onPlayNextClicked: () -> Unit,
     navigateToPlayer: () -> Unit,
+    seekToPosition: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .clickable {
-            navigateToPlayer()
-        }
+    Box(
+        modifier = modifier
+            .background(Color.Transparent)
+            .fillMaxWidth()
+            .padding(top = 10.dp)
+            .clickable {
+                navigateToPlayer()
+            }
     ) {
 
         val animatedProgress by animateFloatAsState(
             targetValue = progress,
-            animationSpec = tween(500, easing = LinearEasing),
+            animationSpec = tween(250, easing = LinearEasing),
             label = "Seek bar progress"
-        )
-
-        LinearProgressIndicator(
-            progress = animatedProgress,
-            trackColor = Color.Red,
-            color = Color.Cyan,
-            modifier = Modifier.fillMaxWidth()
         )
 
         Row(
@@ -181,6 +182,26 @@ fun BottomPlayer(
                 }
             }
         }
+
+        Slider(
+            value = animatedProgress,
+            onValueChange = { updatedProgress ->
+                seekToPosition(updatedProgress)
+            },
+            colors = SliderDefaults.colors(
+                thumbColor = Color.Red,
+                activeTrackColor = Color.Cyan,
+                inactiveTrackColor = Color.Red,
+            ),
+            modifier = Modifier
+                .background(Color.Transparent)
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints)
+                    return@layout layout(placeable.width, 0) {
+                        placeable.place(IntOffset(0, -placeable.height / 2))
+                    }
+                }
+        )
     }
 }
 
@@ -199,7 +220,8 @@ fun BottomPlayerPreview() {
             onFastForwardClicked = {},
             onPlayPreviousClicked = {},
             onPlayNextClicked = {},
-            navigateToPlayer = {}
+            navigateToPlayer = {},
+            seekToPosition = {}
         )
     }
 }

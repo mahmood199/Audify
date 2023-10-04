@@ -219,7 +219,12 @@ private fun AnimatedBottomPlayer(
             },
             navigateToPlayer = {
                 navigateToPlayer()
-            }
+            },
+            seekToPosition = {
+                sendUiEvent(MusicListUiEvent.UpdateProgress(it))
+            },
+            modifier = Modifier
+                .background(Color.Transparent)
         )
     }
 }

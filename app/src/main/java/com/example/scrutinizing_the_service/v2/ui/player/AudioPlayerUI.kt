@@ -32,20 +32,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
@@ -53,14 +49,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.AudioPlayerProgressUI
 import com.linc.audiowaveform.AudioWaveform
 import com.linc.audiowaveform.infiniteLinearGradient
-import kotlinx.collections.immutable.toPersistentList
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -73,15 +67,6 @@ fun AudioPlayerUI(
 ) {
 
     val state by viewModel.state.collectAsState()
-
-
-    val currentPlayingTime by remember {
-        mutableLongStateOf(30L)
-    }
-
-    val duration by remember {
-        mutableLongStateOf(100L)
-    }
 
     Scaffold(
         topBar = {
@@ -104,7 +89,11 @@ fun AudioPlayerUI(
             ) {
                 AudioPlayerState(
                     state = state,
+                    seekToPosition = {
+                        viewModel.sendUIEvent(PlayerUiEvent.UpdateProgress(it))
+                    }
                 )
+
                 PlayerActions(
                     isPlaying = state.isPlaying,
                     skipToNext = {
@@ -117,6 +106,7 @@ fun AudioPlayerUI(
                         viewModel.sendUIEvent(PlayerUiEvent.PlayPreviousItem)
                     }
                 )
+
                 ClosePlayerBottomArc(
                     backPress = backPress,
                     modifier = Modifier
@@ -202,6 +192,7 @@ fun AudioPlayerUI(
 @Composable
 fun AudioPlayerState(
     state: AudioPlayerViewState,
+    seekToPosition: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -215,6 +206,9 @@ fun AudioPlayerState(
             progress = state.progress,
             backGroundColor = Color.Blue,
             progressColor = Color.Red,
+            seekToPosition = {
+                seekToPosition(it)
+            },
             modifier = Modifier.fillMaxHeight(0.1f)
         )
 
@@ -228,7 +222,7 @@ fun AudioPlayerState(
                 color = Color.Black
             )
             Text(
-                text = "${state.duration}",
+                text = state.duration,
                 modifier = Modifier.align(Alignment.CenterEnd),
                 color = Color.Black
             )
@@ -360,42 +354,6 @@ fun ClosePlayerBottomArc(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.surface,
             modifier = Modifier.size(32.dp)
-        )
-    }
-}
-
-@Composable
-fun SimpleArc() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .height(100.dp)
-                .fillMaxWidth(0.5f)
-                .align(Alignment.BottomCenter)
-                .clip(RoundedCornerShape(topEndPercent = 100, topStartPercent = 100))
-                .background(Color.Red)
-        ) {
-
-        }
-    }
-}
-
-@Composable
-fun CanvasArc(
-    modifier: Modifier = Modifier
-) {
-    Canvas(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height = 600.dp)
-            .border(color = Color.Magenta, width = 2.dp)
-    ) {
-        drawArc(
-            color = Color.Cyan,
-            startAngle = -45f,
-            sweepAngle = -90f,
-            useCenter = false,
-            size = Size(size.width, size.height)
         )
     }
 }

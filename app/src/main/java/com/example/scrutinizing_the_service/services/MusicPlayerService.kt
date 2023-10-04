@@ -239,7 +239,7 @@ class MusicPlayerService : Service() {
         mediaPlayer.start()
     }
 
-    inner class MusicPlayerListener : BroadcastReceiver() {
+    inner class MusicPlayerListener() : BroadcastReceiver() {
 
         private val TAG = "MusicPlayerListener"
 

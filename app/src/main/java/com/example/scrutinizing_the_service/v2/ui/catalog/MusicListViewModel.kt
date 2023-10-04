@@ -142,7 +142,7 @@ class MusicListViewModel @Inject constructor(
                 is MusicListUiEvent.UpdateProgress -> {
                     playerController.onPlayerEvents(
                         PlayerEvent.UpdateProgress(
-                            musicListUiEvent.newProgress
+                            newProgress = musicListUiEvent.newProgress
                         )
                     )
                     _state.value.progress = musicListUiEvent.newProgress
