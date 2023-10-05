@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on : macOS-13.6
+    runs-on : ubuntu-22.04.3
 
     steps:
       - name: Checkout code
