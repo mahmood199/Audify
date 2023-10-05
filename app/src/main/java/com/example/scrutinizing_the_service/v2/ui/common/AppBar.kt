@@ -38,7 +38,7 @@ fun AppBar(
     ) {
         Icon(
             imageVector = imageVector,
-            contentDescription = "Back Navigation Button",
+            contentDescription = "Back Navigation Button for $title",
             tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .size(28.dp)
