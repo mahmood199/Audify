@@ -52,7 +52,7 @@ If we start a service by just calling bindService() then it will be destroyed wh
 But is we start by using startService() or startForegroundService() then it will be killed by stopSelf only.
 
 
-By default service runs on main thread.
+By default service runs on thread on which it is invoked. To avoif this we have to manually create a new thread or provide some sort of dispatcher to make it run on bg thread.
 https://developerlife.com/2017/07/10/android-o-n-and-below-component-lifecycles-and-background-tasks/
 
 
