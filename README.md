@@ -57,10 +57,12 @@ https://developerlife.com/2017/07/10/android-o-n-and-below-component-lifecycles-
 
 
 Read about how services can be restarted using some contents.
-START_STICKY
-START_NOT_STICKY
-START_REDELIVER_INTENT 
+1. START_STICKY: The system restarts the service after termination but doesn't redeliver the last intent. Useful for services that can continue independently. 
+This is useful for services that are performing tasks that don't rely on specific Intent data and can continue running independently.
 
+2. START_NOT_STICKY: The system doesn't automatically restart the service if it's terminated. Suitable for one-time or non-persistent tasks. If you have a service that performs a one-time data synchronization task, you might use START_NOT_STICKY because it doesn't make sense to restart the service after the task is completed
+
+3. START_REDELIVER_INTENT: The system restarts the service after termination and redelivers the last intent. Useful for critical tasks that require resuming work with the original intent data after termination. If you have a service that's downloading a large file, you would use START_REDELIVER_INTENT so that even if the service is terminated, it can resume the download from where it left off by redelivering the download Intent.
 
 Service which provides information to activity or another service is called bound service.
 If the service is bound to the components of the same app, then it is local binding. With other app it becomes remote binding.this remote binding can be though of as IPC (Inter Process Communication)
