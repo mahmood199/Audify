@@ -11,6 +11,7 @@ import androidx.media3.common.MediaMetadata
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.data.toSong
+import com.example.scrutinizing_the_service.v2.connection.NetworkConnectivityObserver
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.MusicRepositoryImpl
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
@@ -29,6 +30,7 @@ import javax.inject.Inject
 class MusicListViewModel @Inject constructor(
     private val musicRepository: MusicRepositoryImpl,
     private val playerController: PlayerController,
+    private val networkConnectivityObserver: NetworkConnectivityObserver,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -69,6 +71,12 @@ class MusicListViewModel @Inject constructor(
                         _state.value.duration = playerState.duration
                     }
                 }
+            }
+        }
+
+        viewModelScope.launch {
+            networkConnectivityObserver.networkState.collectLatest {
+                _state.value = _state.value.copy(isConnected = it)
             }
         }
     }

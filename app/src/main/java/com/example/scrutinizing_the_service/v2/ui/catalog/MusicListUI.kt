@@ -197,35 +197,46 @@ private fun AnimatedBottomPlayer(
         enter = slideIn(initialOffset = { IntOffset(0, 100) }),
         exit = slideOut(targetOffset = { IntOffset(0, 200) }),
     ) {
-        BottomPlayer(
-            progress = state.progress,
-            songName = state.currentSong?.name ?: "Error",
-            artist = state.currentSong?.artist ?: "Error",
-            isPlaying = state.isPlaying,
-            onPlayPauseClicked = {
-                sendUiEvent(MusicListUiEvent.PlayPause)
-            },
-            onRewindClicked = {
-                sendUiEvent(MusicListUiEvent.Rewind)
-            },
-            onFastForwardClicked = {
-                sendUiEvent(MusicListUiEvent.FastForward)
-            },
-            onPlayPreviousClicked = {
-                sendUiEvent(MusicListUiEvent.PlayPreviousItem)
-            },
-            onPlayNextClicked = {
-                sendUiEvent(MusicListUiEvent.PlayNextItem)
-            },
-            navigateToPlayer = {
-                navigateToPlayer()
-            },
-            seekToPosition = {
-                sendUiEvent(MusicListUiEvent.UpdateProgress(it))
-            },
-            modifier = Modifier
-                .background(Color.Transparent)
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Internet connection - ${state.isConnected}",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            BottomPlayer(
+                progress = state.progress,
+                songName = state.currentSong?.name ?: "Error",
+                artist = state.currentSong?.artist ?: "Error",
+                isPlaying = state.isPlaying,
+                onPlayPauseClicked = {
+                    sendUiEvent(MusicListUiEvent.PlayPause)
+                },
+                onRewindClicked = {
+                    sendUiEvent(MusicListUiEvent.Rewind)
+                },
+                onFastForwardClicked = {
+                    sendUiEvent(MusicListUiEvent.FastForward)
+                },
+                onPlayPreviousClicked = {
+                    sendUiEvent(MusicListUiEvent.PlayPreviousItem)
+                },
+                onPlayNextClicked = {
+                    sendUiEvent(MusicListUiEvent.PlayNextItem)
+                },
+                navigateToPlayer = {
+                    navigateToPlayer()
+                },
+                seekToPosition = {
+                    sendUiEvent(MusicListUiEvent.UpdateProgress(it))
+                },
+                modifier = Modifier
+                    .background(Color.Transparent)
+            )
+        }
     }
 }
 
