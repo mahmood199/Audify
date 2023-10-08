@@ -83,7 +83,7 @@ fun AudioPlayerProgressUI(
         }
 
         val space = remember {
-            maxWidth / 20
+            maxWidth / 25
         }.value
 
         var startX = remember {
