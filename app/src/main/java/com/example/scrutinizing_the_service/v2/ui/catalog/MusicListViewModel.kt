@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.catalog
 
+import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import androidx.media3.common.MediaMetadata
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.data.toSong
+import com.example.scrutinizing_the_service.v2.connection.NetworkConnectivityObserver
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.MusicRepositoryImpl
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
@@ -20,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +32,7 @@ import javax.inject.Inject
 class MusicListViewModel @Inject constructor(
     private val musicRepository: MusicRepositoryImpl,
     private val playerController: PlayerController,
+    private val networkConnectivityObserver: NetworkConnectivityObserver,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -68,6 +72,14 @@ class MusicListViewModel @Inject constructor(
                     is PlayerState.Ready -> {
                         _state.value.duration = playerState.duration
                     }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                networkConnectivityObserver.observe().collectLatest {
+                    _state.value = _state.value.copy(networkStatus = it)
                 }
             }
         }
