@@ -1,6 +1,5 @@
 package com.example.scrutinizing_the_service.v2.ui.catalog
 
-import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -22,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -77,10 +75,8 @@ class MusicListViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                networkConnectivityObserver.observe().collectLatest {
-                    _state.value = _state.value.copy(networkStatus = it)
-                }
+            networkConnectivityObserver.networkState.collectLatest {
+                _state.value = _state.value.copy(isConnected = it)
             }
         }
     }

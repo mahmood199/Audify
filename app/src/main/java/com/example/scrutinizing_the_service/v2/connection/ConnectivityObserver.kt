@@ -4,6 +4,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface ConnectivityObserver {
 
-    fun observe(): Flow<Status>
+    val networkState: Flow<Boolean>
+
+    val connected: Boolean
+
+    val disconnected: Boolean
 
 }

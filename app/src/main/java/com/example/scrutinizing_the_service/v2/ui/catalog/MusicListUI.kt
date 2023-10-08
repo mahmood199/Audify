@@ -202,7 +202,7 @@ private fun AnimatedBottomPlayer(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = state.networkStatus.displayText,
+                text = "Internet connection - ${state.isConnected}",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
