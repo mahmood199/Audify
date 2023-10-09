@@ -44,15 +44,15 @@
         <service
             android:name=".services.SmartServices"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.RussianService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.RussianIntentService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.MusicPlayerService"
             android:stopWithTask="true" />
