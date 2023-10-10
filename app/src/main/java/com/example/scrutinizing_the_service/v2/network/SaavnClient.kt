@@ -32,6 +32,7 @@ class SaavnClient {
                 })
             }
 
+
             install(ContentEncoding) {
                 brotli()
             }
@@ -55,15 +56,14 @@ class SaavnClient {
             install(Logging) {
                 logger = Logger.DEFAULT
                 level = LogLevel.ALL
+
             }
 
             defaultRequest {
-                url(host = BASE_URL) {
-                    headers.append(
-                        HttpHeaders.ContentType,
-                        ContentType.Application.Json.toString()
-                    )
-                }
+                headers.append(
+                    HttpHeaders.ContentType,
+                    ContentType.Application.Json.toString()
+                )
             }
         }
     }
@@ -72,7 +72,7 @@ class SaavnClient {
 
 
     companion object {
-        private const val TIME_OUT = 60_000
+        private const val TIME_OUT = 10_000
         val BASE_URL = BuildConfig.SAAVN_BASE_URL
     }
 
