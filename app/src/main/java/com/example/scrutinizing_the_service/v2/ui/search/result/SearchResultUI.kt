@@ -146,9 +146,9 @@ fun SearchResultUI(
     }
 }
 
-const val TRACK_PAGE_INDEX = 0
-const val ALBUM_PAGE_INDEX = 1
-const val ARTIST_PAGE_INDEX = 2
+private const val TRACK_PAGE_INDEX = 0
+private const val ALBUM_PAGE_INDEX = 1
+private const val ARTIST_PAGE_INDEX = 2
 
 @Composable
 private fun AnimatedBottomPlayer(
@@ -194,7 +194,7 @@ private fun AnimatedBottomPlayer(
 
 
 @Composable
-fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
+private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
     return listOf(
         Pair("Tracks", ImageVector.vectorResource(R.drawable.ic_music_note)),
         Pair("Album", ImageVector.vectorResource(R.drawable.ic_library_music)),

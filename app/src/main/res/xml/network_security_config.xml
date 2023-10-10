@@ -8,5 +8,6 @@
     </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">https://ws.audioscrobbler.com/2.0/</domain>
+        <domain includeSubdomains="true">https://saavn.me/</domain>
     </domain-config>
 </network-security-config>

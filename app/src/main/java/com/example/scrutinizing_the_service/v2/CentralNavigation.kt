@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
+import com.example.scrutinizing_the_service.v2.ui.landing.LandingPageUI
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
@@ -33,9 +34,13 @@ fun NavigationCentral(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.AudioList.name,
+        startDestination = Screen.LandingPage.name,
         modifier = modifier.background(Color.White),
     ) {
+        composable(route = Screen.LandingPage.name) {
+            LandingPageUI()
+        }
+
         composable(
             route = Screen.AudioList.name,
             exitTransition = {
