@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.data.remote
+package com.example.scrutinizing_the_service.v2.data.remote.last_fm
 
 import com.example.scrutinizing_the_service.v2.data.models.remote.AlbumListResponse
 import com.example.scrutinizing_the_service.v2.network.NetworkModule

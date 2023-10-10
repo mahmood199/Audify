@@ -5,7 +5,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.platform.MusicLocatorV2
 import com.example.scrutinizing_the_service.platform.MusicLocatorV4
 import com.example.scrutinizing_the_service.v2.data.models.remote.AlbumListResponse
-import com.example.scrutinizing_the_service.v2.data.remote.AlbumRemoteDataSource
+import com.example.scrutinizing_the_service.v2.data.remote.last_fm.AlbumRemoteDataSource
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
