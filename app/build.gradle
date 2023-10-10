@@ -24,9 +24,12 @@ android {
             useSupportLibrary true
         }
 
+        //LastFM
         buildConfigField "String", "LAST_FM_API_KEY", project.API_KEY
         buildConfigField "String", "SHARED_API_KEY", project.SHARED_KEY
         buildConfigField "String", "LAST_FM_BASE_URL", project.LAST_FM_BASE_URL
+
+        buildConfigField "String", "SAAVN_BASE_URL", project.SAAVN_BASE_URL
     }
 
     signingConfigs {
@@ -149,6 +152,10 @@ dependencies {
     implementation "io.ktor:ktor-client-serialization:2.1.2"
     implementation "io.ktor:ktor-serialization-kotlinx-json:2.1.2"
     implementation "io.ktor:ktor-client-content-negotiation:2.1.2"
+    implementation "io.ktor:ktor-client-encoding:2.1.2"
+
+    //Brotli
+    implementation "org.brotli:dec:0.1.2"
 
 
     //Room

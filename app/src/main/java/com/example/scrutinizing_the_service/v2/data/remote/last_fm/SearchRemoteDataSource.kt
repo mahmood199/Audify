@@ -3,6 +3,7 @@ package com.example.scrutinizing_the_service.v2.data.remote.last_fm
 import com.example.scrutinizing_the_service.v2.data.models.remote.AlbumListResponse
 import com.example.scrutinizing_the_service.v2.data.models.remote.ArtistListResponse
 import com.example.scrutinizing_the_service.v2.data.models.remote.TrackListResponse
+import com.example.scrutinizing_the_service.v2.network.LastFmClient
 import com.example.scrutinizing_the_service.v2.network.NetworkModule
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import com.example.scrutinizing_the_service.v2.network.ResponseProcessor
@@ -13,13 +14,13 @@ import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class SearchRemoteDataSource @Inject constructor(
-    private val httpClient: HttpClient,
+    private val httpClient: LastFmClient,
     private val responseProcessor: ResponseProcessor,
     private val gson: Gson
 ) {
 
     suspend fun searchForAlbum(album: String): NetworkResult<AlbumListResponse> {
-        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+        val response = httpClient().get(NetworkModule.BASE_URL) {
             parameter("method", "album.search")
             parameter("album", album)
         }
@@ -28,7 +29,7 @@ class SearchRemoteDataSource @Inject constructor(
     }
 
     suspend fun searchForArtist(artist: String): NetworkResult<ArtistListResponse> {
-        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+        val response = httpClient().get(NetworkModule.BASE_URL) {
             parameter("method", "artist.search")
             parameter("artist", artist)
         }
@@ -37,7 +38,7 @@ class SearchRemoteDataSource @Inject constructor(
     }
 
     suspend fun searchForTrack(track: String): NetworkResult<TrackListResponse> {
-        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+        val response = httpClient().get(NetworkModule.BASE_URL) {
             parameter("method", "track.search")
             parameter("track", track)
         }
@@ -49,7 +50,7 @@ class SearchRemoteDataSource @Inject constructor(
         album: String,
         nextPageNumber: Int
     ): NetworkResult<AlbumListResponse> {
-        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+        val response = httpClient().get(NetworkModule.BASE_URL) {
             parameter("method", "album.search")
             parameter("album", album)
             parameter("page", nextPageNumber)
@@ -62,7 +63,7 @@ class SearchRemoteDataSource @Inject constructor(
         album: String,
         nextPageNumber: Int
     ): NetworkResult<ArtistListResponse> {
-        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+        val response = httpClient().get(NetworkModule.BASE_URL) {
             parameter("method", "artist.search")
             parameter("artist", album)
             parameter("page", nextPageNumber)
@@ -75,7 +76,7 @@ class SearchRemoteDataSource @Inject constructor(
         track: String,
         nextPageNumber: Int
     ): NetworkResult<TrackListResponse> {
-        val response = httpClient.get("${NetworkModule.BASE_URL}2.0") {
+        val response = httpClient().get(NetworkModule.BASE_URL) {
             parameter("method", "track.search")
             parameter("track", track)
             parameter("page", nextPageNumber)
