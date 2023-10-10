@@ -36,7 +36,17 @@ fun NavigationCentral(
         modifier = modifier.background(Color.White),
     ) {
         composable(route = Screen.LandingPage.name) {
-            LandingPageUI()
+            LandingPageUI(
+                backPress = {
+                    backPress()
+                },
+                redirectToLocalAudioScreen = {
+                    navController.navigate(Screen.AudioList.name)
+                },
+                navigateToSearch = {
+                    navController.navigate(Screen.SearchHistory.name)
+                }
+            )
         }
 
         composable(
@@ -50,7 +60,9 @@ fun NavigationCentral(
         ) {
             MusicListUI(
                 playMusic = playMusic,
-                backPress = backPress,
+                backPress = {
+                    navController.popBackStack()
+                },
                 navigateToSearch = {
                     navController.navigate(Screen.SearchHistory.name)
                 },
