@@ -14,7 +14,6 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        private const val TIME_OUT = 60_000
         val BASE_URL = BuildConfig.LAST_FM_BASE_URL
     }
 
