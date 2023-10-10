@@ -1,7 +1,6 @@
 package com.example.scrutinizing_the_service.v2.network
 
 import android.util.Log
-import com.example.scrutinizing_the_service.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.compression.ContentEncoding
@@ -73,7 +72,6 @@ class SaavnClient {
 
     companion object {
         private const val TIME_OUT = 10_000
-        val BASE_URL = BuildConfig.SAAVN_BASE_URL
     }
 
 }
