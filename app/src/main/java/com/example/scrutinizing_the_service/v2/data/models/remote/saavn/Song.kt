@@ -1,19 +1,21 @@
 package com.example.scrutinizing_the_service.v2.data.models.remote.saavn
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Song(
-    val album: Album? = null,
-    val duration: String? = null,
-    val explicitContent: String? = null,
-    val featuredArtists: List<Artist>? = null,
-    val id: String? = null,
-    val image: List<Image>? = null,
-    val label: String? = null,
-    val language: String? = null,
-    val name: String? = null,
-    val playCount: String? = null,
-    val primaryArtists: List<PrimaryArtist>? = null,
-    val releaseDate: String? = null,
-    val type: String? = null,
-    val url: String? = null,
-    val year: String? = null,
+    val album: Album,
+    val duration: String,
+    val explicitContent: String,
+    val featuredArtists: List<Artist> = emptyList(),
+    val id: String,
+    val image: List<Image> = emptyList(),
+    val label: String,
+    val language: String,
+    val name: String,
+    val playCount: String,
+    val releaseDate: String,
+    val type: String,
+    val url: String,
+    val year: String,
 )

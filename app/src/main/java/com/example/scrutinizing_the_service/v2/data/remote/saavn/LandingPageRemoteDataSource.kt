@@ -16,7 +16,7 @@ class LandingPageRemoteDataSource @Inject constructor(
 
     suspend fun getHomePageData(): NetworkResult<HomePageResponse> {
         val response = client().get(
-            "https://saavn.me/modules?language=hindi,english"
+            "https://saavn.me/modules?trending"
         ) {
 
         }
