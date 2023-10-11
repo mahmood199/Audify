@@ -112,14 +112,16 @@ fun SearchResultUI(
             ) {
                 SideNavigationBar(
                     headers = headers,
-                    selectedIndex = selectedIndex
-                ) {
-                    selectedIndex = it
-                    viewModel.setPreference(selectedIndex)
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(it)
+                    selectedIndex = selectedIndex,
+                    onItemSelected = {
+                        selectedIndex = it
+                        viewModel.setPreference(selectedIndex)
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(it)
+                        }
                     }
-                }
+                )
+
                 Column(modifier = Modifier.weight(1f)) {
                     VerticalPager(
                         state = pagerState,

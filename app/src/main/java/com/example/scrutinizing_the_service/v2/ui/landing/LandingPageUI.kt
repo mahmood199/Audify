@@ -76,10 +76,8 @@ fun LandingPageUI(
         topBar = {
             Row(
                 modifier = Modifier
-                    .padding(
-                        vertical = 20.dp,
-                        horizontal = 12.dp
-                    )
+                    .padding(top = 32.dp, bottom = 16.dp)
+                    .padding(start = 32.dp, end = 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -131,13 +129,15 @@ fun LandingPageUI(
             ) {
                 SideNavigationBar(
                     headers = headers,
-                    selectedIndex = selectedIndex
-                ) {
-                    selectedIndex = it
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(it)
-                    }
-                }
+                    selectedIndex = selectedIndex,
+                    onItemSelected = {
+                        selectedIndex = it
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(it)
+                        }
+                    },
+                    modifier = Modifier.padding(top = 40.dp)
+                )
 
                 Column(modifier = Modifier.weight(1f)) {
                     VerticalPager(

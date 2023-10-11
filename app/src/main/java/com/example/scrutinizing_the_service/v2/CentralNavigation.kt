@@ -19,6 +19,7 @@ import com.example.scrutinizing_the_service.v2.ui.landing.LandingPageUI
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
+import com.example.scrutinizing_the_service.v2.ui.settings.SettingsUI
 
 const val OFFSET = 500
 
@@ -38,7 +39,7 @@ fun NavigationCentral(
         composable(route = Screen.LandingPage.name) {
             LandingPageUI(
                 backPress = {
-                    backPress()
+                    navController.navigate(Screen.SettingsPage.name)
                 },
                 redirectToLocalAudioScreen = {
                     navController.navigate(Screen.AudioList.name)
@@ -47,6 +48,10 @@ fun NavigationCentral(
                     navController.navigate(Screen.SearchHistory.name)
                 }
             )
+        }
+
+        composable(route = Screen.SettingsPage.name) {
+            SettingsUI()
         }
 
         composable(
@@ -71,6 +76,7 @@ fun NavigationCentral(
                 }
             )
         }
+
         composable(
             route = Screen.SearchHistory.name,
             enterTransition = {
