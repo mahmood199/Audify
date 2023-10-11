@@ -1,7 +1,7 @@
 package com.example.scrutinizing_the_service.v2.data.remote.last_fm
 
-import com.example.scrutinizing_the_service.v2.data.models.remote.TagListResponse
-import com.example.scrutinizing_the_service.v2.data.models.remote.TagResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.TagListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.TagResponse
 import com.example.scrutinizing_the_service.v2.network.LastFmClient
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import com.example.scrutinizing_the_service.v2.network.ResponseProcessor

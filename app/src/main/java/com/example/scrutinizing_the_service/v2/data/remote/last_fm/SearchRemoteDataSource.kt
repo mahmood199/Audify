@@ -1,8 +1,8 @@
 package com.example.scrutinizing_the_service.v2.data.remote.last_fm
 
-import com.example.scrutinizing_the_service.v2.data.models.remote.AlbumListResponse
-import com.example.scrutinizing_the_service.v2.data.models.remote.ArtistListResponse
-import com.example.scrutinizing_the_service.v2.data.models.remote.TrackListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.AlbumListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.ArtistListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.TrackListResponse
 import com.example.scrutinizing_the_service.v2.network.LastFmClient
 import com.example.scrutinizing_the_service.v2.network.NetworkModule
 import com.example.scrutinizing_the_service.v2.network.NetworkResult

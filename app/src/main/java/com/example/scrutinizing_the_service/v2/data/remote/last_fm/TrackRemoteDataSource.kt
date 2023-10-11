@@ -1,6 +1,6 @@
 package com.example.scrutinizing_the_service.v2.data.remote.last_fm
 
-import com.example.scrutinizing_the_service.v2.data.models.remote.TrackListResponse
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.TrackListResponse
 import com.example.scrutinizing_the_service.v2.network.LastFmClient
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import com.example.scrutinizing_the_service.v2.network.ResponseProcessor

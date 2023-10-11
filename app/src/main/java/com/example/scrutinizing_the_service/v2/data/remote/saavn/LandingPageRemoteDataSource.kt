@@ -1,22 +1,26 @@
 package com.example.scrutinizing_the_service.v2.data.remote.saavn
 
-import android.util.Log
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.HomePageResponse
+import com.example.scrutinizing_the_service.v2.network.NetworkResult
+import com.example.scrutinizing_the_service.v2.network.ResponseProcessor
 import com.example.scrutinizing_the_service.v2.network.SaavnClient
-import io.ktor.client.call.body
+import com.google.gson.Gson
 import io.ktor.client.request.get
 import javax.inject.Inject
 
 class LandingPageRemoteDataSource @Inject constructor(
-    private val client: SaavnClient
+    private val responseProcessor: ResponseProcessor,
+    private val client: SaavnClient,
+    private val gson: Gson
 ) {
 
-    suspend fun getHomePageData() {
+    suspend fun getHomePageData(): NetworkResult<HomePageResponse> {
         val response = client().get(
             "https://saavn.me/modules?language=hindi,english"
         ) {
 
         }
-        Log.d("LandingPage", response.body<String>())
+        return responseProcessor.getResultFromResponse<HomePageResponse>(gson, response)
     }
 
 }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -85,11 +84,12 @@ fun LandingPageUI(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = ImageVector.vectorResource(
+                        R.drawable.ic_account_settings
+                    ),
                     contentDescription = null,
                     modifier = Modifier
                         .size(32.dp)
-                        .background(Color.Gray)
                         .clickable {
                             backPress()
                         }

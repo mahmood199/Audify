@@ -12,7 +12,6 @@ import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.data.toSong
 import com.example.scrutinizing_the_service.v2.connection.NetworkConnectivityObserver
-import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.MusicRepositoryImpl
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
@@ -30,7 +29,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MusicListViewModel @Inject constructor(
     private val musicRepository: MusicRepositoryImpl,
-    private val landingPageRepository: LandingPageRepositoryImpl,
     private val playerController: PlayerController,
     private val networkConnectivityObserver: NetworkConnectivityObserver,
     savedStateHandle: SavedStateHandle,
@@ -82,9 +80,6 @@ class MusicListViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
-            landingPageRepository.getLandingPageData()
-        }
     }
 
     fun getDeviceAudios() {
