@@ -75,7 +75,7 @@ fun QuickPicksUI(
                 ) {
                     Text(
                         text = "Albums",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.ExtraBold
                     )
                     val lazyGridState = rememberLazyGridState()
@@ -110,7 +110,7 @@ fun QuickPicksUI(
                                     "album"
                                 }
                             ) {
-                                AlbumV2UI(
+                                AlbumItemUI(
                                     album = albums[it],
                                     modifier = Modifier.width(maxWidth * 0.9f)
                                 )
@@ -124,7 +124,7 @@ fun QuickPicksUI(
 }
 
 @Composable
-fun AlbumV2UI(
+fun AlbumItemUI(
     album: Album,
     modifier: Modifier = Modifier
 ) {
