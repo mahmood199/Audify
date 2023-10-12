@@ -1,20 +1,20 @@
 package com.example.scrutinizing_the_service.v2.ui.landing
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -24,9 +24,8 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,26 +34,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Artist
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.example.scrutinizing_the_service.v2.ui.common.LoadMoreItemsRowUI
-import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.glide.GlideImage
+import com.example.scrutinizing_the_service.v2.ui.common.SnappingLazyRow
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -69,6 +62,7 @@ fun QuickPicksUI(
     val albums = viewModel.albums.toPersistentList()
     val songs = viewModel.songs.toPersistentList()
     val artists = viewModel.artists.toPersistentList()
+    val playlists = viewModel.playlists.toPersistentList()
 
     Column(
         modifier = modifier
@@ -82,10 +76,10 @@ fun QuickPicksUI(
                 ContentLoaderUI()
             } else {
                 QuickPicksUIContent(
-                    state = state,
                     albums = albums,
                     songs = songs,
-                    artists = artists
+                    artists = artists,
+                    playlists = playlists
                 )
             }
         }
@@ -94,225 +88,87 @@ fun QuickPicksUI(
 
 @Composable
 fun QuickPicksUIContent(
-    state: QuickPickViewState,
     albums: PersistentList<Album>,
     songs: PersistentList<Song>,
-    artists: PersistentList<Artist>,
+    artists: PersistentList<ArtistData>,
+    playlists: PersistentList<Playlist>,
     modifier: Modifier = Modifier
 ) {
+
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
         AlbumCatalogs(
-            state = state,
             albums = albums
         )
 
         ArtistCatalogs(
-            state = state,
             artists = artists,
         )
-/*
-        ArtistCatalogs(
-            state = state,
-            artists = artists,
-        )*/
 
+        SongCatalogs(
+            songs = songs
+        )
+
+        PlaylistCatalogs(
+            playlists = playlists,
+            modifier = Modifier.padding(top = 20.dp)
+        )
     }
 }
 
 @Composable
-fun ArtistCatalogs(
-    state: QuickPickViewState,
-    artists: PersistentList<Artist>,
+fun PlaylistCatalogs(
+    playlists: PersistentList<Playlist>,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Text(
-            text = "Artists",
+            text = "Trending Playlists",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.ExtraBold
         )
 
-        val lazyListState = rememberLazyListState()
-
-        LazyRow(
-            state = lazyListState,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            contentPadding = PaddingValues(horizontal = 12.dp),
-        ) {
-            items(
-                count = artists.size,
-                key = { index ->
-                    artists[index].id + index
-                }
-            ) {
-                ArtistItemUI(
-                    artist = artists[it],
-                    modifier = Modifier.fillParentMaxWidth(0.3f)
-                )
-            }
-            item(
-                key = "See More 2",
-            ) {
-                LoadMoreItemsRowUI(
-                    modifier = Modifier
-                        .fillParentMaxWidth(0.3f)
-                        .aspectRatio(1f)
-                        .background(Color.Red)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ArtistItemUI(
-    artist: Artist,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        GlideImage(
-            imageModel = {
-                ""
+        SnappingLazyRow(
+            items = playlists,
+            itemWidth = LocalConfiguration.current.screenWidthDp.dp,
+            onSelect = {},
+            key = { index, item ->
+                item.id + item.firstname + index
             },
-            modifier = Modifier.clip(CircleShape),
-            failure = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(
-                        R.drawable.ic_album_place_holder
-                    ),
-                    contentDescription = "Album place holder",
-                    tint = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier
+                .fillMaxWidth(),
+            item = { index, playlist, scale ->
+                PlayListItemUI(
+                    album = playlist,
+                    imageWidthRatio = 0.35f,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(15))
-                        .background(Color.Gray)
+                        .width(LocalConfiguration.current.screenWidthDp.dp * 0.8f)
+                        .scale(scale = scale)
                         .padding(12.dp)
                 )
-            },
-            loading = {
-                ContentLoaderUI(
-                    modifier = Modifier.align(Alignment.Center)
-                )
             }
         )
 
-        Text(
-            text = artist.name,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            maxLines = 2,
-            minLines = 2
-        )
-    }
-
-}
-
-@Composable
-fun SongCatalogs(
-    state: QuickPickViewState,
-    songs: PersistentList<Song>,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = "Songs",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.ExtraBold
-        )
-    }
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        contentPadding = PaddingValues(horizontal = 12.dp)
-    ) {
-        items(
-            count = songs.size,
-            key = { index ->
-                songs[index].id + index
-            }
-        ) {
-            SongItemUI(
-                song = songs[it],
-                modifier = Modifier.fillParentMaxWidth(0.3f)
-            )
-        }
-
-        item(
-            key = "See More 2",
-        ) {
-            LoadMoreItemsRowUI(
-                modifier = Modifier
-                    .fillParentMaxWidth(0.3f)
-                    .aspectRatio(1f)
-            )
-        }
+        Spacer(modifier = Modifier.height(120.dp))
     }
 }
 
-@Composable
-fun SongItemUI(
-    song: Song,
-    modifier: Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        GlideImage(
-            imageModel = {
-                song.image.last().link
-            },
-            modifier = Modifier.clip(CircleShape),
-            failure = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(
-                        R.drawable.ic_album_place_holder
-                    ),
-                    contentDescription = "Album place holder",
-                    tint = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(15))
-                        .background(Color.Gray)
-                        .padding(12.dp)
-                )
-            },
-            loading = {
-                ContentLoaderUI(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        )
-
-        Text(
-            text = song.name,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumCatalogs(
-    state: QuickPickViewState,
     albums: PersistentList<Album>,
     modifier: Modifier = Modifier
 ) {
@@ -338,15 +194,14 @@ fun AlbumCatalogs(
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(0.5f)
         ) {
 
             LazyHorizontalGrid(
                 modifier = Modifier
-                    .heightIn(maxHeight),
+                    .height(400.dp),
                 state = lazyGridState,
                 rows = GridCells.Fixed(4),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 flingBehavior = flingBehavior,
             ) {
@@ -372,10 +227,64 @@ fun AlbumCatalogs(
                 ) {
                     LoadMoreItemsRowUI(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .width(maxWidth * 0.5f)
-                            .background(Color.Red)
+                            .width(maxWidth * 0.25f)
                             .padding(12.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ArtistCatalogs(
+    artists: PersistentList<ArtistData>,
+    modifier: Modifier = Modifier
+) {
+
+    AnimatedVisibility(artists.size > 3) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Artists",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.ExtraBold
+            )
+
+            val lazyListState = rememberLazyListState()
+
+            LazyRow(
+                state = lazyListState,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                contentPadding = PaddingValues(horizontal = 12.dp),
+            ) {
+                items(
+                    count = artists.size,
+                    key = { index ->
+                        artists[index].id + index
+                    }
+                ) {
+                    ArtistItemUI(
+                        artist = artists[it],
+                        modifier = Modifier
+                            .fillParentMaxWidth(0.3f)
+                            .animateItemPlacement()
+                            .animateContentSize()
+                    )
+                }
+                item(
+                    key = "See More 2",
+                ) {
+                    LoadMoreItemsRowUI(
+                        modifier = Modifier
+                            .fillParentMaxWidth(0.3f)
+                            .aspectRatio(1f)
                     )
                 }
             }
@@ -384,72 +293,51 @@ fun AlbumCatalogs(
 }
 
 @Composable
-fun AlbumItemUI(
-    album: Album,
+fun SongCatalogs(
+    songs: PersistentList<Song>,
     modifier: Modifier = Modifier
 ) {
-    BoxWithConstraints(
-        modifier = modifier,
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        Text(
+            text = "Songs",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            contentPadding = PaddingValues(horizontal = 12.dp)
         ) {
-            GlideImage(
-                imageModel = {
-                    if (album.image.isEmpty()) {
-                        ""
-                    } else {
-                        album.image.last().link
-                    }
-                },
-                imageOptions = ImageOptions(
-                    contentScale = ContentScale.FillBounds
-                ),
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .fillMaxWidth(0.4f)
-                    .clip(RoundedCornerShape(25)),
-                failure = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(
-                            R.drawable.ic_album_place_holder
-                        ),
-                        contentDescription = "Album place holder",
-                        tint = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(15))
-                            .background(Color.Gray)
-                            .padding(12.dp)
-                    )
-                },
-                loading = {
-                    ContentLoaderUI(modifier = Modifier.fillMaxSize())
+            items(
+                count = songs.size,
+                key = { index ->
+                    songs[index].id + index
                 }
-            )
-            Column(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    text = album.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                SongItemUI(
+                    song = songs[it],
+                    modifier = Modifier
+                        .fillParentMaxWidth(0.25f)
                 )
-                Text(
-                    text = album.id,
-                    style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis
+            }
+
+            item(
+                key = "See More 2",
+            ) {
+                LoadMoreItemsRowUI(
+                    modifier = Modifier
+                        .fillParentMaxWidth(0.3f)
+                        .aspectRatio(1f)
                 )
             }
         }
     }
 }
-
 
 @Preview
 @Composable

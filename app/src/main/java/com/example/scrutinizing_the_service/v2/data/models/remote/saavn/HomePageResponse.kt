@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HomePageResponse(
-    val data: Data? = null,
+    val data: HomePageData? = null,
     val message: String? = null,
     val status: String,
 )

@@ -8,5 +8,5 @@ data class Artist(
     val name: String,
     val role: String,
     val type: String,
-    val url: String?
+    val url: String
 )

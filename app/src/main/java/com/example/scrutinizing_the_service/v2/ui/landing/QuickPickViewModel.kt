@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Artist
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,7 +27,8 @@ class QuickPickViewModel @Inject constructor(
 
     val albums = mutableStateListOf<Album>()
     val songs = mutableStateListOf<Song>()
-    val artists = mutableStateListOf<Artist>()
+    val artists = mutableStateListOf<ArtistData>()
+    val playlists = mutableStateListOf<Playlist>()
 
     init {
         viewModelScope.launch {
@@ -37,16 +40,38 @@ class QuickPickViewModel @Inject constructor(
 
                     result.data.data?.albums?.let {
                         albums.addAll(it)
-                        it.forEachIndexed { _, album ->
-                            artists.addAll(album.primaryArtists)
-                        }
                     }
-                    result.data.data?.trending?.songs?.let {
-                        songs.addAll(songs)
+
+                    result.data.data?.trending?.songs?.forEach { song ->
+                        songs.add(song)
                     }
+
+                    result.data.data?.playlists?.forEach {
+                        playlists.add(it)
+                    }
+
+                    result.data.data?.albums?.let {
+                        extractImageForArtists(it)
+                    }
+
+
                 }
 
                 else -> {}
+            }
+        }
+    }
+
+    private suspend fun extractImageForArtists(albums: List<Album>) {
+        albums.forEach { album ->
+            album.primaryArtists.forEachIndexed { index, artist ->
+                delay(1000)
+                when(val result = landingPageRepository.getArtistInfo(artist.url)) {
+                    is NetworkResult.Success -> {
+                        artists.add(result.data.data)
+                    }
+                    else -> {}
+                }
             }
         }
     }
