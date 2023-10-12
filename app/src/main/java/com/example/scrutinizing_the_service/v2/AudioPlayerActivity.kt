@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.media3.common.util.UnstableApi
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
@@ -39,6 +40,9 @@ class AudioPlayerActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
 
             ScrutinizingTheServiceTheme {

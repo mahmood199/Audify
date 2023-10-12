@@ -17,11 +17,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -113,14 +115,12 @@ fun QuickPicksUIContent(
         ArtistCatalogs(
             state = state,
             artists = artists,
-            modifier = Modifier.fillMaxHeight(0.5f)
         )
-
+/*
         ArtistCatalogs(
             state = state,
             artists = artists,
-            modifier = Modifier.fillMaxHeight()
-        )
+        )*/
 
     }
 }
@@ -133,7 +133,8 @@ fun ArtistCatalogs(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
@@ -141,10 +142,14 @@ fun ArtistCatalogs(
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.ExtraBold
         )
+
+        val lazyListState = rememberLazyListState()
+
         LazyRow(
+            state = lazyListState,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            contentPadding = PaddingValues(horizontal = 12.dp)
+            contentPadding = PaddingValues(horizontal = 12.dp),
         ) {
             items(
                 count = artists.size,
@@ -164,6 +169,7 @@ fun ArtistCatalogs(
                     modifier = Modifier
                         .fillParentMaxWidth(0.3f)
                         .aspectRatio(1f)
+                        .background(Color.Red)
                 )
             }
         }
@@ -176,7 +182,7 @@ fun ArtistItemUI(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -209,7 +215,9 @@ fun ArtistItemUI(
             text = artist.name,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            minLines = 2
         )
     }
 
@@ -328,6 +336,7 @@ fun AlbumCatalogs(
 
         BoxWithConstraints(
             modifier = Modifier
+                .padding(top = 12.dp)
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
         ) {
@@ -401,7 +410,7 @@ fun AlbumItemUI(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .fillMaxWidth(0.4f)
-                    .clip(RoundedCornerShape(10)),
+                    .clip(RoundedCornerShape(25)),
                 failure = {
                     Icon(
                         imageVector = ImageVector.vectorResource(

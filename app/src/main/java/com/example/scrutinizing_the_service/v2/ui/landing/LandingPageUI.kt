@@ -52,6 +52,7 @@ fun LandingPageUI(
     redirectToLocalAudioScreen: () -> Unit,
     navigateToSearch: () -> Unit,
     backPress: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: LandingPageViewModel = hiltViewModel()
 ) {
 
@@ -76,7 +77,7 @@ fun LandingPageUI(
         topBar = {
             Row(
                 modifier = Modifier
-                    .padding(top = 32.dp, bottom = 16.dp)
+                    .padding(top = 64.dp, bottom = 16.dp)
                     .padding(start = 32.dp, end = 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -112,7 +113,8 @@ fun LandingPageUI(
                     contentDescription = "Search Song Button"
                 )
             }
-        }
+        },
+        modifier = modifier
     ) { paddingValues ->
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),

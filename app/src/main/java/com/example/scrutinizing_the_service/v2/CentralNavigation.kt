@@ -4,10 +4,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,7 +32,7 @@ fun NavigationCentral(
     NavHost(
         navController = navController,
         startDestination = Screen.LandingPage.name,
-        modifier = modifier.background(Color.White),
+        modifier = modifier
     ) {
         composable(route = Screen.LandingPage.name) {
             LandingPageUI(
@@ -46,7 +44,7 @@ fun NavigationCentral(
                 },
                 navigateToSearch = {
                     navController.navigate(Screen.SearchHistory.name)
-                }
+                },
             )
         }
 
