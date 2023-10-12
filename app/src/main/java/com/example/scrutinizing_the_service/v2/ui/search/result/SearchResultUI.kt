@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
 import com.example.scrutinizing_the_service.v2.ui.search.album.SearchAlbumUI
@@ -113,14 +112,16 @@ fun SearchResultUI(
             ) {
                 SideNavigationBar(
                     headers = headers,
-                    selectedIndex = selectedIndex
-                ) {
-                    selectedIndex = it
-                    viewModel.setPreference(selectedIndex)
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(it)
+                    selectedIndex = selectedIndex,
+                    onItemSelected = {
+                        selectedIndex = it
+                        viewModel.setPreference(selectedIndex)
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(it)
+                        }
                     }
-                }
+                )
+
                 Column(modifier = Modifier.weight(1f)) {
                     VerticalPager(
                         state = pagerState,
@@ -146,9 +147,9 @@ fun SearchResultUI(
     }
 }
 
-const val TRACK_PAGE_INDEX = 0
-const val ALBUM_PAGE_INDEX = 1
-const val ARTIST_PAGE_INDEX = 2
+private const val TRACK_PAGE_INDEX = 0
+private const val ALBUM_PAGE_INDEX = 1
+private const val ARTIST_PAGE_INDEX = 2
 
 @Composable
 private fun AnimatedBottomPlayer(
@@ -194,7 +195,7 @@ private fun AnimatedBottomPlayer(
 
 
 @Composable
-fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
+private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
     return listOf(
         Pair("Tracks", ImageVector.vectorResource(R.drawable.ic_music_note)),
         Pair("Album", ImageVector.vectorResource(R.drawable.ic_library_music)),

@@ -23,14 +23,11 @@
         android:requestRawExternalStorageAccess="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:debuggable="true"
         android:theme="@style/Theme.ScrutinizingTheService"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
-        <activity
-            android:name=".v2.AudioPlayerActivity"
-            android:exported="false"
-            android:label="@string/title_activity_audio_player"
-            android:theme="@style/Theme.ScrutinizingTheService" />
+        tools:targetApi="31"
+        tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".ui.music.MusicPlayerActivity"
             android:exported="false">
@@ -49,26 +46,18 @@
         <service
             android:name=".services.SmartServices"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.RussianService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.RussianIntentService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.MusicPlayerService"
             android:stopWithTask="true" />
-        <service
-            android:name=".v2.media3.AudioPlayerService"
-            android:exported="true"
-            android:foregroundServiceType="mediaPlayback">
-            <intent-filter>
-                <action android:name="androidx.media3.session.MediaSessionService" />
-            </intent-filter>
-        </service>
 
         <receiver
             android:name="androidx.media3.session.MediaButtonReceiver"
@@ -113,33 +102,45 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="false" />
+
+        <activity
+            android:name=".v2.AudioPlayerActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
-<!--
-        Register receiver dynamically for api level 26 and above because static registration wont work.
-        For api 25 and below both will work.
 
-        Not required because we can dynamically register listeners
-        <receiver
-            android:name=".v2.receiver.ConnectionReceiver"
-            android:exported="false">
-            &lt;!&ndash;dash;&gt;
-            exported = false means this will be used within the application only
-            &lt;!&ndash;dash;&gt;
+        <service
+            android:name=".v2.media3.AudioPlayerService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback">
             <intent-filter>
-                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="androidx.media3.session.MediaSessionService" />
             </intent-filter>
-        </receiver>
--->
+        </service>
+
     </application>
 
-</manifest>
+</manifest><!--
+            Register receiver dynamically for api level 26 and above because static registration wont work.
+            For api 25 and below both will work.
+
+            Not required because we can dynamically register listeners
+            <receiver
+                android:name=".v2.receiver.ConnectionReceiver"
+                android:exported="false">
+                &lt;!&ndash;dash;&gt;
+                exported = false means this will be used within the application only
+                &lt;!&ndash;dash;&gt;
+                <intent-filter>
+                    <action android:name="android.net.wifi.STATE_CHANGE" />
+                </intent-filter>
+            </receiver>
+    -->

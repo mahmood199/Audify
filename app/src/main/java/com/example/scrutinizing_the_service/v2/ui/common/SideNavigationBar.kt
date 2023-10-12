@@ -4,11 +4,13 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -31,12 +33,13 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun SideNavigationBar(
-    headers: PersistentList<Pair<String, ImageVector>>,
     selectedIndex: Int,
-    onItemSelected: (Int) -> Unit
+    onItemSelected: (Int) -> Unit,
+    headers: PersistentList<Pair<String, ImageVector>>,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .padding(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp)
@@ -77,7 +80,6 @@ fun Header(
         ), label = "Color Animation"
     )
     Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier
             .vertical()
             .rotate(-90f)
@@ -109,17 +111,23 @@ fun Header(
 @Composable
 fun SideNavigationBarUI() {
     ScrutinizingTheServiceTheme {
-        SideNavigationBar(
-            listOf(
-                Pair("Track", Icons.Default.Search),
-                Pair("Album", Icons.Default.Search),
-                Pair("Artist", Icons.Default.Search),
-                Pair("Tag", Icons.Default.Search),
-                Pair("Something", Icons.Default.Search),
-                Pair("Something Odd", Icons.Default.Search),
-                Pair("Something Odd", Icons.Default.Search),
-                Pair("Something Never", Icons.Default.Search),
-            ).toPersistentList(), 0
-        ) {}
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Red)
+        ) {
+            SideNavigationBar(
+                selectedIndex = 0,
+                headers = listOf(
+                    Pair("Track", Icons.Default.Search),
+                    Pair("Album", Icons.Default.Search),
+                    Pair("Artist", Icons.Default.Search),
+                    Pair("Tag", Icons.Default.Search),
+                    Pair("Something", Icons.Default.Search),
+                ).toPersistentList(),
+                onItemSelected = {},
+                modifier = Modifier.padding(top = 200.dp)
+            )
+        }
     }
 }

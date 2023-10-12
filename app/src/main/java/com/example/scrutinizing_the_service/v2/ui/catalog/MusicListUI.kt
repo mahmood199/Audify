@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,7 +33,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -47,6 +45,7 @@ import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
+import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.PermissionStatus
@@ -280,11 +279,7 @@ private fun MusicListContent(
         modifier = modifier
     ) {
         if (it) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            ContentLoaderUI()
         } else {
             MusicList(
                 songs = songs,

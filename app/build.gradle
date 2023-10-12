@@ -24,9 +24,12 @@ android {
             useSupportLibrary true
         }
 
+        //LastFM
         buildConfigField "String", "LAST_FM_API_KEY", project.API_KEY
         buildConfigField "String", "SHARED_API_KEY", project.SHARED_KEY
         buildConfigField "String", "LAST_FM_BASE_URL", project.LAST_FM_BASE_URL
+
+        buildConfigField "String", "SAAVN_BASE_URL", project.SAAVN_BASE_URL
     }
 
     signingConfigs {
@@ -77,14 +80,14 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation 'androidx.activity:activity-compose:1.8.0'
     implementation platform('androidx.compose:compose-bom:2023.08.00')
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.navigation:navigation-compose:2.7.3'
+    implementation 'androidx.navigation:navigation-compose:2.7.4'
     implementation 'androidx.compose.material3:material3'
     implementation "androidx.compose.material3:material3-window-size-class"
     implementation "com.google.accompanist:accompanist-permissions:0.32.0"
@@ -149,6 +152,10 @@ dependencies {
     implementation "io.ktor:ktor-client-serialization:2.1.2"
     implementation "io.ktor:ktor-serialization-kotlinx-json:2.1.2"
     implementation "io.ktor:ktor-client-content-negotiation:2.1.2"
+    implementation "io.ktor:ktor-client-encoding:2.1.2"
+
+    //Brotli
+    implementation "org.brotli:dec:0.1.2"
 
 
     //Room

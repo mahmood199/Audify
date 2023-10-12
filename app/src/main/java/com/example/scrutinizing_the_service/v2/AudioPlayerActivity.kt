@@ -5,7 +5,6 @@ import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
-import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -14,15 +13,15 @@ import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.media3.common.util.UnstableApi
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
-import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.receiver.WifiConnectionReceiver
+import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
+import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -41,9 +40,11 @@ class AudioPlayerActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
-            val window: Window = this.window
-            window.navigationBarColor = MaterialTheme.colorScheme.onSecondary.toArgb()
+
             ScrutinizingTheServiceTheme {
                 NavigationCentral(
                     backPress = {

@@ -79,6 +79,7 @@ class MusicListViewModel @Inject constructor(
                 _state.value = _state.value.copy(isConnected = it)
             }
         }
+
     }
 
     fun getDeviceAudios() {

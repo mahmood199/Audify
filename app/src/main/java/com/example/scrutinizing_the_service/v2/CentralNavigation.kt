@@ -3,13 +3,9 @@ package com.example.scrutinizing_the_service.v2
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,9 +13,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
+import com.example.scrutinizing_the_service.v2.ui.landing.LandingPageUI
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
+import com.example.scrutinizing_the_service.v2.ui.settings.SettingsUI
 
 const val OFFSET = 500
 
@@ -33,9 +31,27 @@ fun NavigationCentral(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.AudioList.name,
-        modifier = modifier.background(Color.White),
+        startDestination = Screen.LandingPage.name,
+        modifier = modifier
     ) {
+        composable(route = Screen.LandingPage.name) {
+            LandingPageUI(
+                backPress = {
+                    navController.navigate(Screen.SettingsPage.name)
+                },
+                redirectToLocalAudioScreen = {
+                    navController.navigate(Screen.AudioList.name)
+                },
+                navigateToSearch = {
+                    navController.navigate(Screen.SearchHistory.name)
+                },
+            )
+        }
+
+        composable(route = Screen.SettingsPage.name) {
+            SettingsUI()
+        }
+
         composable(
             route = Screen.AudioList.name,
             exitTransition = {
@@ -47,7 +63,9 @@ fun NavigationCentral(
         ) {
             MusicListUI(
                 playMusic = playMusic,
-                backPress = backPress,
+                backPress = {
+                    navController.popBackStack()
+                },
                 navigateToSearch = {
                     navController.navigate(Screen.SearchHistory.name)
                 },
@@ -56,6 +74,7 @@ fun NavigationCentral(
                 }
             )
         }
+
         composable(
             route = Screen.SearchHistory.name,
             enterTransition = {

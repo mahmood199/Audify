@@ -2,8 +2,8 @@ package com.example.scrutinizing_the_service.v2.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.scrutinizing_the_service.v2.data.models.remote.Track
-import com.example.scrutinizing_the_service.v2.data.remote.SearchRemoteDataSource
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Track
+import com.example.scrutinizing_the_service.v2.data.remote.last_fm.SearchRemoteDataSource
 import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import javax.inject.Inject
 
