@@ -1,6 +1,6 @@
 package com.example.scrutinizing_the_service.v2.data.local.datasource
 
-import com.example.scrutinizing_the_service.v2.data.local.db.RecentSearchesDao
+import com.example.scrutinizing_the_service.v2.data.local.dao.RecentSearchesDao
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

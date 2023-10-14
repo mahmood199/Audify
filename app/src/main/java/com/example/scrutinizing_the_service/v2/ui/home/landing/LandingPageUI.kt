@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.landing
+package com.example.scrutinizing_the_service.v2.ui.home.landing
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -42,6 +42,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
+import com.example.scrutinizing_the_service.v2.ui.home.playlist.PlaylistUI
+import com.example.scrutinizing_the_service.v2.ui.home.quick_pick.QuickPicksUI
+import com.example.scrutinizing_the_service.v2.ui.home.songs.SongsUI
+import com.example.scrutinizing_the_service.v2.ui.home.album.AlbumsUI
+import com.example.scrutinizing_the_service.v2.ui.home.artist.ArtistsUI
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -153,7 +158,7 @@ fun LandingPageUI(
                             SONGS_PAGE_INDEX -> SongsUI()
 
                             PLAYLIST_PAGE_INDEX -> PlaylistUI(
-                                goToLocalAudioScreen = redirectToLocalAudioScreen
+                                goToLocalAudioScreen = redirectToLocalAudioScreen,
                             )
 
                             ARTIST_PAGE_INDEX -> ArtistsUI()

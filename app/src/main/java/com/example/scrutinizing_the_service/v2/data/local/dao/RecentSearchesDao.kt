@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.data.local.db
+package com.example.scrutinizing_the_service.v2.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
