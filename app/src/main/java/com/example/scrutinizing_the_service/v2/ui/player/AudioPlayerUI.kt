@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,8 +52,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
+import com.example.scrutinizing_the_service.v2.ext.px
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.AudioPlayerProgressUI
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.linc.audiowaveform.AudioWaveform
 import com.linc.audiowaveform.infiniteLinearGradient
 import kotlin.math.roundToInt
@@ -68,13 +72,22 @@ fun AudioPlayerUI(
 
     val state by viewModel.state.collectAsState()
 
+    val systemUiController = rememberSystemUiController()
+
+    SaveableLaunchedEffect(Unit) {
+        // Match the color of bottom player and navigation bar for better UX
+        systemUiController.setNavigationBarColor(Color.Cyan)
+    }
+
     Scaffold(
         topBar = {
             AppBar(
                 imageVector = Icons.Default.ArrowBack,
                 title = "Music Player UI",
                 backPressAction = backPress,
-                modifier = Modifier.shadow(12.dp)
+                modifier = Modifier
+                    .padding(top = 32.dp)
+                    .shadow(12.dp)
             )
         },
         bottomBar = {
@@ -149,30 +162,7 @@ fun AudioPlayerUI(
                     .clip(RoundedCornerShape(10))
                     .background(Color.DarkGray)
             ) {
-                var waveformProgress by remember(Unit) { mutableFloatStateOf(0F) }
 
-                val animatedGradientBrush = Brush.infiniteLinearGradient(
-                    colors = listOf(Color(0xff22c1c3), Color(0xfffdbb2d)),
-                    animation = tween(durationMillis = 6000, easing = LinearEasing),
-                    width = 128F
-                )
-
-                val configuration = LocalConfiguration.current
-                val numberOfWaves = remember(configuration.screenWidthDp) {
-                    (configuration.screenWidthDp / 5f).roundToInt()
-                }
-
-                AudioWaveform(
-                    progress = waveformProgress,
-                    progressBrush = animatedGradientBrush,
-                    amplitudes = List(numberOfWaves) {
-                        Random.nextInt(from = 1, until = 100)
-                    },
-                    onProgressChange = { waveformProgress = it },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .align(Alignment.Center)
-                )
             }
 
             Text(
@@ -202,10 +192,16 @@ fun AudioPlayerState(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
+        val animatedGradientBrush = Brush.infiniteLinearGradient(
+            colors = listOf(Color(0xff22c1c3), Color(0xfffdbb2d)),
+            animation = tween(durationMillis = 6000, easing = LinearEasing),
+            width = 128F
+        )
+
         AudioPlayerProgressUI(
             progress = state.progress,
             backGroundColor = Color.Blue,
-            progressColor = Color.Red,
+            progressColor = animatedGradientBrush,
             seekToPosition = {
                 seekToPosition(it)
             },

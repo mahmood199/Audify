@@ -22,6 +22,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ext.px
+import com.linc.audiowaveform.infiniteLinearGradient
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlin.random.Random
@@ -40,7 +42,7 @@ import kotlin.random.Random
 fun AudioPlayerProgressUI(
     progress: Float,
     backGroundColor: Color,
-    progressColor: Color,
+    progressColor: Brush,
     seekToPosition: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -136,7 +138,7 @@ fun AudioPlayerProgressUI(
             val canvasHeight = size.height
 
             drawRect(
-                color = progressColor,
+                brush = progressColor,
                 topLeft = Offset(0f, canvasHeight * 0.25f),
                 size = Size(
                     width = canvasWidth * animatedProgress.coerceAtMost(1f),
@@ -175,10 +177,17 @@ fun PreviewAudioPlayerProgressUI() {
             progress = 1.0f
         }
 
+        val animatedGradientBrush = Brush.infiniteLinearGradient(
+            colors = listOf(Color(0xff22c1c3), Color(0xfffdbb2d)),
+            animation = tween(durationMillis = 6000, easing = LinearEasing),
+            width = 128F
+        )
+
+
         AudioPlayerProgressUI(
             progress = progress,
             backGroundColor = Color.Blue,
-            progressColor = Color.Red,
+            progressColor = animatedGradientBrush,
             seekToPosition = {
                 progress = it
             },
