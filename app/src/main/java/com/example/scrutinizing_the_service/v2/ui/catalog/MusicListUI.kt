@@ -8,11 +8,11 @@ import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -50,6 +50,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -81,54 +82,58 @@ fun MusicListUI(
         backPress()
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        Scaffold(
-            topBar = {
-                AppBar(
-                    imageVector = Icons.Default.ArrowBack,
-                    title = "Catalog",
-                    backPressAction = backPress,
-                )
-            },
-            bottomBar = {
-                AnimatedBottomPlayer(
-                    state = state,
-                    isShown = true,
-                    sendUiEvent = viewModel::sendUIEvent,
-                    navigateToPlayer = navigateToPlayer
-                )
-            },
-            floatingActionButtonPosition = FabPosition.End,
-            floatingActionButton = {
-                AnimatedFAB(isShown, navigateToSearch)
-            },
-            modifier = modifier
-                .background(Color.White)
-                .fillMaxSize()
-        ) { paddingValues ->
+    val systemUiController = rememberSystemUiController()
 
-            PermissionRequired(
-                isLoading = state.loading,
-                songs = songs,
-                lazyListState = listState,
-                permissionState = permissionState,
-                permissionGranted = {
-                    viewModel.getDeviceAudios()
-                },
-                sendUiEvent = viewModel::sendUIEvent,
-                playMusic = playMusic,
-                modifier = Modifier
-                    .padding(
-                        top = paddingValues.calculateTopPadding(),
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-            )
-        }
+    SaveableLaunchedEffect(Unit) {
+        // Match the color of bottom player and navigation bar for better UX
+        systemUiController.setNavigationBarColor(Color.White)
     }
+
+    Scaffold(
+        topBar = {
+            AppBar(
+                imageVector = Icons.Default.ArrowBack,
+                title = "Catalog",
+                backPressAction = backPress,
+                modifier = Modifier
+                    .padding(top = 32.dp)
+            )
+        },
+        bottomBar = {
+            AnimatedBottomPlayer(
+                state = state,
+                isShown = true,
+                sendUiEvent = viewModel::sendUIEvent,
+                navigateToPlayer = navigateToPlayer
+            )
+        },
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            AnimatedFAB(isShown, navigateToSearch)
+        },
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+    ) { paddingValues ->
+
+        PermissionRequired(
+            isLoading = state.loading,
+            songs = songs,
+            lazyListState = listState,
+            permissionState = permissionState,
+            permissionGranted = {
+                viewModel.getDeviceAudios()
+            },
+            sendUiEvent = viewModel::sendUIEvent,
+            playMusic = playMusic,
+            modifier = Modifier
+                .padding(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
+        )
+    }
+
 }
 
 @OptIn(ExperimentalPermissionsApi::class)

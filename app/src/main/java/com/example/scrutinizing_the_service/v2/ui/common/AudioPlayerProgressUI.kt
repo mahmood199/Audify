@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ext.px
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 @Composable
@@ -159,7 +162,17 @@ fun PreviewAudioPlayerProgressUI() {
     ScrutinizingTheServiceTheme {
 
         var progress by remember {
-            mutableStateOf(0f)
+            mutableFloatStateOf(0f)
+        }
+
+        LaunchedEffect(Unit) {
+            progress = 0.25f
+            delay(500)
+            progress = 0.5f
+            delay(500)
+            progress = 0.75f
+            delay(500)
+            progress = 1.0f
         }
 
         AudioPlayerProgressUI(
