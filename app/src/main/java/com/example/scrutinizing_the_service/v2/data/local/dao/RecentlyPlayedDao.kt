@@ -2,6 +2,8 @@ package com.example.scrutinizing_the_service.v2.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
@@ -24,9 +26,11 @@ interface RecentlyPlayedDao {
     )
     suspend fun getByText(word: String): List<RecentlyPlayed>
 
-    @Upsert
-    suspend fun upsert(item: RecentlyPlayed): Long
+    @Query("SELECT * from recently_played")
+    suspend fun getAll(): List<RecentlyPlayed>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(item: RecentlyPlayed): Long
 
 
     @Query("Delete from recently_played where id=:id")

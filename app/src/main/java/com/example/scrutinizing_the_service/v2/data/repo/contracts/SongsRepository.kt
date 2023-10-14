@@ -12,7 +12,10 @@ interface SongsRepository {
 
     suspend fun getSongsByGenresTesting(genre: String): NetworkResult<SongsResponse>
 
+    suspend fun getAll(): List<RecentlyPlayed>
 
-    fun observeSongsTable(): Flow<List<RecentlyPlayed>>
+    fun observeMostRecentlyPlayed(): Flow<List<RecentlyPlayed>>
+
+    fun observeMostPlayed(): Flow<List<RecentlyPlayed>>
 
 }

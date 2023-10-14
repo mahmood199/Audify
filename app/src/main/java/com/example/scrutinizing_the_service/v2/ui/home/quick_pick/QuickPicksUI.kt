@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
@@ -118,10 +119,6 @@ fun QuickPicksUIContent(
 
         ArtistCatalogs(
             artists = artists,
-        )
-
-        SongCatalogs(
-            songs = songs
         )
 
         PlaylistCatalogs(
@@ -307,7 +304,7 @@ fun ArtistCatalogs(
 
 @Composable
 fun SongCatalogs(
-    songs: PersistentList<Song>,
+    songs: PersistentList<RecentlyPlayed>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -333,7 +330,7 @@ fun SongCatalogs(
                 }
             ) {
                 SongItemUI(
-                    song = songs[it],
+                    recentlyPlayed = songs[it],
                     modifier = Modifier
                         .fillParentMaxWidth(0.25f)
                 )

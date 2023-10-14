@@ -4,6 +4,7 @@ import com.example.scrutinizing_the_service.v2.data.local.dao.RecentlyPlayedDao
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class SongsLocalDataSource @Inject constructor(
@@ -11,7 +12,15 @@ class SongsLocalDataSource @Inject constructor(
 ) {
 
     fun sortByMostRecentlyPlayed(): Flow<List<RecentlyPlayed>> {
-        return dao.sortByMostPlayed()
+        return dao.sortByMostRecentlyPlayed().distinctUntilChanged()
+    }
+
+    fun sortByMostPlayed(): Flow<List<RecentlyPlayed>> {
+        return dao.sortByMostPlayed().distinctUntilChanged()
+    }
+
+    suspend fun getAll(): List<RecentlyPlayed> {
+        return dao.getAll()
     }
 
     suspend fun insertSongs(songs: List<RecentlyPlayed>) {

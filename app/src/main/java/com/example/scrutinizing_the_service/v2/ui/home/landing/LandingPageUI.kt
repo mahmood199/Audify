@@ -158,7 +158,7 @@ fun LandingPageUI(
                             SONGS_PAGE_INDEX -> SongsUI()
 
                             PLAYLIST_PAGE_INDEX -> PlaylistUI(
-                                goToLocalAudioScreen = redirectToLocalAudioScreen
+                                goToLocalAudioScreen = redirectToLocalAudioScreen,
                             )
 
                             ARTIST_PAGE_INDEX -> ArtistsUI()

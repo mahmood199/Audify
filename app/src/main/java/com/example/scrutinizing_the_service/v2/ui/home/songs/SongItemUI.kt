@@ -22,15 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
+import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.skydoves.landscapist.glide.GlideImage
 
 
 @Composable
 fun SongItemUI(
-    song: Song,
-    modifier: Modifier
+    recentlyPlayed: RecentlyPlayed,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -39,7 +39,7 @@ fun SongItemUI(
     ) {
         GlideImage(
             imageModel = {
-                song.image.last().link
+                ""
             },
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(percent = 10))
@@ -65,7 +65,7 @@ fun SongItemUI(
         )
 
         Text(
-            text = song.name,
+            text = recentlyPlayed.name,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             minLines = 3,

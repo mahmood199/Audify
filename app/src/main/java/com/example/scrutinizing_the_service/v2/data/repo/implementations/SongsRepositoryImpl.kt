@@ -47,8 +47,16 @@ class SongsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun observeSongsTable(): Flow<List<RecentlyPlayed>> {
+    override fun observeMostRecentlyPlayed(): Flow<List<RecentlyPlayed>> {
         return localDataSource.sortByMostRecentlyPlayed()
+    }
+
+    override fun observeMostPlayed(): Flow<List<RecentlyPlayed>> {
+        return localDataSource.sortByMostPlayed()
+    }
+
+    override suspend fun getAll(): List<RecentlyPlayed> {
+        return localDataSource.getAll()
     }
 
 }
