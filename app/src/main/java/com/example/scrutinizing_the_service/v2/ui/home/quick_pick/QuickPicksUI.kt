@@ -1,8 +1,10 @@
-package com.example.scrutinizing_the_service.v2.ui.landing
+package com.example.scrutinizing_the_service.v2.ui.home.quick_pick
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -48,8 +50,13 @@ import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.example.scrutinizing_the_service.v2.ui.common.LoadMoreItemsRowUI
 import com.example.scrutinizing_the_service.v2.ui.common.SnappingLazyRow
+import com.example.scrutinizing_the_service.v2.ui.home.songs.SongItemUI
+import com.example.scrutinizing_the_service.v2.ui.home.album.AlbumItemUI
+import com.example.scrutinizing_the_service.v2.ui.home.artist.ArtistItemUI
+import com.example.scrutinizing_the_service.v2.ui.home.playlist.PlayListItemUI
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
+import kotlin.math.abs
 
 @Composable
 fun QuickPicksUI(
@@ -142,10 +149,13 @@ fun PlaylistCatalogs(
 
         SnappingLazyRow(
             items = playlists,
-            itemWidth = LocalConfiguration.current.screenWidthDp.dp,
+            itemWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f,
             onSelect = {},
             key = { index, item ->
                 item.id + item.firstname + index
+            },
+            scaleCalculator = { offset, halfRowWidth ->
+                (1f - minOf(1f, abs(offset).toFloat() / halfRowWidth) * 0.4f)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -154,8 +164,8 @@ fun PlaylistCatalogs(
                     album = playlist,
                     imageWidthRatio = 0.35f,
                     modifier = Modifier
-                        .width(LocalConfiguration.current.screenWidthDp.dp * 0.8f)
                         .scale(scale = scale)
+                        .width(LocalConfiguration.current.screenWidthDp.dp * 0.8f)
                         .padding(12.dp)
                 )
             }
@@ -243,7 +253,10 @@ fun ArtistCatalogs(
     modifier: Modifier = Modifier
 ) {
 
-    AnimatedVisibility(artists.size > 3) {
+    AnimatedVisibility(
+        visible = artists.size > 3,
+        enter = fadeIn() + expandVertically()
+    ) {
         Column(
             modifier = modifier
                 .fillMaxWidth()

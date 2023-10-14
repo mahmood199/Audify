@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.landing
+package com.example.scrutinizing_the_service.v2.ui.home.quick_pick
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf

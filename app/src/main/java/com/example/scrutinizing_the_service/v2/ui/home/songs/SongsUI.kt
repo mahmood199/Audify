@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.landing
+package com.example.scrutinizing_the_service.v2.ui.home.songs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -10,11 +10,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 
 @Composable
-fun ArtistsUI() {
+fun SongsUI() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Green)
+            .background(Color.Red)
     ) {
 
     }
@@ -23,8 +23,8 @@ fun ArtistsUI() {
 
 @Preview
 @Composable
-fun PreviewArtistsUI() {
+fun PreviewSongsUI() {
     ScrutinizingTheServiceTheme {
-        ArtistsUI()
+        SongsUI()
     }
 }

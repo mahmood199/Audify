@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ui.landing
+package com.example.scrutinizing_the_service.v2.ui.home.songs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,16 +19,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.skydoves.landscapist.glide.GlideImage
 
+
 @Composable
-fun ArtistItemUI(
-    artist: ArtistData,
-    modifier: Modifier = Modifier
+fun SongItemUI(
+    song: Song,
+    modifier: Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -38,10 +39,10 @@ fun ArtistItemUI(
     ) {
         GlideImage(
             imageModel = {
-                artist.image.last().link
+                song.image.last().link
             },
             modifier = Modifier
-                .clip(CircleShape)
+                .clip(shape = RoundedCornerShape(percent = 10))
                 .aspectRatio(1f),
             failure = {
                 Icon(
@@ -64,13 +65,13 @@ fun ArtistItemUI(
         )
 
         Text(
-            text = artist.name,
+            text = song.name,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            maxLines = 2,
-            minLines = 2
+            minLines = 3,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.Bold
         )
     }
-
 }
