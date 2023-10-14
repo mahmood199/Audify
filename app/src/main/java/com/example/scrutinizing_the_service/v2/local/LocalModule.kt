@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.v2.local
 
+import android.content.ContentValues
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
@@ -8,8 +9,12 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.room.OnConflictStrategy
 import androidx.room.Room
-import com.example.scrutinizing_the_service.v2.data.local.db.RecentSearchesDao
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.scrutinizing_the_service.v2.data.local.dao.RecentSearchesDao
+import com.example.scrutinizing_the_service.v2.data.local.dao.RecentlyPlayedDao
 import com.example.scrutinizing_the_service.v2.data.local.prefs.PreferencesDataStore
 import dagger.Module
 import dagger.Provides
@@ -38,13 +43,8 @@ class LocalModule {
             context,
             ApplicationDatabase::class.java,
             DB_NAME
-        ).build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideRecentSearchesDao(db: ApplicationDatabase): RecentSearchesDao {
-        return db.recentSearchesDao()
+        ).addCallback(object : RoomDatabase.Callback() {
+        }).build()
     }
 
     @Singleton
@@ -68,5 +68,18 @@ class LocalModule {
             }
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideRecentSearchesDao(db: ApplicationDatabase): RecentSearchesDao {
+        return db.recentSearchesDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRecentlyPlayedDao(db: ApplicationDatabase): RecentlyPlayedDao {
+        return db.recentlyPlayedDao()
+    }
+
 
 }
