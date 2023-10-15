@@ -191,8 +191,9 @@ private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
         Pair("Quick Picks", ImageVector.vectorResource(R.drawable.ic_music_note)),
         Pair("Songs", ImageVector.vectorResource(R.drawable.ic_library_music)),
         Pair("Playlists", ImageVector.vectorResource(R.drawable.ic_artist)),
-        Pair("Artists", ImageVector.vectorResource(R.drawable.ic_artist)),
-        Pair("Albums", ImageVector.vectorResource(R.drawable.ic_artist)),
+        Pair("Artists", ImageVector.vectorResource(R.drawable.ic_artist_2)),
+        Pair("Albums", ImageVector.vectorResource(R.drawable.ic_album_2)),
+        Pair("Favourites", ImageVector.vectorResource(R.drawable.ic_favorite_filled)),
     ).toPersistentList()
 }
 

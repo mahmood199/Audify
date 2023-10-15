@@ -19,9 +19,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -108,6 +110,7 @@ fun Header(
                 imageVector = it.second,
                 contentDescription = it.first,
                 tint = Color.Transparent,
+                modifier = Modifier.size(24.dp)
             )
             Column {
                 AnimatedVisibility(
@@ -123,6 +126,7 @@ fun Header(
                         imageVector = it.second,
                         contentDescription = it.first,
                         tint = animatedColor,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
@@ -131,6 +135,7 @@ fun Header(
         Text(
             text = it.first,
             color = animatedColor,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.ExtraBold
         )
     }
