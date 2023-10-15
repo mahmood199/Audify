@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -193,7 +194,12 @@ fun AudioPlayerState(
     ) {
 
         val animatedGradientBrush = Brush.infiniteLinearGradient(
-            colors = listOf(Color(0xff22c1c3), Color(0xfffdbb2d)),
+            colors = listOf(
+                Color(0xff22c1c3),
+                Color(0xfffdbb2d),
+                Color.Red,
+                Color.Magenta
+            ),
             animation = tween(durationMillis = 6000, easing = LinearEasing),
             width = 128F
         )
@@ -239,20 +245,35 @@ fun PlayerActions(
         mutableStateOf(false)
     }
 
+    var repeatMode by remember {
+        mutableStateOf(false)
+    }
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_repeat_playlist),
-            contentDescription = "",
-            tint = Color.Black,
-            modifier = Modifier
-                .padding(4.dp)
-                .size(40.dp)
-                .padding(2.dp)
-        )
+        IconButton(
+            onClick = {
+                repeatMode = repeatMode.not()
+            }
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(
+                    if (repeatMode)
+                        R.drawable.ic_repeat_one
+                    else
+                        R.drawable.ic_repeat_playlist
+                ),
+                contentDescription = "",
+                tint = Color.Black,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .size(40.dp)
+                    .padding(2.dp)
+            )
+        }
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_skip_previous),
             contentDescription = "",
@@ -296,23 +317,26 @@ fun PlayerActions(
                 .border(width = 2.dp, color = Color.Black, CircleShape)
                 .padding(2.dp)
         )
-        Icon(
-            imageVector = ImageVector.vectorResource(
-                if (isAddedToFavourite)
-                    R.drawable.ic_favorite_filled
-                else
-                    R.drawable.ic_favorite
-            ),
-            contentDescription = "",
-            tint = Color.Black,
-            modifier = Modifier
-                .padding(4.dp)
-                .size(40.dp)
-                .clickable {
-                    isAddedToFavourite = !isAddedToFavourite
-                }
-                .padding(2.dp)
-        )
+        IconButton(
+            onClick = {
+                isAddedToFavourite = !isAddedToFavourite
+            }
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(
+                    if (isAddedToFavourite)
+                        R.drawable.ic_favorite_filled
+                    else
+                        R.drawable.ic_favorite
+                ),
+                contentDescription = "",
+                tint = Color.Black,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .size(40.dp)
+                    .padding(2.dp)
+            )
+        }
     }
 }
 

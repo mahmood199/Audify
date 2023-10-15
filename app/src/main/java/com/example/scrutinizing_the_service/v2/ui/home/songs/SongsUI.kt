@@ -38,7 +38,6 @@ fun SongsUI(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.DarkGray)
             ) {
                 LazyColumn {
                     items(
