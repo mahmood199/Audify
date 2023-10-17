@@ -1,0 +1,120 @@
+[versions]
+ktx = "1.12.0"
+appcompat = "1.6.1"
+material = "1.10.0"
+ktor = "2.3.2"
+ktor-gson = "1.5.0"
+serialization-json = "1.5.1"
+media3-version = "1.1.1"
+androidx-legacy-support = "1.0.0"
+glide = "4.16.0"
+room-version = "2.6.0-rc01"
+paging-version = "3.2.1"
+glide-version = "2.2.8"
+dataStore-version = "1.0.0"
+compose-audio-wave-form = "1.1.1"
+kotlinx-collections-immutable-version = "0.3.5"
+brotli-dec-version = "0.1.2"
+lifecycle-version = "2.6.2"
+hilt-version = "2.48"
+hilt-navigation-compose = "1.0.0"
+constraint-layout = "2.1.4"
+activity-compose = "1.8.0"
+compose-bom = "2023.10.00"
+navigation-compose = "2.7.4"
+accompanist-permission = "0.32.0"
+accompanist-animation = "0.32.0"
+accompanist-pager = "0.32.0"
+accompanist-system-ui-controller = "0.27.0"
+junit = "4.13.2"
+androidx-junit = "1.1.5"
+espresso = "3.5.1"
+
+[libraries]
+androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+# compose-material3-window-size-class = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "compose-bom"  }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permission" }
+accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist-animation" }
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist-system-ui-controller" }
+
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+
+
+
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-version" }
+lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycle-version" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-version" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt-version" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+
+
+
+
+
+
+
+
+
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-gson = { group = "io.ktor", name = "ktor-gson", version.ref = "ktor-gson" }
+ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding", version.ref = "ktor" }
+
+
+legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "androidx-legacy-support" }
+
+
+media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-version" }
+media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "media3-version" }
+media3-exoplayer-hls = { group = "androidx.media3", name = "media3-exoplayer-hls", version.ref = "media3-version" }
+media3-exoplayer-rtsp = { group = "androidx.media3", name = "media3-exoplayer-rtsp", version.ref = "media3-version" }
+media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-version" }
+media3-ui-leanback = { group = "androidx.media3", name = "media3-ui-leanback", version.ref = "media3-version" }
+media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3-version" }
+media3-extractor = { group = "androidx.media3", name = "media3-extractor", version.ref = "media3-version" }
+
+
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+
+
+
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-version" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room-version" }
+paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging-version" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-version" }
+landscapist-glide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "glide-version" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore-version" }
+compose-audiowaveform = { group = "com.github.lincollincol", name = "compose-audiowaveform", version.ref = "compose-audio-wave-form" }
+
+kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable-version" }
+brotli-dec = { group = "org.brotli", name = "dec", version.ref = "brotli-dec-version" }
+
+
+
+[plugins]
