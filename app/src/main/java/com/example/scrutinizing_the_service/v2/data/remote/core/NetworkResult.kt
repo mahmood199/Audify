@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.network
+package com.example.scrutinizing_the_service.v2.data.remote.core
 
 sealed class NetworkResult<T : Any> {
     class Success<T: Any>(val data: T) : NetworkResult<T>()

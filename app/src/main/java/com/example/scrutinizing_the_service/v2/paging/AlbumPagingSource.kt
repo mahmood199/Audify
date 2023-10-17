@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Album
 import com.example.scrutinizing_the_service.v2.data.remote.last_fm.SearchRemoteDataSource
-import com.example.scrutinizing_the_service.v2.network.NetworkResult
+import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
 import javax.inject.Inject
 
 class AlbumPagingSource @Inject constructor(

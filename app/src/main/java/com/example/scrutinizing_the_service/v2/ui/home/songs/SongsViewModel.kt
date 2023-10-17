@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
-import com.example.scrutinizing_the_service.v2.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

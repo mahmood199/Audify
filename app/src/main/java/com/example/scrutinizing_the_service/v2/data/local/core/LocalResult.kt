@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.local
+package com.example.scrutinizing_the_service.v2.data.local.core
 
 sealed class LocalResult<T : Any> {
     class Success<T: Any>(val data: T) : LocalResult<T>()

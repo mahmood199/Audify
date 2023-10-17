@@ -7,7 +7,7 @@ import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.SongsResponse
 import com.example.scrutinizing_the_service.v2.data.remote.saavn.SongsRemoteDataSource
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
-import com.example.scrutinizing_the_service.v2.network.NetworkResult
+import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

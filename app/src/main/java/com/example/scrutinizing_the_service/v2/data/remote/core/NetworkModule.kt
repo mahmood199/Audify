@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.network
+package com.example.scrutinizing_the_service.v2.data.remote.core
 
 import com.example.scrutinizing_the_service.BuildConfig
 import com.google.gson.Gson
