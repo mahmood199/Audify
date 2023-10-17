@@ -43,7 +43,7 @@ fun SongsUI(
                     items(
                         count = songs.size,
                         key = { index ->
-                            songs[index].id
+                            songs[index].id + index
                         },
                         contentType = {
                             "Songs UI"
