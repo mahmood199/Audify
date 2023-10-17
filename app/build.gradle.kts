@@ -94,9 +94,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
-
-    implementation("androidx.compose.material3:material3-window-size-class")
-
+    implementation(libs.compose.material3.window.size)
     implementation(libs.navigation.compose)
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.navigation.animation)
