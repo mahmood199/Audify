@@ -15,7 +15,7 @@ import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
         RecentSearch::class,
         RecentlyPlayed::class,
         Genre::class
-    ], version = 4
+    ], version = 4,
 )
 abstract class ApplicationDatabase : RoomDatabase() {
 
