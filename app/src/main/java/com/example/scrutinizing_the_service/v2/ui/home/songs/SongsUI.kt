@@ -38,13 +38,12 @@ fun SongsUI(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.DarkGray)
             ) {
                 LazyColumn {
                     items(
                         count = songs.size,
                         key = { index ->
-                            songs[index].id
+                            songs[index].id + index
                         },
                         contentType = {
                             "Songs UI"

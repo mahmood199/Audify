@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
+import com.example.scrutinizing_the_service.v2.ui.home.favourites.FavouritesUI
 import com.example.scrutinizing_the_service.v2.ui.home.playlist.PlaylistUI
 import com.example.scrutinizing_the_service.v2.ui.home.quick_pick.QuickPicksUI
 import com.example.scrutinizing_the_service.v2.ui.home.songs.SongsUI
@@ -165,6 +166,8 @@ fun LandingPageUI(
 
                             ALBUM_PAGE_INDEX -> AlbumsUI()
 
+                            FAVOURITES_PAGE_INDEX -> FavouritesUI()
+
                             else -> Box(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -183,6 +186,7 @@ private const val SONGS_PAGE_INDEX = 1
 private const val PLAYLIST_PAGE_INDEX = 2
 private const val ARTIST_PAGE_INDEX = 3
 private const val ALBUM_PAGE_INDEX = 4
+private const val FAVOURITES_PAGE_INDEX = 5
 
 
 @Composable
@@ -191,8 +195,9 @@ private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
         Pair("Quick Picks", ImageVector.vectorResource(R.drawable.ic_music_note)),
         Pair("Songs", ImageVector.vectorResource(R.drawable.ic_library_music)),
         Pair("Playlists", ImageVector.vectorResource(R.drawable.ic_artist)),
-        Pair("Artists", ImageVector.vectorResource(R.drawable.ic_artist)),
-        Pair("Albums", ImageVector.vectorResource(R.drawable.ic_artist)),
+        Pair("Artists", ImageVector.vectorResource(R.drawable.ic_artist_2)),
+        Pair("Albums", ImageVector.vectorResource(R.drawable.ic_album_2)),
+        Pair("Favourites", ImageVector.vectorResource(R.drawable.ic_favorite_filled)),
     ).toPersistentList()
 }
 

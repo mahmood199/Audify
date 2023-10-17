@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.network
+package com.example.scrutinizing_the_service.v2.data.remote.core
 
 import io.ktor.client.plugins.compression.ContentEncoder
 import io.ktor.utils.io.ByteReadChannel

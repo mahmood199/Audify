@@ -5,7 +5,7 @@ import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Artist
 import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.TrackListResponse
 import com.example.scrutinizing_the_service.v2.data.remote.last_fm.SearchRemoteDataSource
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SearchRepository
-import com.example.scrutinizing_the_service.v2.network.NetworkResult
+import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
 import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(

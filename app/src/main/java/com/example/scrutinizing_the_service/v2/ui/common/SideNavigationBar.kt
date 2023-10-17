@@ -1,20 +1,29 @@
 package com.example.scrutinizing_the_service.v2.ui.common
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +34,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import kotlinx.collections.immutable.PersistentList
@@ -65,20 +76,22 @@ fun Header(
     defaultContentColor: Color = Color.Black,
     defaultScale: Float = 1f
 ) {
-    val animatedScale: Float by animateFloatAsState(
-        targetValue = 1.25f,
+    val animatedScale by animateFloatAsState(
+        targetValue = if (isSelected) 1.25f else defaultScale,
         animationSpec = TweenSpec(
-            durationMillis = 1000,
+            durationMillis = 250,
             easing = FastOutSlowInEasing
         ), label = "Scale Animation"
     )
+
     val animatedColor by animateColorAsState(
-        targetValue = Color.White,
+        targetValue = if (isSelected) Color.White else defaultContentColor,
         animationSpec = TweenSpec(
-            durationMillis = 1000,
-            easing = FastOutSlowInEasing
+            durationMillis = 250,
+            easing = LinearEasing
         ), label = "Color Animation"
     )
+
     Column(
         modifier = modifier
             .vertical()
@@ -89,19 +102,41 @@ fun Header(
             ) {
                 onSelected()
             }
-            .scale(
-                if (isSelected) animatedScale else defaultScale
-            ),
+            .scale(animatedScale),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = it.second,
-            contentDescription = it.first,
-            tint = if (isSelected) animatedColor else defaultContentColor,
-        )
+        Box {
+            Icon(
+                imageVector = it.second,
+                contentDescription = it.first,
+                tint = Color.Transparent,
+                modifier = Modifier.size(24.dp)
+            )
+            Column {
+                AnimatedVisibility(
+                    visible = isSelected,
+                    enter = fadeIn() + slideInVertically {
+                        -100
+                    },
+                    exit = fadeOut() + slideOutVertically {
+                        -100
+                    }
+                ) {
+                    Icon(
+                        imageVector = it.second,
+                        contentDescription = it.first,
+                        tint = animatedColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+        }
+
         Text(
             text = it.first,
-            color = if (isSelected) animatedColor else defaultContentColor
+            color = animatedColor,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.ExtraBold
         )
     }
 }

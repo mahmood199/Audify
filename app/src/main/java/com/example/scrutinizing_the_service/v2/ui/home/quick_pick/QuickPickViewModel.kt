@@ -9,7 +9,7 @@ import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistDa
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
-import com.example.scrutinizing_the_service.v2.network.NetworkResult
+import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
