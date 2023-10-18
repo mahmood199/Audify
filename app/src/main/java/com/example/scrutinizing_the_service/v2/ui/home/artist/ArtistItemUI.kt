@@ -22,13 +22,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
+import com.example.scrutinizing_the_service.v2.data.models.local.Artist2
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ArtistItemUI(
-    artist: ArtistData,
+    artist: Artist2,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,7 +39,7 @@ fun ArtistItemUI(
     ) {
         GlideImage(
             imageModel = {
-                artist.image.last().link
+                artist.image.link
             },
             modifier = Modifier
                 .clip(CircleShape)

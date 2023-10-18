@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.data.models.local.Artist2
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
@@ -69,7 +70,7 @@ fun QuickPicksUI(
 
     val albums = viewModel.albums.toPersistentList()
     val songs = viewModel.songs.toPersistentList()
-    val artists = viewModel.artists.toPersistentList()
+    val artists = viewModel.localArtist.toPersistentList()
     val playlists = viewModel.playlists.toPersistentList()
 
     Column(
@@ -98,7 +99,7 @@ fun QuickPicksUI(
 fun QuickPicksUIContent(
     albums: PersistentList<Album>,
     songs: PersistentList<Song>,
-    artists: PersistentList<ArtistData>,
+    artists: PersistentList<Artist2>,
     playlists: PersistentList<Playlist>,
     modifier: Modifier = Modifier
 ) {
@@ -246,7 +247,7 @@ fun AlbumCatalogs(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArtistCatalogs(
-    artists: PersistentList<ArtistData>,
+    artists: PersistentList<Artist2>,
     modifier: Modifier = Modifier
 ) {
 
