@@ -83,7 +83,7 @@ fun SearchResultUI(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp)
+                    .padding(top = 32.dp)
                     .padding(horizontal = 12.dp)
             )
         },

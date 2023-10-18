@@ -94,7 +94,10 @@ fun SearchHistoryUI(
 
     Scaffold(
         topBar = {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 32.dp)
+            ) {
                 AppBar(
                     imageVector = Icons.Default.ArrowBack,
                     title = "Search",
