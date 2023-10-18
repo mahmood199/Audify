@@ -1,8 +1,8 @@
 package com.example.scrutinizing_the_service.v2.data.models.remote.saavn
 
 data class ArtistData(
-    val availableLanguages: List<String>,
-    val bio: List<Any>,
+    val availableLanguages: List<String> = emptyList(),
+    val bio: List<Bio>,
     val dob: String,
     val dominantLanguage: String,
     val dominantType: String,

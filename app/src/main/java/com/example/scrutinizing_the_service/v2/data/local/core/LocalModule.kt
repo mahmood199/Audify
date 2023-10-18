@@ -11,6 +11,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.scrutinizing_the_service.v2.data.local.dao.ArtistDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.GenreDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.RecentSearchesDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.RecentlyPlayedDao
@@ -100,4 +101,9 @@ class LocalModule {
         return db.genreDao()
     }
 
+    @Singleton
+    @Provides
+    fun provideArtistDao(db: ApplicationDatabase): ArtistDao {
+        return db.artistsDao()
+    }
 }

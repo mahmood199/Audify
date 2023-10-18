@@ -4,22 +4,26 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.scrutinizing_the_service.v2.data.models.local.Artist2
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
 import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
+import com.example.scrutinizing_the_service.v2.data.repo.contracts.ArtistsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class QuickPickViewModel @Inject constructor(
     private val landingPageRepository: LandingPageRepositoryImpl,
+    private val artistsRepository: ArtistsRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuickPickViewState())
@@ -29,6 +33,8 @@ class QuickPickViewModel @Inject constructor(
     val songs = mutableStateListOf<Song>()
     val artists = mutableStateListOf<ArtistData>()
     val playlists = mutableStateListOf<Playlist>()
+
+    var localArtist = mutableStateListOf<Artist2>()
 
     init {
         viewModelScope.launch {
@@ -53,11 +59,16 @@ class QuickPickViewModel @Inject constructor(
                     result.data.data?.albums?.let {
                         extractImageForArtists(it)
                     }
-
-
                 }
 
                 else -> {}
+            }
+        }
+
+        viewModelScope.launch {
+            artistsRepository.getAll().collectLatest {
+                localArtist.clear()
+                localArtist.addAll(it)
             }
         }
     }
@@ -66,11 +77,8 @@ class QuickPickViewModel @Inject constructor(
         albums.forEach { album ->
             album.primaryArtists.forEachIndexed { index, artist ->
                 delay(1000)
-                when(val result = landingPageRepository.getArtistInfo(artist.url)) {
-                    is NetworkResult.Success -> {
-                        artists.add(result.data.data)
-                    }
-                    else -> {}
+                if (localArtist.map { it.id }.contains(element = artist.id).not()) {
+                    artistsRepository.getArtistInfo(artist.url)
                 }
             }
         }
