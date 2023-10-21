@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
+import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SongsViewModel @Inject constructor(
-    private val songsRepository: SongsRepository
+    private val songsRepository: SongsRepository,
+    private val playerController: PlayerController
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SongsViewState())
@@ -33,8 +35,8 @@ class SongsViewModel @Inject constructor(
     private fun observeLocalDB() {
         viewModelScope.launch {
             songsRepository.observeMostRecentlyPlayed().collectLatest {
-                songs += it
-                Log.d("SongsViewModel2", it.size.toString())
+                songs.clear()
+                songs.addAll(it)
             }
         }
     }
@@ -45,6 +47,12 @@ class SongsViewModel @Inject constructor(
             delay(2000)
             songsRepository.getSongsByGenres(genre)
             _state.value = _state.value.copy(isLoading = false)
+        }
+    }
+
+    private fun searchSongs(query: String) {
+        viewModelScope.launch {
+
         }
     }
 

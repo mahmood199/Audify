@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.toSong
-import com.example.scrutinizing_the_service.v2.ext.calculateProgressValue
+import com.example.scrutinizing_the_service.v2.util.calculateProgressValue
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState

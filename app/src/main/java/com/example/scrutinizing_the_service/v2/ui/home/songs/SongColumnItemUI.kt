@@ -1,6 +1,7 @@
 package com.example.scrutinizing_the_service.v2.ui.home.songs
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -28,12 +29,17 @@ import com.skydoves.landscapist.glide.GlideImage
 
 
 @Composable
-fun SongItemUI(
+fun SongColumnItemUI(
     recentlyPlayed: RecentlyPlayed,
+    onItemClicked: (RecentlyPlayed) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onItemClicked(recentlyPlayed)
+            },
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

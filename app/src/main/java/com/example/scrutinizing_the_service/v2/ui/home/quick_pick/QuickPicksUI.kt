@@ -54,7 +54,7 @@ import com.example.scrutinizing_the_service.v2.ui.common.SnappingLazyRow
 import com.example.scrutinizing_the_service.v2.ui.home.album.AlbumItemUI
 import com.example.scrutinizing_the_service.v2.ui.home.artist.ArtistItemUI
 import com.example.scrutinizing_the_service.v2.ui.home.playlist.PlayListItemUI
-import com.example.scrutinizing_the_service.v2.ui.home.songs.SongItemUI
+import com.example.scrutinizing_the_service.v2.ui.home.songs.SongColumnItemUI
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlin.math.abs
@@ -329,8 +329,11 @@ fun SongCatalogs(
                     songs[index].id + index
                 }
             ) {
-                SongItemUI(
+                SongColumnItemUI(
                     recentlyPlayed = songs[it],
+                    onItemClicked = {
+
+                    },
                     modifier = Modifier
                         .fillParentMaxWidth(0.25f)
                 )

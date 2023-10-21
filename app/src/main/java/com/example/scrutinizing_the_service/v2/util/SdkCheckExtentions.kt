@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.ext
+package com.example.scrutinizing_the_service.v2.util
 
 import android.os.Build
 import android.os.Build.VERSION
