@@ -29,6 +29,7 @@ accompanist-system-ui-controller = "0.27.0"
 junit = "4.13.2"
 androidx-junit = "1.1.5"
 espresso = "3.5.1"
+compose-runtime = "2.6.2"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -48,7 +49,7 @@ accompanist-permissions = { group = "com.google.accompanist", name = "accompanis
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist-animation" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist-system-ui-controller" }
-
+compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-runtime" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }

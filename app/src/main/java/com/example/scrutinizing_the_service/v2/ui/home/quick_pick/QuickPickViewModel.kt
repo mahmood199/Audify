@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.home.quick_pick
 
+import android.media.browse.MediaBrowser.MediaItem
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
 import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.ArtistsRepository
+import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class QuickPickViewModel @Inject constructor(
     private val landingPageRepository: LandingPageRepositoryImpl,
-    private val artistsRepository: ArtistsRepository
+    private val artistsRepository: ArtistsRepository,
+    private val controller: PlayerController
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuickPickViewState())

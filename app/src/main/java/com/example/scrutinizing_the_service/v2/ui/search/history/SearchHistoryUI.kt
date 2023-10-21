@@ -31,7 +31,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +50,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
@@ -64,12 +64,12 @@ fun SearchHistoryUI(
     viewModel: SearchHistoryViewModel = hiltViewModel()
 ) {
 
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     var isEditMode by remember {
         mutableStateOf(false)
     }
 
-    val searchQuery by viewModel.uiQuery.collectAsState("")
+    val searchQuery by viewModel.uiQuery.collectAsStateWithLifecycle()
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -78,7 +78,7 @@ fun SearchHistoryUI(
 
     val controller = LocalSoftwareKeyboardController.current
 
-    val searches by viewModel.books.collectAsState(emptyList())
+    val searches by viewModel.books.collectAsStateWithLifecycle(emptyList())
 
     AlertDialogWrapper(
         openAlertDialog = openAlertDialog,

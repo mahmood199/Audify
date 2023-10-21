@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import kotlinx.collections.immutable.toPersistentList
@@ -21,7 +21,7 @@ fun SongsUI(
     viewModel: SongsViewModel = hiltViewModel()
 ) {
 
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val songs = viewModel.songs.toPersistentList()
 
@@ -48,7 +48,7 @@ fun SongsUI(
                         contentType = {
                             "Songs UI"
                         }
-                    ) {index ->
+                    ) { index ->
                         SongItemUI(
                             recentlyPlayed = songs[index],
                         )

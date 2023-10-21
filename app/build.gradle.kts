@@ -100,6 +100,7 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.compose.runtime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -108,7 +109,6 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
-
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.service)
