@@ -84,6 +84,7 @@ fun QuickPicksUI(
                 ContentLoaderUI()
             } else {
                 QuickPicksUIContent(
+                    state = state,
                     albums = albums,
                     songs = songs,
                     artists = artists,
@@ -96,6 +97,7 @@ fun QuickPicksUI(
 
 @Composable
 fun QuickPicksUIContent(
+    state: QuickPickViewState,
     albums: PersistentList<Album>,
     songs: PersistentList<Song>,
     artists: PersistentList<Artist2>,
@@ -112,6 +114,8 @@ fun QuickPicksUIContent(
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
+        Text(text = "${state.genreCount}")
 
         AlbumCatalogs(
             albums = albums

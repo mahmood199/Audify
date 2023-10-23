@@ -11,6 +11,8 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.session.MediaSession
 import com.example.scrutinizing_the_service.v2.media3.CommandCallback
+import com.example.scrutinizing_the_service.v2.media3.PlayerDelegate
+import com.example.scrutinizing_the_service.v2.media3.PlayerDelegateImpl
 import com.example.scrutinizing_the_service.v2.media3.SimpleMediaNotificationManager
 import dagger.Module
 import dagger.Provides
@@ -86,6 +88,14 @@ object Media3Module {
             player = player
         )
     }
+
+/*
+    @Singleton
+    @Provides
+    fun providePlayerDelegate(
+        player: Player
+    ): PlayerDelegate = PlayerDelegateImpl(player)
+*/
 
     private const val SEEK_BACK_IN_MILLIS = 10000L
     private const val SEEK_FORWARD_IN_MILLIS = 10000L

@@ -1,11 +1,13 @@
 package com.example.scrutinizing_the_service.v2.ui.home.songs
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.scrutinizing_the_service.v2.data.models.local.Genre
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
+import com.example.scrutinizing_the_service.v2.data.repo.contracts.UserPreferenceRepository
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SongsViewModel @Inject constructor(
     private val songsRepository: SongsRepository,
+    private val genreRepository: GenreRepository,
     private val playerController: PlayerController
 ) : ViewModel() {
 
@@ -27,8 +30,9 @@ class SongsViewModel @Inject constructor(
 
     val songs = mutableStateListOf<RecentlyPlayed>()
 
+    val genres = mutableStateListOf<Genre>()
+
     init {
-        searchSongByGenre("Popular Hits")
         observeLocalDB()
     }
 
@@ -37,6 +41,13 @@ class SongsViewModel @Inject constructor(
             songsRepository.observeMostRecentlyPlayed().collectLatest {
                 songs.clear()
                 songs.addAll(it)
+            }
+        }
+
+        viewModelScope.launch {
+            genreRepository.getAll().collectLatest {
+                genres.clear()
+                genres.addAll(it)
             }
         }
     }

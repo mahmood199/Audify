@@ -1,6 +1,5 @@
 package com.example.scrutinizing_the_service.v2.ui.home.quick_pick
 
-import android.media.browse.MediaBrowser.MediaItem
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -10,11 +9,13 @@ import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
-import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
 import com.example.scrutinizing_the_service.v2.data.remote.core.NetworkResult
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.ArtistsRepository
+import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
+import com.example.scrutinizing_the_service.v2.data.repo.implementations.LandingPageRepositoryImpl
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class QuickPickViewModel @Inject constructor(
     private val landingPageRepository: LandingPageRepositoryImpl,
     private val artistsRepository: ArtistsRepository,
+    private val genreRepository: GenreRepository,
     private val controller: PlayerController
 ) : ViewModel() {
 
@@ -40,7 +42,7 @@ class QuickPickViewModel @Inject constructor(
     var localArtist = mutableStateListOf<Artist2>()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _state.emit(_state.value.copy(isLoading = true))
             when (val result = landingPageRepository.getLandingPageData()) {
                 is NetworkResult.Success -> {
@@ -68,10 +70,16 @@ class QuickPickViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             artistsRepository.getAll().collectLatest {
                 localArtist.clear()
                 localArtist.addAll(it)
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            genreRepository.getAll().collectLatest {
+                _state.emit(_state.value.copy(genreCount = it.size))
             }
         }
     }

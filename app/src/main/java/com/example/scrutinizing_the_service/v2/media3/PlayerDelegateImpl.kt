@@ -3,7 +3,6 @@ package com.example.scrutinizing_the_service.v2.media3
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,9 +16,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PlayerController @Inject constructor(
-    private val player: Player
-) : Player.Listener {
+class PlayerDelegateImpl @Inject constructor(
+    private val player: Player,
+    private val playerDelegate: PlayerDelegate
+) : PlayerDelegate by playerDelegate {
 
     private val _audioState: MutableStateFlow<PlayerState> =
         MutableStateFlow(PlayerState.Initial)
@@ -32,7 +32,7 @@ class PlayerController @Inject constructor(
         player.addListener(this)
     }
 
-    fun addItems(mediaItems: List<MediaItem>) {
+    override fun addItems(mediaItems: List<MediaItem>) {
         if (player.mediaItemCount == 0) {
             player.playlistMetadata
             player.setMediaItems(mediaItems)
@@ -40,9 +40,7 @@ class PlayerController @Inject constructor(
         }
     }
 
-    suspend fun onPlayerEvents(
-        playerEvent: PlayerEvent,
-    ) {
+    override suspend fun onPlayerEvents(playerEvent: PlayerEvent) {
         when (playerEvent) {
             PlayerEvent.PlayPause -> playOrPause()
             PlayerEvent.Rewind -> player.seekBack()
@@ -86,20 +84,47 @@ class PlayerController @Inject constructor(
         }
     }
 
-    override fun onPlaybackStateChanged(playbackState: Int) {
-        when (playbackState) {
-            ExoPlayer.STATE_BUFFERING -> _audioState.value =
-                PlayerState.Buffering(
-                    progress = player.currentPosition,
-                    duration = player.duration
-                )
-
-            ExoPlayer.STATE_READY -> _audioState.value =
-                PlayerState.Ready(player.duration)
+    override suspend fun playOrPause() {
+        if (player.isPlaying) {
+            player.pause()
+            stopProgressUpdate()
+        } else {
+            player.play()
+            _audioState.value = PlayerState.Playing(
+                isPlaying = true,
+            )
+            startProgressUpdate()
         }
     }
 
+    override suspend fun startProgressUpdate() {
+        job.run {
+            while (true) {
+                delay(500)
+                _audioState.value = PlayerState.Progress(
+                    progress = player.currentPosition,
+                    duration = player.duration,
+                    mediaItem = player.currentMediaItem
+                )
+            }
+        }
+
+    }
+
+    override fun stopProgressUpdate() {
+        job?.cancel()
+        coroutineScope.cancel()
+        _audioState.value = PlayerState.Playing(
+            isPlaying = false,
+        )
+    }
+
     override fun onIsPlayingChanged(isPlaying: Boolean) {
+        super.onIsPlayingChanged(isPlaying)
+        nestedOnIsPlayingChanged(isPlaying)
+    }
+
+    override fun nestedOnIsPlayingChanged(isPlaying: Boolean) {
         _audioState.value = PlayerState.Playing(
             isPlaying = isPlaying,
         )
@@ -116,71 +141,21 @@ class PlayerController @Inject constructor(
         }
     }
 
-    private suspend fun playOrPause() {
-        if (player.isPlaying) {
-            player.pause()
-            stopProgressUpdate()
-        } else {
-            player.play()
-            _audioState.value = PlayerState.Playing(
-                isPlaying = true,
-            )
-            startProgressUpdate()
-        }
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        super.onPlaybackStateChanged(playbackState)
+        nestedOnPlaybackStateChanged(playbackState)
     }
 
-    private suspend fun startProgressUpdate() = job.run {
-        while (true) {
-            delay(500)
-            _audioState.value = PlayerState.Progress(
-                progress = player.currentPosition,
-                duration = player.duration,
-                mediaItem = player.currentMediaItem
-            )
-        }
-    }
-
-    private fun stopProgressUpdate() {
-        job?.cancel()
-        coroutineScope.cancel()
-        _audioState.value = PlayerState.Playing(
-            isPlaying = false,
-        )
-    }
-
-    suspend fun sendMediaEvent(action: MediaPlayerAction) {
-        when (action) {
-            MediaPlayerAction.PlayPause -> {
-                onPlayerEvents(PlayerEvent.PlayPause)
-            }
-
-            MediaPlayerAction.Rewind -> {
-                onPlayerEvents(PlayerEvent.Rewind)
-            }
-
-            MediaPlayerAction.FastForward -> {
-                onPlayerEvents(PlayerEvent.FastForward)
-            }
-
-            MediaPlayerAction.PlayNextItem -> {
-                onPlayerEvents(PlayerEvent.PlayNextItem)
-            }
-
-            MediaPlayerAction.PlayPreviousItem -> {
-                onPlayerEvents(PlayerEvent.PlayPreviousItem)
-            }
-
-            is MediaPlayerAction.PlaySongAt -> {
-                onPlayerEvents(PlayerEvent.PlaySongAt(action.index))
-            }
-
-            is MediaPlayerAction.UpdateProgress -> {
-                onPlayerEvents(
-                    PlayerEvent.UpdateProgress(
-                        newProgress = action.newProgress
-                    )
+    override fun nestedOnPlaybackStateChanged(playbackState: Int) {
+        when (playbackState) {
+            ExoPlayer.STATE_BUFFERING -> _audioState.value =
+                PlayerState.Buffering(
+                    progress = player.currentPosition,
+                    duration = player.duration
                 )
-            }
+
+            ExoPlayer.STATE_READY -> _audioState.value =
+                PlayerState.Ready(player.duration)
         }
     }
 

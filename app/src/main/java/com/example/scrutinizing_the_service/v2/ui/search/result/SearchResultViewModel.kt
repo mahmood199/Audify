@@ -7,6 +7,7 @@ import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.toSong
 import com.example.scrutinizing_the_service.v2.data.models.local.SearchPreference
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.UserPreferenceRepository
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState
@@ -79,13 +80,15 @@ class SearchResultViewModel @Inject constructor(
 
         viewModelScope.launch {
             preferenceRepository.getSearchPreference().collectLatest {
-                when(it.searchPreference) {
+                when (it.searchPreference) {
                     SearchPreference.Track -> {
                         _state.value = _state.value.copy(userSelectedPage = 0)
                     }
+
                     SearchPreference.Album -> {
                         _state.value = _state.value.copy(userSelectedPage = 1)
                     }
+
                     SearchPreference.Artist -> {
                         _state.value = _state.value.copy(userSelectedPage = 2)
                     }
@@ -96,7 +99,7 @@ class SearchResultViewModel @Inject constructor(
 
     fun setPreference(page: Int) {
         viewModelScope.launch {
-            when(page) {
+            when (page) {
                 0 -> preferenceRepository.setSearchPreference(SearchPreference.Track)
                 1 -> preferenceRepository.setSearchPreference(SearchPreference.Album)
                 2 -> preferenceRepository.setSearchPreference(SearchPreference.Artist)
@@ -113,41 +116,16 @@ class SearchResultViewModel @Inject constructor(
         )
     }
 
-    fun sendUIEvent(uiEvent: SearchResultUiEvent) {
+    fun sendMediaAction(action: MediaPlayerAction) {
         viewModelScope.launch {
-            when (uiEvent) {
-                SearchResultUiEvent.PlayPause -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayPause)
-                }
+            playerController.sendMediaEvent(action)
+        }
+    }
 
-                SearchResultUiEvent.Rewind -> {
-                    playerController.onPlayerEvents(PlayerEvent.Rewind)
-                }
-
-                SearchResultUiEvent.FastForward -> {
-                    playerController.onPlayerEvents(PlayerEvent.FastForward)
-                }
-
-                SearchResultUiEvent.PlayNextItem -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayNextItem)
-                }
-
-                SearchResultUiEvent.PlayPreviousItem -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayPreviousItem)
-                }
-
-                is SearchResultUiEvent.PlaySongAt -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlaySongAt(uiEvent.index))
-                }
-
-                is SearchResultUiEvent.UpdateProgress -> {
-                    playerController.onPlayerEvents(
-                        PlayerEvent.UpdateProgress(
-                            newProgress = uiEvent.newProgress
-                        )
-                    )
-                    _state.value.progress = uiEvent.newProgress
-                }
+    fun sendUiEvent(searchResultUiEvent: SearchResultUiEvent) {
+        when (searchResultUiEvent) {
+            is SearchResultUiEvent.UpdateProgress -> {
+                _state.value.progress = searchResultUiEvent.newProgress
             }
         }
     }

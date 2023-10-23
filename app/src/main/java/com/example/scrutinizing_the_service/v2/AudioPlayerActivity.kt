@@ -19,6 +19,7 @@ import androidx.media3.common.util.UnstableApi
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.receiver.WifiConnectionReceiver
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
@@ -51,7 +52,7 @@ class AudioPlayerActivity : ComponentActivity() {
                         finish()
                     },
                     playMusic = { song, index ->
-                        viewModel.sendUIEvent(MusicListUiEvent.PlaySongAt(index))
+                        viewModel.sendMediaAction(MediaPlayerAction.PlaySongAt(index))
                         startMusicService()
                     }
                 )

@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class Genre(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String
+    val name: String,
+    val userSelected: Boolean = false
 )

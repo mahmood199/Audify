@@ -142,9 +142,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.encoding)
-
-    //Brotli
-    implementation(libs.brotli.dec)
+    implementation(libs.slf4j.simple)
 
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)

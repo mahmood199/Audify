@@ -128,6 +128,7 @@ fun AudioPlayerProgressUI(
                         }
                     )
                     detectDragGestures { change, dragAmount ->
+                        change.consume()
                         seekToPosition(change.position.x / maxWidthInPx)
                     }
                 }

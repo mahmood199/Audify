@@ -13,6 +13,7 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.data.toSong
 import com.example.scrutinizing_the_service.v2.connection.NetworkConnectivityObserver
 import com.example.scrutinizing_the_service.v2.data.repo.implementations.MusicRepositoryImpl
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState
@@ -113,49 +114,21 @@ class MusicListViewModel @Inject constructor(
     private fun calculateProgressValue(currentProgress: Long, duration: Long) {
         val progress = if (currentProgress > 0) currentProgress.toFloat() / duration.toFloat()
         else 0f
-        _state.value = _state.value.copy(
-            progress =
-            progress
-        )
+        _state.value = _state.value.copy(progress = progress)
         _state.value =
             _state.value.copy(progressString = TimeConverter.getConvertedTime(currentProgress))
     }
 
-    fun sendUIEvent(musicListUiEvent: MusicListUiEvent) {
+    fun sendMediaAction(action: MediaPlayerAction) {
         viewModelScope.launch {
-            when (musicListUiEvent) {
-                MusicListUiEvent.PlayPause -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayPause)
-                }
+            playerController.sendMediaEvent(action)
+        }
+    }
 
-                MusicListUiEvent.Rewind -> {
-                    playerController.onPlayerEvents(PlayerEvent.Rewind)
-                }
-
-                MusicListUiEvent.FastForward -> {
-                    playerController.onPlayerEvents(PlayerEvent.FastForward)
-                }
-
-                MusicListUiEvent.PlayNextItem -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayNextItem)
-                }
-
-                MusicListUiEvent.PlayPreviousItem -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayPreviousItem)
-                }
-
-                is MusicListUiEvent.PlaySongAt -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlaySongAt(musicListUiEvent.index))
-                }
-
-                is MusicListUiEvent.UpdateProgress -> {
-                    playerController.onPlayerEvents(
-                        PlayerEvent.UpdateProgress(
-                            newProgress = musicListUiEvent.newProgress
-                        )
-                    )
-                    _state.value.progress = musicListUiEvent.newProgress
-                }
+    fun sendUIEvent(musicListUiEvent: MusicListUiEvent) {
+        when (musicListUiEvent) {
+            is MusicListUiEvent.UpdateProgress -> {
+                _state.value.progress = musicListUiEvent.newProgress
             }
         }
     }
