@@ -1,6 +1,9 @@
 package com.example.scrutinizing_the_service.v2.ui.home.songs
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -9,19 +12,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +43,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun SongsUI(
     viewModel: SongsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -44,9 +51,7 @@ fun SongsUI(
 
     val genres = viewModel.genres.toPersistentList()
 
-    val selectedGenres = remember {
-        mutableStateListOf<Genre>()
-    }
+    val selectedGenres = viewModel.selectedGenres.toPersistentList()
 
     AnimatedContent(
         targetState = genres.count { it.userSelected } == 0,
@@ -54,9 +59,18 @@ fun SongsUI(
         modifier = Modifier.fillMaxSize()
     ) {
         if (it) {
-            GenreSelectionUI(genres, selectedGenres)
+            GenreSelectionUI(
+                state = state,
+                genres = genres,
+                selectedGenres = selectedGenres,
+                onGenreClicked = { genre ->
+                    viewModel.addRemoveToSelectedItems(genre)
+                }, confirmGenreSelection = {
+                    viewModel.confirmGenreSelection()
+                }
+            )
         } else {
-            ShowSongsContent(
+            SongsContentUI(
                 state = state,
                 songs = songs
             )
@@ -67,11 +81,15 @@ fun SongsUI(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GenreSelectionUI(
+    state: SongsViewState,
     genres: PersistentList<Genre>,
-    selectedGenres: SnapshotStateList<Genre>
+    selectedGenres: PersistentList<Genre>,
+    onGenreClicked: (Genre) -> Unit,
+    confirmGenreSelection: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
@@ -92,18 +110,36 @@ fun GenreSelectionUI(
 
         FlowRow(
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.Center,
         ) {
             genres.forEachIndexed { index, genre ->
                 GenreUiItem(
                     genre = genre,
                     onGenreClicked = { selectedGenre ->
-                        if (selectedGenres.contains(selectedGenre))
-                            selectedGenres.remove(selectedGenre)
-                        else
-                            selectedGenres.add(selectedGenre)
+                        onGenreClicked(genre)
                     },
-                    isSelected = selectedGenres.contains(genre)
+                    isSelected = selectedGenres.contains(genre),
+                    modifier = Modifier.padding(end = 12.dp)
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = state.enforceSelection,
+            modifier = Modifier
+        ) {
+            Column {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp)
+                )
+
+                Text(
+                    text = "Please select genres to proceed",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Red),
                 )
             }
         }
@@ -115,7 +151,7 @@ fun GenreSelectionUI(
         )
 
         Button({
-
+            confirmGenreSelection()
         }) {
             Text("Confirm selection")
         }
@@ -123,7 +159,7 @@ fun GenreSelectionUI(
 }
 
 @Composable
-fun ShowSongsContent(
+fun SongsContentUI(
     state: SongsViewState,
     songs: PersistentList<RecentlyPlayed>,
     modifier: Modifier = Modifier

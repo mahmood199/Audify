@@ -7,7 +7,6 @@ import com.example.scrutinizing_the_service.v2.data.models.local.Genre
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.UserPreferenceRepository
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +30,8 @@ class SongsViewModel @Inject constructor(
     val songs = mutableStateListOf<RecentlyPlayed>()
 
     val genres = mutableStateListOf<Genre>()
+
+    val selectedGenres = mutableStateListOf<Genre>()
 
     init {
         observeLocalDB()
@@ -64,6 +65,38 @@ class SongsViewModel @Inject constructor(
     private fun searchSongs(query: String) {
         viewModelScope.launch {
 
+        }
+    }
+
+    fun addRemoveToSelectedItems(selectedGenre: Genre) {
+        if (selectedGenres.contains(selectedGenre))
+            selectedGenres.remove(selectedGenre)
+        else {
+            selectedGenres.add(selectedGenre)
+            if (_state.value.enforceSelection)
+                _state.tryEmit(_state.value.copy(enforceSelection = false))
+        }
+    }
+
+    fun confirmGenreSelection() {
+        if (selectedGenres.isEmpty()) {
+            selectionPrompt(true)
+        } else {
+            updateSelectedGenre()
+        }
+    }
+
+    private fun updateSelectedGenre() {
+        viewModelScope.launch(Dispatchers.IO) {
+            selectedGenres.forEach { genre ->
+                genreRepository.add(genre)
+            }
+        }
+    }
+
+    fun selectionPrompt(value: Boolean) {
+        viewModelScope.launch {
+            _state.emit(_state.value.copy(enforceSelection = value))
         }
     }
 
