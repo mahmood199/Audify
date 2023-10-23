@@ -167,4 +167,8 @@ class PlayerController @Inject constructor(
         )
     }
 
+    fun getCurrentlyPlayingItem(): MediaItem? {
+        return player.currentMediaItem
+    }
+
 }
