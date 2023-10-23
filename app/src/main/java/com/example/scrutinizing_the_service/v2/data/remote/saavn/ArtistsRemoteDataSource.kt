@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import java.io.IOException
 import javax.inject.Inject
 
 class ArtistsRemoteDataSource @Inject constructor(
@@ -17,12 +18,14 @@ class ArtistsRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getArtistData(artistUrl: String): NetworkResult<ArtistDetailResponse> {
-        val response = client.get(
-            "https://saavn.me/artists"
-        ) {
-            parameter("link", artistUrl)
+        return safeApiCall {
+            val response = client.get(
+                "https://saavn.me/artists"
+            ) {
+                parameter("link", artistUrl)
+            }
+            responseProcessor.getResultFromResponse<ArtistDetailResponse>(gson, response)
         }
-        return responseProcessor.getResultFromResponse<ArtistDetailResponse>(gson, response)
     }
 
 }

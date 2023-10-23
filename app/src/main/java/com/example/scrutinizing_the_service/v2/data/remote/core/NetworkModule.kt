@@ -1,6 +1,5 @@
 package com.example.scrutinizing_the_service.v2.data.remote.core
 
-import android.util.Log
 import com.example.scrutinizing_the_service.BuildConfig
 import com.google.gson.Gson
 import dagger.Module
@@ -16,11 +15,8 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.client.request.HttpSendPipeline
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.bodyAsText
-import io.ktor.client.statement.request
 import io.ktor.gson.GsonConverter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -34,7 +30,7 @@ class NetworkModule {
 
     companion object {
         val BASE_URL = BuildConfig.LAST_FM_BASE_URL
-        const val TIME_OUT = 10_000
+        const val TIME_OUT = 30_000
     }
 
     @Provides
@@ -50,37 +46,14 @@ class NetworkModule {
             })
         }
 
-
-        install(ContentEncoding) {
-            brotli()
-        }
-
         engine {
             connectTimeout = TIME_OUT
             socketTimeout = TIME_OUT
         }
 
-        install(ResponseObserver) {
-            onResponse { response ->
-                Log.d("Header:", response.headers.toString())
-                Log.d("Url:", response.request.url.toString())
-                Log.d("Method", response.request.method.value)
-                Log.d("Request:", response.request.content.toString())
-                Log.d("HTTP status:", "${response.status.value}")
-                Log.d("Response:", response.bodyAsText())
-            }
-        }
-
         install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.ALL
-        }
-
-        defaultRequest {
-            headers.append(
-                HttpHeaders.ContentType,
-                ContentType.Application.Json.toString()
-            )
         }
     }
 
@@ -102,24 +75,13 @@ class NetworkModule {
             socketTimeout = TIME_OUT
         }
 
-        install(ResponseObserver) {
-            onResponse { response ->
-                Log.d("Header:", response.headers.toString())
-                Log.d("Url:", response.request.url.toString())
-                Log.d("Method", response.request.method.value)
-                Log.d("Request:", response.request.content.toString())
-                Log.d("HTTP status:", "${response.status.value}")
-                Log.d("Response:", response.bodyAsText())
-            }
-        }
-
         install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.ALL
         }
 
         defaultRequest {
-            url(host =  BuildConfig.LAST_FM_BASE_URL) {
+            url(host = BuildConfig.LAST_FM_BASE_URL) {
                 headers.append(
                     HttpHeaders.ContentType,
                     ContentType.Application.Json.toString()

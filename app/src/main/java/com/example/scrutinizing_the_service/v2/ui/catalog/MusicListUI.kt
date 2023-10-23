@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
@@ -84,7 +86,7 @@ fun MusicListUI(
 
     val systemUiController = rememberSystemUiController()
 
-    SaveableLaunchedEffect(Unit) {
+    LaunchedEffect(Unit) {
         // Match the color of bottom player and navigation bar for better UX
         systemUiController.setNavigationBarColor(Color.White)
     }
@@ -103,6 +105,7 @@ fun MusicListUI(
             AnimatedBottomPlayer(
                 state = state,
                 isShown = true,
+                sendMediaAction = viewModel::sendMediaAction,
                 sendUiEvent = viewModel::sendUIEvent,
                 navigateToPlayer = navigateToPlayer
             )
@@ -193,6 +196,7 @@ private fun PermissionRequired(
 private fun AnimatedBottomPlayer(
     state: MusicListViewState,
     isShown: Boolean,
+    sendMediaAction: (MediaPlayerAction) -> Unit,
     sendUiEvent: (MusicListUiEvent) -> Unit,
     navigateToPlayer: () -> Unit
 ) {
@@ -217,24 +221,25 @@ private fun AnimatedBottomPlayer(
                 artist = state.currentSong?.artist ?: "Error",
                 isPlaying = state.isPlaying,
                 onPlayPauseClicked = {
-                    sendUiEvent(MusicListUiEvent.PlayPause)
+                    sendMediaAction(MediaPlayerAction.PlayPause)
                 },
                 onRewindClicked = {
-                    sendUiEvent(MusicListUiEvent.Rewind)
+                    sendMediaAction(MediaPlayerAction.Rewind)
                 },
                 onFastForwardClicked = {
-                    sendUiEvent(MusicListUiEvent.FastForward)
+                    sendMediaAction(MediaPlayerAction.FastForward)
                 },
                 onPlayPreviousClicked = {
-                    sendUiEvent(MusicListUiEvent.PlayPreviousItem)
+                    sendMediaAction(MediaPlayerAction.PlayPreviousItem)
                 },
                 onPlayNextClicked = {
-                    sendUiEvent(MusicListUiEvent.PlayNextItem)
+                    sendMediaAction(MediaPlayerAction.PlayNextItem)
                 },
                 navigateToPlayer = {
                     navigateToPlayer()
                 },
                 seekToPosition = {
+                    sendMediaAction(MediaPlayerAction.UpdateProgress(it))
                     sendUiEvent(MusicListUiEvent.UpdateProgress(it))
                 },
                 modifier = Modifier

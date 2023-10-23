@@ -54,7 +54,7 @@ import com.example.scrutinizing_the_service.v2.ui.common.SnappingLazyRow
 import com.example.scrutinizing_the_service.v2.ui.home.album.AlbumItemUI
 import com.example.scrutinizing_the_service.v2.ui.home.artist.ArtistItemUI
 import com.example.scrutinizing_the_service.v2.ui.home.playlist.PlayListItemUI
-import com.example.scrutinizing_the_service.v2.ui.home.songs.SongItemUI
+import com.example.scrutinizing_the_service.v2.ui.home.songs.SongColumnItemUI
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlin.math.abs
@@ -84,6 +84,7 @@ fun QuickPicksUI(
                 ContentLoaderUI()
             } else {
                 QuickPicksUIContent(
+                    state = state,
                     albums = albums,
                     songs = songs,
                     artists = artists,
@@ -96,6 +97,7 @@ fun QuickPicksUI(
 
 @Composable
 fun QuickPicksUIContent(
+    state: QuickPickViewState,
     albums: PersistentList<Album>,
     songs: PersistentList<Song>,
     artists: PersistentList<Artist2>,
@@ -112,6 +114,8 @@ fun QuickPicksUIContent(
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
+        Text(text = "${state.genreCount}")
 
         AlbumCatalogs(
             albums = albums
@@ -329,8 +333,11 @@ fun SongCatalogs(
                     songs[index].id + index
                 }
             ) {
-                SongItemUI(
+                SongColumnItemUI(
                     recentlyPlayed = songs[it],
+                    onItemClicked = {
+
+                    },
                     modifier = Modifier
                         .fillParentMaxWidth(0.25f)
                 )

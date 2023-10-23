@@ -25,10 +25,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 import javax.inject.Singleton
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -47,13 +50,20 @@ class LocalModule {
             context,
             ApplicationDatabase::class.java,
             DB_NAME
-        ).addCallback(object : RoomDatabase.Callback() {
+        )
+            .fallbackToDestructiveMigration()
+            .addCallback(object : RoomDatabase.Callback() {
 
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                Executors.newSingleThreadExecutor().execute {
-                    genres.forEachIndexed { index, s ->
-                        //(db as ApplicationDatabase).genreDao().add(Genre(name = s))
+                val job = CoroutineScope(EmptyCoroutineContext + Dispatchers.IO)
+                job.launch(Dispatchers.IO) {
+                    try {
+                        genres.forEachIndexed { index, s ->
+                            db.execSQL("INSERT INTO genres (name, userSelected) VALUES ('$s', 'false')")
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }

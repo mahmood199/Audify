@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
 import com.example.scrutinizing_the_service.v2.ui.home.album.AlbumsUI
 import com.example.scrutinizing_the_service.v2.ui.home.artist.ArtistsUI
@@ -48,6 +50,7 @@ import com.example.scrutinizing_the_service.v2.ui.home.favourites.FavouritesUI
 import com.example.scrutinizing_the_service.v2.ui.home.playlist.PlaylistUI
 import com.example.scrutinizing_the_service.v2.ui.home.quick_pick.QuickPicksUI
 import com.example.scrutinizing_the_service.v2.ui.home.songs.SongsUI
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -58,6 +61,7 @@ fun LandingPageUI(
     redirectToLocalAudioScreen: () -> Unit,
     navigateToSearch: () -> Unit,
     backPress: () -> Unit,
+    playMusicFromRemote: (RecentlyPlayed) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LandingPageViewModel = hiltViewModel()
 ) {
@@ -78,6 +82,12 @@ fun LandingPageUI(
     }
 
     val coroutineScope = rememberCoroutineScope()
+
+    val uiController = rememberSystemUiController()
+
+    LaunchedEffect(Unit) {
+        uiController.setNavigationBarColor(Color.Transparent)
+    }
 
     Scaffold(
         topBar = {
@@ -156,7 +166,11 @@ fun LandingPageUI(
 
                             QUICK_PICKS_PAGE_INDEX -> QuickPicksUI()
 
-                            SONGS_PAGE_INDEX -> SongsUI()
+                            SONGS_PAGE_INDEX -> SongsUI(
+                                playMusicFromRemote = { recentlyPlayed ->
+                                    playMusicFromRemote(recentlyPlayed)
+                                }
+                            )
 
                             PLAYLIST_PAGE_INDEX -> PlaylistUI(
                                 goToLocalAudioScreen = redirectToLocalAudioScreen,
@@ -211,7 +225,8 @@ fun PreviewLandingPageUI() {
 
             },
             navigateToSearch = {},
-            backPress = {}
+            backPress = {},
+            playMusicFromRemote = {}
         )
     }
 }

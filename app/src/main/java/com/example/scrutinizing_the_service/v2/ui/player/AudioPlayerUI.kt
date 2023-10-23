@@ -51,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.AudioPlayerProgressUI
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -98,19 +99,20 @@ fun AudioPlayerUI(
                     state = state,
                     seekToPosition = {
                         viewModel.sendUIEvent(PlayerUiEvent.UpdateProgress(it))
+                        viewModel.sendMediaAction(MediaPlayerAction.UpdateProgress(it))
                     }
                 )
 
                 PlayerActions(
                     isPlaying = state.isPlaying,
                     skipToNext = {
-                        viewModel.sendUIEvent(PlayerUiEvent.PlayNextItem)
+                        viewModel.sendMediaAction(MediaPlayerAction.PlayNextItem)
                     },
                     pausePlay = {
-                        viewModel.sendUIEvent(PlayerUiEvent.PlayPause)
+                        viewModel.sendMediaAction(MediaPlayerAction.PlayPause)
                     },
                     skipToPrevious = {
-                        viewModel.sendUIEvent(PlayerUiEvent.PlayPreviousItem)
+                        viewModel.sendMediaAction(MediaPlayerAction.PlayPreviousItem)
                     }
                 )
 

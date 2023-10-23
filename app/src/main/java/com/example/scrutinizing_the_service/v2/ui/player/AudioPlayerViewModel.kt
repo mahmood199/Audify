@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.data.toSong
-import com.example.scrutinizing_the_service.v2.ext.calculateProgressValue
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState
+import com.example.scrutinizing_the_service.v2.util.calculateProgressValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -89,39 +90,16 @@ class AudioPlayerViewModel @Inject constructor(
     fun sendUIEvent(playerUiEvent: PlayerUiEvent) {
         viewModelScope.launch {
             when (playerUiEvent) {
-                PlayerUiEvent.PlayPause -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayPause)
-                }
-
-                PlayerUiEvent.Rewind -> {
-                    playerController.onPlayerEvents(PlayerEvent.Rewind)
-                }
-
-                PlayerUiEvent.FastForward -> {
-                    playerController.onPlayerEvents(PlayerEvent.FastForward)
-                }
-
-                PlayerUiEvent.PlayNextItem -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayNextItem)
-                }
-
-                PlayerUiEvent.PlayPreviousItem -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlayPreviousItem)
-                }
-
-                is PlayerUiEvent.PlaySongAt -> {
-                    playerController.onPlayerEvents(PlayerEvent.PlaySongAt(playerUiEvent.index))
-                }
-
                 is PlayerUiEvent.UpdateProgress -> {
-                    playerController.onPlayerEvents(
-                        PlayerEvent.UpdateProgress(
-                            newProgress = playerUiEvent.newProgress
-                        )
-                    )
                     _state.value.progress = playerUiEvent.newProgress
                 }
             }
+        }
+    }
+
+    fun sendMediaAction(action: MediaPlayerAction) {
+        viewModelScope.launch {
+            playerController.sendMediaEvent(action)
         }
     }
 

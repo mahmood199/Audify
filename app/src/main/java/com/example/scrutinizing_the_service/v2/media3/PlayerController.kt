@@ -3,6 +3,7 @@ package com.example.scrutinizing_the_service.v2.media3
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,27 +32,47 @@ class PlayerController @Inject constructor(
         player.addListener(this)
     }
 
-    fun addItems(mediaItems: List<MediaItem>) {
-        if (player.mediaItemCount == 0) {
-            player.playlistMetadata
-            player.setMediaItems(mediaItems)
-            player.prepare()
-        }
-    }
+    suspend fun sendMediaEvent(action: MediaPlayerAction) {
+        when (action) {
 
-    suspend fun onPlayerEvents(
-        playerEvent: PlayerEvent,
-    ) {
-        when (playerEvent) {
-            PlayerEvent.PlayPause -> playOrPause()
-            PlayerEvent.Rewind -> player.seekBack()
-            PlayerEvent.FastForward -> player.seekForward()
-            is PlayerEvent.PlaySongAt -> {
-                if (player.currentMediaItemIndex == playerEvent.index) {
+            is MediaPlayerAction.UpdateProgress -> {
+                player.seekTo((player.duration * action.newProgress).toLong())
+            }
+
+            MediaPlayerAction.PlayPause -> {
+                playOrPause()
+            }
+
+            MediaPlayerAction.Rewind -> {
+                player.seekBack()
+            }
+
+            MediaPlayerAction.FastForward -> {
+                player.seekForward()
+            }
+
+            MediaPlayerAction.PlayNextItem -> {
+                with(player) {
+                    seekTo(player.nextMediaItemIndex, 0)
+                    prepare()
+                    play()
+                }
+            }
+
+            MediaPlayerAction.PlayPreviousItem -> {
+                with(player) {
+                    seekTo(player.previousMediaItemIndex, 0)
+                    prepare()
+                    play()
+                }
+            }
+
+            is MediaPlayerAction.PlaySongAt -> {
+                if (player.currentMediaItemIndex == action.index) {
                     playOrPause()
                 } else {
                     with(player) {
-                        seekTo(playerEvent.index, 0)
+                        seekTo(action.index, 0)
                         playWhenReady = true
                         _audioState.value = PlayerState.Playing(
                             isPlaying = true,
@@ -61,27 +82,26 @@ class PlayerController @Inject constructor(
                 }
             }
 
-            is PlayerEvent.UpdateProgress -> {
-                player.seekTo(
-                    (player.duration * playerEvent.newProgress).toLong()
-                )
+            is MediaPlayerAction.SetMediaItem -> {
+                setMediaItem(action.mediaItem)
             }
 
-            PlayerEvent.PlayNextItem -> {
-                with(player) {
-                    seekTo(player.nextMediaItemIndex, 0)
-                    prepare()
-                    play()
-                }
-            }
+        }
+    }
 
-            PlayerEvent.PlayPreviousItem -> {
-                with(player) {
-                    seekTo(player.previousMediaItemIndex, 0)
-                    prepare()
-                    play()
-                }
-            }
+    private fun setMediaItem(mediaItem: MediaItem) {
+        with(player) {
+            setMediaItem(mediaItem)
+            prepare()
+            play()
+        }
+    }
+
+    fun addItems(mediaItems: List<MediaItem>) {
+        if (player.mediaItemCount == 0) {
+            player.playlistMetadata
+            player.setMediaItems(mediaItems)
+            player.prepare()
         }
     }
 

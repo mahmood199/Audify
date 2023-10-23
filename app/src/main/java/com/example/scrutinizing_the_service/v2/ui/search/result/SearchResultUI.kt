@@ -36,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
 import com.example.scrutinizing_the_service.v2.ui.search.album.SearchAlbumUI
@@ -91,7 +92,8 @@ fun SearchResultUI(
             AnimatedBottomPlayer(
                 state = state,
                 selectedPage = selectedIndex,
-                sendUiEvent = viewModel::sendUIEvent,
+                sendMediaAction = viewModel::sendMediaAction,
+                sendUiEvent = viewModel::sendUiEvent,
                 navigateToPlayer = navigateToPlayer
             )
         },
@@ -155,6 +157,7 @@ private const val ARTIST_PAGE_INDEX = 2
 private fun AnimatedBottomPlayer(
     state: SearchResultViewState,
     selectedPage: Int,
+    sendMediaAction: (MediaPlayerAction) -> Unit,
     sendUiEvent: (SearchResultUiEvent) -> Unit,
     navigateToPlayer: () -> Unit
 ) {
@@ -169,24 +172,25 @@ private fun AnimatedBottomPlayer(
             artist = state.currentSong?.artist ?: "Error",
             isPlaying = state.isPlaying,
             onPlayPauseClicked = {
-                sendUiEvent(SearchResultUiEvent.PlayPause)
+                sendMediaAction(MediaPlayerAction.PlayPause)
             },
             onRewindClicked = {
-                sendUiEvent(SearchResultUiEvent.Rewind)
+                sendMediaAction(MediaPlayerAction.Rewind)
             },
             onFastForwardClicked = {
-                sendUiEvent(SearchResultUiEvent.FastForward)
+                sendMediaAction(MediaPlayerAction.FastForward)
             },
             onPlayPreviousClicked = {
-                sendUiEvent(SearchResultUiEvent.PlayPreviousItem)
+                sendMediaAction(MediaPlayerAction.PlayPreviousItem)
             },
             onPlayNextClicked = {
-                sendUiEvent(SearchResultUiEvent.PlayNextItem)
+                sendMediaAction(MediaPlayerAction.PlayNextItem)
             },
             navigateToPlayer = {
                 navigateToPlayer()
             },
             seekToPosition = {
+                sendMediaAction(MediaPlayerAction.UpdateProgress(it))
                 sendUiEvent(SearchResultUiEvent.UpdateProgress(it))
             }
         )
