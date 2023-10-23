@@ -1,12 +1,16 @@
 package com.example.scrutinizing_the_service.v2.ui.home.songs
 
+import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import com.example.scrutinizing_the_service.v2.data.models.local.Genre
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
+import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -62,12 +66,6 @@ class SongsViewModel @Inject constructor(
         }
     }
 
-    private fun searchSongs(query: String) {
-        viewModelScope.launch {
-
-        }
-    }
-
     fun addRemoveToSelectedItems(selectedGenre: Genre) {
         if (selectedGenres.contains(selectedGenre))
             selectedGenres.remove(selectedGenre)
@@ -89,14 +87,50 @@ class SongsViewModel @Inject constructor(
     private fun updateSelectedGenre() {
         viewModelScope.launch(Dispatchers.IO) {
             selectedGenres.forEach { genre ->
-                genreRepository.add(genre)
+                genreRepository.add(genre.copy(userSelected = true))
             }
+            searchSongByGenre(selectedGenres.first().name)
         }
     }
 
     fun selectionPrompt(value: Boolean) {
         viewModelScope.launch {
             _state.emit(_state.value.copy(enforceSelection = value))
+        }
+    }
+
+    fun sendMediaAction(action: MediaPlayerAction) {
+        viewModelScope.launch {
+            playerController.sendMediaEvent(action)
+        }
+    }
+
+    fun playItem(recentlyPlayed: RecentlyPlayed) {
+        // Make Mapper for this
+        val item = MediaItem.Builder()
+            .setUri(recentlyPlayed.downloadUrl)
+            .setMediaMetadata(
+                MediaMetadata.Builder()
+                    .setAlbumArtist(recentlyPlayed.albumName)
+                    .setDisplayTitle(recentlyPlayed.name)
+                    .setSubtitle(recentlyPlayed.releaseDate)
+                    .setArtworkUri(Uri.parse(recentlyPlayed.imageUrl))
+                    .setReleaseYear(
+                        try {
+                            recentlyPlayed.year.toInt()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            2000
+                        }
+                    )
+                    .setAlbumTitle(recentlyPlayed.albumName)
+                    .setTitle(recentlyPlayed.name)
+                    .build()
+            )
+            .build()
+        sendMediaAction(MediaPlayerAction.SetMediaItem(item))
+        viewModelScope.launch(Dispatchers.IO) {
+            songsRepository.insertSongs(listOf(recentlyPlayed.copy(playCount = recentlyPlayed.playCount + 1)))
         }
     }
 

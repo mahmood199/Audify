@@ -22,6 +22,7 @@ data class RecentlyPlayed(
     val language: String,
     val name: String,
     val playCount: String,
+    val playCountLocal: Int = 0,
     val releaseDate: String,
     val type: String,
     @ColumnInfo("time_stamp")

@@ -50,7 +50,9 @@ class LocalModule {
             context,
             ApplicationDatabase::class.java,
             DB_NAME
-        ).addCallback(object : RoomDatabase.Callback() {
+        )
+            .fallbackToDestructiveMigration()
+            .addCallback(object : RoomDatabase.Callback() {
 
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)

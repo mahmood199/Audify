@@ -21,7 +21,6 @@ import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.receiver.WifiConnectionReceiver
-import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,6 +52,9 @@ class AudioPlayerActivity : ComponentActivity() {
                     },
                     playMusic = { song, index ->
                         viewModel.sendMediaAction(MediaPlayerAction.PlaySongAt(index))
+                        startMusicService()
+                    },
+                    playMusicFromRemote = {
                         startMusicService()
                     }
                 )
@@ -94,6 +96,7 @@ fun NavigationCentralPreview() {
             backPress = {},
             playMusic = { song: Song, i: Int ->
             },
+            playMusicFromRemote = {},
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surface
             )

@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
+import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.home.landing.LandingPageUI
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
@@ -24,6 +25,7 @@ const val OFFSET = 500
 @Composable
 fun NavigationCentral(
     playMusic: (Song, Int) -> Unit,
+    playMusicFromRemote: (RecentlyPlayed) -> Unit,
     backPress: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -45,6 +47,7 @@ fun NavigationCentral(
                 navigateToSearch = {
                     navController.navigate(Screen.SearchHistory.name)
                 },
+                playMusicFromRemote = playMusicFromRemote
             )
         }
 

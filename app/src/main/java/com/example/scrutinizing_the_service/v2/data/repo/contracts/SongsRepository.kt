@@ -13,6 +13,8 @@ interface SongsRepository {
 
     suspend fun getAll(): List<RecentlyPlayed>
 
+    suspend fun insertSongs(songs: List<RecentlyPlayed>)
+
     fun observeMostRecentlyPlayed(): Flow<List<RecentlyPlayed>>
 
     fun observeMostPlayed(): Flow<List<RecentlyPlayed>>

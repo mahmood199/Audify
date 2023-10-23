@@ -99,6 +99,7 @@ fun AudioPlayerUI(
                     state = state,
                     seekToPosition = {
                         viewModel.sendUIEvent(PlayerUiEvent.UpdateProgress(it))
+                        viewModel.sendMediaAction(MediaPlayerAction.UpdateProgress(it))
                     }
                 )
 

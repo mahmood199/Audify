@@ -32,27 +32,47 @@ class PlayerController @Inject constructor(
         player.addListener(this)
     }
 
-    fun addItems(mediaItems: List<MediaItem>) {
-        if (player.mediaItemCount == 0) {
-            player.playlistMetadata
-            player.setMediaItems(mediaItems)
-            player.prepare()
-        }
-    }
+    suspend fun sendMediaEvent(action: MediaPlayerAction) {
+        when (action) {
 
-    suspend fun onPlayerEvents(
-        playerEvent: PlayerEvent,
-    ) {
-        when (playerEvent) {
-            PlayerEvent.PlayPause -> playOrPause()
-            PlayerEvent.Rewind -> player.seekBack()
-            PlayerEvent.FastForward -> player.seekForward()
-            is PlayerEvent.PlaySongAt -> {
-                if (player.currentMediaItemIndex == playerEvent.index) {
+            is MediaPlayerAction.UpdateProgress -> {
+                player.seekTo((player.duration * action.newProgress).toLong())
+            }
+
+            MediaPlayerAction.PlayPause -> {
+                playOrPause()
+            }
+
+            MediaPlayerAction.Rewind -> {
+                player.seekBack()
+            }
+
+            MediaPlayerAction.FastForward -> {
+                player.seekForward()
+            }
+
+            MediaPlayerAction.PlayNextItem -> {
+                with(player) {
+                    seekTo(player.nextMediaItemIndex, 0)
+                    prepare()
+                    play()
+                }
+            }
+
+            MediaPlayerAction.PlayPreviousItem -> {
+                with(player) {
+                    seekTo(player.previousMediaItemIndex, 0)
+                    prepare()
+                    play()
+                }
+            }
+
+            is MediaPlayerAction.PlaySongAt -> {
+                if (player.currentMediaItemIndex == action.index) {
                     playOrPause()
                 } else {
                     with(player) {
-                        seekTo(playerEvent.index, 0)
+                        seekTo(action.index, 0)
                         playWhenReady = true
                         _audioState.value = PlayerState.Playing(
                             isPlaying = true,
@@ -62,27 +82,26 @@ class PlayerController @Inject constructor(
                 }
             }
 
-            is PlayerEvent.UpdateProgress -> {
-                player.seekTo(
-                    (player.duration * playerEvent.newProgress).toLong()
-                )
+            is MediaPlayerAction.SetMediaItem -> {
+                setMediaItem(action.mediaItem)
             }
 
-            PlayerEvent.PlayNextItem -> {
-                with(player) {
-                    seekTo(player.nextMediaItemIndex, 0)
-                    prepare()
-                    play()
-                }
-            }
+        }
+    }
 
-            PlayerEvent.PlayPreviousItem -> {
-                with(player) {
-                    seekTo(player.previousMediaItemIndex, 0)
-                    prepare()
-                    play()
-                }
-            }
+    private fun setMediaItem(mediaItem: MediaItem) {
+        with(player) {
+            setMediaItem(mediaItem)
+            prepare()
+            play()
+        }
+    }
+
+    fun addItems(mediaItems: List<MediaItem>) {
+        if (player.mediaItemCount == 0) {
+            player.playlistMetadata
+            player.setMediaItems(mediaItems)
+            player.prepare()
         }
     }
 
@@ -146,42 +165,6 @@ class PlayerController @Inject constructor(
         _audioState.value = PlayerState.Playing(
             isPlaying = false,
         )
-    }
-
-    suspend fun sendMediaEvent(action: MediaPlayerAction) {
-        when (action) {
-            MediaPlayerAction.PlayPause -> {
-                onPlayerEvents(PlayerEvent.PlayPause)
-            }
-
-            MediaPlayerAction.Rewind -> {
-                onPlayerEvents(PlayerEvent.Rewind)
-            }
-
-            MediaPlayerAction.FastForward -> {
-                onPlayerEvents(PlayerEvent.FastForward)
-            }
-
-            MediaPlayerAction.PlayNextItem -> {
-                onPlayerEvents(PlayerEvent.PlayNextItem)
-            }
-
-            MediaPlayerAction.PlayPreviousItem -> {
-                onPlayerEvents(PlayerEvent.PlayPreviousItem)
-            }
-
-            is MediaPlayerAction.PlaySongAt -> {
-                onPlayerEvents(PlayerEvent.PlaySongAt(action.index))
-            }
-
-            is MediaPlayerAction.UpdateProgress -> {
-                onPlayerEvents(
-                    PlayerEvent.UpdateProgress(
-                        newProgress = action.newProgress
-                    )
-                )
-            }
-        }
     }
 
 }

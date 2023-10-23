@@ -59,4 +59,8 @@ class SongsRepositoryImpl @Inject constructor(
         return localDataSource.getAll()
     }
 
+    override suspend fun insertSongs(songs: List<RecentlyPlayed>) {
+        return localDataSource.insertSongs(songs)
+    }
+
 }
