@@ -1,6 +1,7 @@
 package com.example.scrutinizing_the_service.v2.ui.player
 
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -37,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -54,8 +56,11 @@ import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.AudioPlayerProgressUI
+import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
+import com.example.scrutinizing_the_service.v2.ui.common.FailedToLoadImage
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.linc.audiowaveform.infiniteLinearGradient
+import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -88,7 +93,7 @@ fun AudioPlayerUI(
         bottomBar = {
             Column(
                 modifier = Modifier
-                    .background(Color.Green)
+                    .background(state.backGroundColor)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
                     .background(Color.Cyan)
@@ -124,8 +129,8 @@ fun AudioPlayerUI(
             }
         },
         modifier = modifier
-            .background(Color.Green)
             .fillMaxSize()
+            .background(state.backGroundColor)
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -134,11 +139,10 @@ fun AudioPlayerUI(
                     top = paddingValues.calculateTopPadding(),
                     bottom = paddingValues.calculateBottomPadding()
                 )
-                .background(Color.Green),
+                .background(state.backGroundColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-
             Text(
                 text = "Hey there",
                 modifier = Modifier
@@ -156,9 +160,24 @@ fun AudioPlayerUI(
                     .fillMaxWidth(0.8f)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(10))
-                    .background(Color.DarkGray)
             ) {
+                val imageLink = remember(state.currentMediaItem) {
+                    state.currentMediaItem?.mediaMetadata?.artworkUri?.let {
+                        "${it.scheme}:${it.schemeSpecificPart}"
+                    } ?: ""
+                }
 
+                GlideImage(
+                    imageModel = {
+                        imageLink
+                    },
+                    loading = {
+                        ContentLoaderUI()
+                    },
+                    failure = {
+                        FailedToLoadImage()
+                    }
+                )
             }
 
             Text(

@@ -9,6 +9,7 @@ object ScreenName {
     const val SEARCH_RESULT = "search_result"
     const val LANDING_PAGE = "landing_page"
     const val SETTINGS_PAGE = "settings"
+    const val GENRE_SELECTION = "genre_selection"
 }
 
 
@@ -20,4 +21,5 @@ sealed class Screen(val name: String) {
     data object SearchResult : Screen(name = ScreenName.SEARCH_RESULT)
     data object LandingPage : Screen(name = ScreenName.LANDING_PAGE)
     data object SettingsPage : Screen(name = ScreenName.SETTINGS_PAGE)
+    data object GenreSelection : Screen(name = ScreenName.GENRE_SELECTION)
 }

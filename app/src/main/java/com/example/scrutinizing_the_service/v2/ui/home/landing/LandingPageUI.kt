@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -58,6 +59,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LandingPageUI(
+    redirectToGenreSelection: () -> Unit,
     redirectToLocalAudioScreen: () -> Unit,
     navigateToSearch: () -> Unit,
     backPress: () -> Unit,
@@ -157,42 +159,62 @@ fun LandingPageUI(
                     modifier = Modifier.padding(top = 40.dp)
                 )
 
-                Column(modifier = Modifier.weight(1f)) {
-                    VerticalPager(
-                        state = pagerState,
-                        userScrollEnabled = false
-                    ) { currentPage ->
-                        when (currentPage) {
-
-                            QUICK_PICKS_PAGE_INDEX -> QuickPicksUI()
-
-                            SONGS_PAGE_INDEX -> SongsUI(
-                                playMusicFromRemote = { recentlyPlayed ->
-                                    playMusicFromRemote(recentlyPlayed)
-                                }
-                            )
-
-                            PLAYLIST_PAGE_INDEX -> PlaylistUI(
-                                goToLocalAudioScreen = redirectToLocalAudioScreen,
-                            )
-
-                            ARTIST_PAGE_INDEX -> ArtistsUI()
-
-                            ALBUM_PAGE_INDEX -> AlbumsUI()
-
-                            FAVOURITES_PAGE_INDEX -> FavouritesUI()
-
-                            else -> Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Color.Black)
-                            )
-                        }
-                    }
-                }
+                PagerContent(
+                    modifier = Modifier.weight(1f),
+                    pagerState = pagerState,
+                    redirectToGenreSelection = redirectToGenreSelection,
+                    playMusicFromRemote = playMusicFromRemote,
+                    redirectToLocalAudioScreen = redirectToLocalAudioScreen
+                )
             }
         }
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PagerContent(
+    pagerState : PagerState,
+    redirectToGenreSelection: () -> Unit,
+    redirectToLocalAudioScreen: () -> Unit,
+    playMusicFromRemote: (RecentlyPlayed) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        VerticalPager(
+            state = pagerState,
+            userScrollEnabled = false
+        ) { currentPage ->
+            when (currentPage) {
+
+                QUICK_PICKS_PAGE_INDEX -> QuickPicksUI()
+
+                SONGS_PAGE_INDEX -> SongsUI(
+                    redirectToGenreSelection = redirectToGenreSelection,
+                    playMusicFromRemote = { recentlyPlayed ->
+                        playMusicFromRemote(recentlyPlayed)
+                    }
+                )
+
+                PLAYLIST_PAGE_INDEX -> PlaylistUI(
+                    goToLocalAudioScreen = redirectToLocalAudioScreen,
+                )
+
+                ARTIST_PAGE_INDEX -> ArtistsUI()
+
+                ALBUM_PAGE_INDEX -> AlbumsUI()
+
+                FAVOURITES_PAGE_INDEX -> FavouritesUI()
+
+                else -> Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black)
+                )
+            }
+        }
+    }
+
 }
 
 private const val QUICK_PICKS_PAGE_INDEX = 0
@@ -226,7 +248,8 @@ fun PreviewLandingPageUI() {
             },
             navigateToSearch = {},
             backPress = {},
-            playMusicFromRemote = {}
+            playMusicFromRemote = {},
+            redirectToGenreSelection = {}
         )
     }
 }

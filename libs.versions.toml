@@ -31,6 +31,7 @@ androidx-junit = "1.1.5"
 espresso = "3.5.1"
 compose-runtime = "2.6.2"
 slf4jSimple = "2.0.9"
+palette-ktx-version = "1.0.0"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -118,6 +119,6 @@ compose-audiowaveform = { group = "com.github.lincollincol", name = "compose-aud
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable-version" }
 brotli-dec = { group = "org.brotli", name = "dec", version.ref = "brotli-dec-version" }
 
-
+palette-ktx = { group = "androidx.palette", name = "palette-ktx", version.ref = "palette-ktx-version" }
 
 [plugins]

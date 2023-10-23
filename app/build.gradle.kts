@@ -65,6 +65,7 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -153,4 +154,7 @@ dependencies {
     implementation(libs.landscapist.glide)
     implementation(libs.datastore.preferences)
     implementation(libs.compose.audiowaveform)
+
+    implementation(libs.palette.ktx)
+
 }
