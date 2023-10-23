@@ -16,12 +16,14 @@ class LandingPageRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getHomePageData(): NetworkResult<HomePageResponse> {
-        val response = client.get(
-            "https://saavn.me/modules?trending"
-        ) {
+        return safeApiCall {
+            val response = client.get(
+                "https://saavn.me/modules?trending"
+            ) {
 
+            }
+            return responseProcessor.getResultFromResponse<HomePageResponse>(gson, response)
         }
-        return responseProcessor.getResultFromResponse<HomePageResponse>(gson, response)
     }
 
 }
