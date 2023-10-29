@@ -91,7 +91,7 @@ class PlayerController @Inject constructor(
 
     private fun setMediaItem(mediaItem: MediaItem) {
         with(player) {
-            setMediaItem(mediaItem)
+            setMediaItems(listOf(mediaItem))
             prepare()
             play()
         }
@@ -99,7 +99,6 @@ class PlayerController @Inject constructor(
 
     fun addItems(mediaItems: List<MediaItem>) {
         if (player.mediaItemCount == 0) {
-            player.playlistMetadata
             player.setMediaItems(mediaItems)
             player.prepare()
         }
@@ -165,6 +164,10 @@ class PlayerController @Inject constructor(
         _audioState.value = PlayerState.Playing(
             isPlaying = false,
         )
+    }
+
+    fun getCurrentlyPlayingItem(): MediaItem? {
+        return player.currentMediaItem
     }
 
 }

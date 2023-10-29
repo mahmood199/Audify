@@ -6,12 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.scrutinizing_the_service.v2.data.models.local.Genre
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
 import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
+import com.example.scrutinizing_the_service.v2.paging.AlbumPagingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,14 +46,14 @@ class SongsViewModel @Inject constructor(
     }
 
     private fun observeLocalDB() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             songsRepository.observeMostRecentlyPlayed().collectLatest {
                 songs.clear()
                 songs.addAll(it)
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             genreRepository.getAll().collectLatest {
                 genres.clear()
                 genres.addAll(it)
@@ -65,6 +69,7 @@ class SongsViewModel @Inject constructor(
             _state.value = _state.value.copy(isLoading = false)
         }
     }
+
 
     fun addRemoveToSelectedItems(selectedGenre: Genre) {
         if (selectedGenres.contains(selectedGenre))
@@ -98,6 +103,8 @@ class SongsViewModel @Inject constructor(
             _state.emit(_state.value.copy(enforceSelection = value))
         }
     }
+
+
 
     fun sendMediaAction(action: MediaPlayerAction) {
         viewModelScope.launch {

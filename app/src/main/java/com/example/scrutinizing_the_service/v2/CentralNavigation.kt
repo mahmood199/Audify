@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
+import com.example.scrutinizing_the_service.v2.ui.genre.GenreSelectionUI
 import com.example.scrutinizing_the_service.v2.ui.home.landing.LandingPageUI
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
@@ -47,7 +48,10 @@ fun NavigationCentral(
                 navigateToSearch = {
                     navController.navigate(Screen.SearchHistory.name)
                 },
-                playMusicFromRemote = playMusicFromRemote
+                playMusicFromRemote = playMusicFromRemote,
+                redirectToGenreSelection = {
+                    navController.navigate(Screen.GenreSelection.name)
+                }
             )
         }
 
@@ -146,6 +150,12 @@ fun NavigationCentral(
             }
         ) {
 
+        }
+
+        composable(
+            route = Screen.GenreSelection.name
+        ) {
+            GenreSelectionUI()
         }
     }
 }

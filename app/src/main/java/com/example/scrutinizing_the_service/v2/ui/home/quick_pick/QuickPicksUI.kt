@@ -129,6 +129,8 @@ fun QuickPicksUIContent(
             playlists = playlists,
             modifier = Modifier.padding(top = 20.dp)
         )
+
+        ShimmerDemoUI()
     }
 }
 
