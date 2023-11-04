@@ -21,7 +21,8 @@ class GenresViewModel @Inject constructor(
     private val _state = MutableStateFlow(GenresViewState())
     val state = _state.asStateFlow()
 
-    val genres = mutableStateListOf<Genre>()
+    private val _genres = MutableStateFlow<List<Genre>>(emptyList())
+    val genres = _genres.asStateFlow()
 
     val selectedGenres = mutableStateListOf<Genre>()
 
@@ -32,8 +33,7 @@ class GenresViewModel @Inject constructor(
     private fun observeLocalDB() {
         viewModelScope.launch(Dispatchers.IO) {
             genreRepository.getAll().collectLatest {
-                genres.clear()
-                genres.addAll(it)
+                _genres.value = it
             }
         }
     }
@@ -69,8 +69,5 @@ class GenresViewModel @Inject constructor(
             _state.emit(_state.value.copy(enforceSelection = value))
         }
     }
-
-
-
 
 }

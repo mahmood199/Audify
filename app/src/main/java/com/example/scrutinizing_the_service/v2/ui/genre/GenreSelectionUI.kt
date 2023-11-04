@@ -38,7 +38,7 @@ fun GenreSelectionUI(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val genres = viewModel.genres.toPersistentList()
+    val genres by viewModel.genres.collectAsStateWithLifecycle()
 
     val selectedGenres = viewModel.selectedGenres.toPersistentList()
 

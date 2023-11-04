@@ -32,9 +32,9 @@ fun SongsUI(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val songs = viewModel.songs.toPersistentList()
+    val songs by viewModel.songs.collectAsStateWithLifecycle()
 
-    val genres = viewModel.genres.toPersistentList()
+    val genres by viewModel.genres.collectAsStateWithLifecycle()
 
     AnimatedContent(
         targetState = genres.count { it.userSelected } == 0,
@@ -49,6 +49,7 @@ fun SongsUI(
             SongsContentUI(
                 state = state,
                 songs = songs,
+                redirectToGenreSelection = redirectToGenreSelection,
                 songSelected = { recentlyPlayed ->
                     viewModel.playItem(recentlyPlayed)
                     playMusicFromRemote(recentlyPlayed)
@@ -84,7 +85,8 @@ fun GoToGenreSelectionScreen(
 @Composable
 fun SongsContentUI(
     state: SongsViewState,
-    songs: PersistentList<RecentlyPlayed>,
+    songs: List<RecentlyPlayed>,
+    redirectToGenreSelection: () -> Unit,
     songSelected: (RecentlyPlayed) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -97,6 +99,22 @@ fun SongsContentUI(
             ContentLoaderUI(modifier = Modifier.fillMaxSize())
         } else {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                item {
+                    Button(
+                        onClick = {
+                            redirectToGenreSelection()
+                        }
+                    ) {
+                        Text("Go to select genre")
+                    }
+                }
+                item {
+                    if (songs.isEmpty()) {
+                        Text("No songs submitted to UI")
+                    } else {
+                        Text("Songs submitted to UI")
+                    }
+                }
                 items(
                     count = songs.size,
                     key = { index ->

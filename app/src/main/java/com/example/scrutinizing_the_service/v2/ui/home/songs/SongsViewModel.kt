@@ -20,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,11 +36,11 @@ class SongsViewModel @Inject constructor(
     private val _state = MutableStateFlow(SongsViewState())
     val state = _state.asStateFlow()
 
-    val songs = mutableStateListOf<RecentlyPlayed>()
+    private val _songs = MutableStateFlow<List<RecentlyPlayed>>(emptyList())
+    val songs: StateFlow<List<RecentlyPlayed>> = _songs.asStateFlow()
 
-    val genres = mutableStateListOf<Genre>()
-
-    val selectedGenres = mutableStateListOf<Genre>()
+    private val _genres = MutableStateFlow<List<Genre>>(emptyList())
+    val genres = _genres.asStateFlow()
 
     init {
         observeLocalDB()
@@ -48,15 +49,14 @@ class SongsViewModel @Inject constructor(
     private fun observeLocalDB() {
         viewModelScope.launch(Dispatchers.IO) {
             songsRepository.observeMostRecentlyPlayed().collectLatest {
-                songs.clear()
-                songs.addAll(it)
+                _songs.value = it
             }
         }
 
         viewModelScope.launch(Dispatchers.IO) {
             genreRepository.getAll().collectLatest {
-                genres.clear()
-                genres.addAll(it)
+                _genres.value = it
+                searchSongByGenre(it.first().name)
             }
         }
     }
@@ -69,42 +69,6 @@ class SongsViewModel @Inject constructor(
             _state.value = _state.value.copy(isLoading = false)
         }
     }
-
-
-    fun addRemoveToSelectedItems(selectedGenre: Genre) {
-        if (selectedGenres.contains(selectedGenre))
-            selectedGenres.remove(selectedGenre)
-        else {
-            selectedGenres.add(selectedGenre)
-            if (_state.value.enforceSelection)
-                _state.tryEmit(_state.value.copy(enforceSelection = false))
-        }
-    }
-
-    fun confirmGenreSelection() {
-        if (selectedGenres.isEmpty()) {
-            selectionPrompt(true)
-        } else {
-            updateSelectedGenre()
-        }
-    }
-
-    private fun updateSelectedGenre() {
-        viewModelScope.launch(Dispatchers.IO) {
-            selectedGenres.forEach { genre ->
-                genreRepository.add(genre.copy(userSelected = true))
-            }
-            searchSongByGenre(selectedGenres.first().name)
-        }
-    }
-
-    fun selectionPrompt(value: Boolean) {
-        viewModelScope.launch {
-            _state.emit(_state.value.copy(enforceSelection = value))
-        }
-    }
-
-
 
     fun sendMediaAction(action: MediaPlayerAction) {
         viewModelScope.launch {
