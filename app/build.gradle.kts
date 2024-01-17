@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.scrutinizing_the_service"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -137,6 +137,7 @@ dependencies {
     //KTOR
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.gson)
@@ -157,5 +158,10 @@ dependencies {
     implementation(libs.compose.audiowaveform)
 
     implementation(libs.palette.ktx)
+
+    debugImplementation(libs.chucker.debug)
+    releaseImplementation(libs.chucker.release)
+
+    implementation(libs.compose.constraint.layout)
 
 }
