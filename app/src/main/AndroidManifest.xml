@@ -77,7 +77,7 @@
                 <action android:name="EMITTER_PREVIOUS" />
             </intent-filter>
         </receiver>
-        <receiver
+<!--        <receiver
             android:name=".services.MusicPlayerService$MusicPlayerListener"
             android:exported="false">
             <intent-filter>
@@ -98,7 +98,7 @@
             <intent-filter>
                 <action android:name="RECEIVER_REWIND" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <activity
             android:name=".ui.MainActivity"

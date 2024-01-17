@@ -35,10 +35,11 @@ android {
     }
 
     signingConfigs {
-        register("release") {
-            storePassword = "Party"
-            keyAlias = "Party2"
-            keyPassword = "Password"
+        create("release") {
+            storePassword = "Mahmood"
+            keyAlias = "key0"
+            storeFile = file("./music_player_key_store.key")
+            keyPassword = "Mahmood"
         }
     }
 
