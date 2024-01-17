@@ -2,6 +2,7 @@ package com.example.scrutinizing_the_service.v2.ui.audio_download
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun AudioDownloadUI(
+    onDownloadItem: (Track) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AudioDownloadViewModel = hiltViewModel()
 ) {
@@ -100,8 +102,16 @@ fun AudioDownloadUI(
                             contentType = items.itemContentType { "tracks" },
                         ) { index ->
                             val item = items[index]
+                            val url = when (index % 3) {
+                                0 -> "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3"
+                                1 -> "https://onlinetestcase.com/wp-content/uploads/2023/06/2-MB-MP3.mp3"
+                                2 -> "https://onlinetestcase.com/wp-content/uploads/2023/06/10-MB-MP3.mp3"
+                                else -> "https://onlinetestcase.com/wp-content/uploads/2023/06/10-MB-MP3.mp3"
+                            }
                             if (item != null) {
-                                TrackUI2(item)
+                                TrackUI2(item, url, {
+                                    onDownloadItem(item)
+                                })
                             }
                         }
 
@@ -123,10 +133,19 @@ fun AudioDownloadUI(
 }
 
 @Composable
-fun TrackUI2(item: Track) {
+fun TrackUI2(
+    item: Track,
+    url: String,
+    onClicked : () -> Unit,
+    modifier: Modifier = Modifier
+) {
     ConstraintLayout(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onClicked()
+            }
+        ,
     ) {
 
         val (image, detail) = createRefs()
@@ -184,6 +203,7 @@ fun TrackUI2(item: Track) {
         ) {
             Text(text = item.name, style = MaterialTheme.typography.bodyLarge)
             Text(text = item.artist, style = MaterialTheme.typography.titleMedium)
+            Text(text = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3", style = MaterialTheme.typography.bodySmall)
         }
     }
 }
@@ -203,7 +223,9 @@ fun TrackUI2Preview() {
                 name = "Mahmood",
                 streamable = "True",
                 url = ""
-            )
+            ),
+            url = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3" ,
+            {}
         )
     }
 }

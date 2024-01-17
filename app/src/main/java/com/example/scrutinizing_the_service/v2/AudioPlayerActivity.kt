@@ -18,6 +18,7 @@ import androidx.core.view.WindowCompat
 import androidx.media3.common.util.UnstableApi
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Track
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.receiver.WifiConnectionReceiver
@@ -56,10 +57,14 @@ class AudioPlayerActivity : ComponentActivity() {
                     },
                     playMusicFromRemote = {
                         startMusicService()
+                    },
+                    onDownloadTrack = {
+                        startDownloadService(it)
                     }
                 )
             }
         }
+
         registerReceiver(
             receiver,
             IntentFilter().apply {
@@ -67,6 +72,10 @@ class AudioPlayerActivity : ComponentActivity() {
                 addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
             }
         )
+    }
+
+    private fun startDownloadService(it: Track) {
+
     }
 
     private fun startMusicService() {
@@ -97,6 +106,9 @@ fun NavigationCentralPreview() {
             playMusic = { song: Song, i: Int ->
             },
             playMusicFromRemote = {},
+            onDownloadTrack = {
+
+            },
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surface
             )

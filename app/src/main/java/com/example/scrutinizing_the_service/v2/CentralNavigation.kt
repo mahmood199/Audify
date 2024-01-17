@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Track
 import com.example.scrutinizing_the_service.v2.ui.audio_download.AudioDownloadUI
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.genre.GenreSelectionUI
@@ -29,6 +30,7 @@ fun NavigationCentral(
     playMusic: (Song, Int) -> Unit,
     playMusicFromRemote: (RecentlyPlayed) -> Unit,
     backPress: () -> Unit,
+    onDownloadTrack: (Track) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -162,7 +164,11 @@ fun NavigationCentral(
         composable(
             route = Screen.AudioDownloadListScreen.name
         ) {
-            AudioDownloadUI()
+            AudioDownloadUI(
+                onDownloadItem = { track ->
+                    onDownloadTrack(track)
+                }
+            )
         }
     }
 }

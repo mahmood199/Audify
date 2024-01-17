@@ -56,7 +56,9 @@ class SongsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             genreRepository.getAll().collectLatest {
                 _genres.value = it
-                searchSongByGenre(it.first().name)
+                if (it.isNotEmpty()) {
+                    searchSongByGenre(it.first().name)
+                }
             }
         }
     }
