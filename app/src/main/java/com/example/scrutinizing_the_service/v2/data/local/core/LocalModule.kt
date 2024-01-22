@@ -13,6 +13,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.scrutinizing_the_service.v2.data.local.dao.ArtistDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.GenreDao
+import com.example.scrutinizing_the_service.v2.data.local.dao.LocalFileDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.RecentSearchesDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.RecentlyPlayedDao
 import com.example.scrutinizing_the_service.v2.data.local.prefs.PreferencesDataStore
@@ -116,4 +117,11 @@ class LocalModule {
     fun provideArtistDao(db: ApplicationDatabase): ArtistDao {
         return db.artistsDao()
     }
+
+    @Singleton
+    @Provides
+    fun provideLocalFilesDao(db: ApplicationDatabase): LocalFileDao {
+        return db.fileDao()
+    }
+
 }

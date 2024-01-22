@@ -8,6 +8,7 @@ plugins {
     id("kotlin-android")
     id("kotlinx-serialization")
     id("kotlin-kapt")
+    id("androidx.baselineprofile")
 }
 
 android {
@@ -50,7 +51,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
         }
     }
 
@@ -103,12 +109,14 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.compose.runtime)
+    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
+    "baselineProfile"(project(":baselineprofile"))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
@@ -163,5 +171,7 @@ dependencies {
     releaseImplementation(libs.chucker.release)
 
     implementation(libs.compose.constraint.layout)
+
+    implementation("com.mindorks.android:prdownloader:0.6.0")
 
 }

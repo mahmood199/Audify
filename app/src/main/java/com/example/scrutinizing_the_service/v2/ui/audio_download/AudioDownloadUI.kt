@@ -16,6 +16,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -32,35 +33,26 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Rank
-import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Track
-import com.example.scrutinizing_the_service.v2.paging.isAppending
-import com.example.scrutinizing_the_service.v2.paging.isEmpty
-import com.example.scrutinizing_the_service.v2.paging.isFirstLoad
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun AudioDownloadUI(
-    onDownloadItem: (Track) -> Unit,
+    onDownloadItem: (Song, Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AudioDownloadViewModel = hiltViewModel()
 ) {
 
-    val items = viewModel.tracks.collectAsLazyPagingItems()
+    val items = viewModel.tracks.toList()
 
     val loadTargetState: SearchResultState by remember {
         derivedStateOf {
             return@derivedStateOf when {
-                items.isEmpty.not() -> SearchResultState.Success
-
-                items.isFirstLoad -> SearchResultState.Loading
+                items.isEmpty().not() -> SearchResultState.Success
 
                 else -> SearchResultState.Error
             }
@@ -92,14 +84,12 @@ fun AudioDownloadUI(
                 ) {
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         items(
-                            count = items.itemCount,
+                            count = items.size,
                             key = {
-                                val key: (index: Int) -> Any = items.itemKey { item ->
-                                    item.mbid + "$it"
-                                }
-                                key(it)
+                                val item = items[it]
+                                item.id + "$it"
                             },
-                            contentType = items.itemContentType { "tracks" },
+                            contentType = { "tracks" },
                         ) { index ->
                             val item = items[index]
                             val url = when (index % 3) {
@@ -108,14 +98,12 @@ fun AudioDownloadUI(
                                 2 -> "https://onlinetestcase.com/wp-content/uploads/2023/06/10-MB-MP3.mp3"
                                 else -> "https://onlinetestcase.com/wp-content/uploads/2023/06/10-MB-MP3.mp3"
                             }
-                            if (item != null) {
-                                TrackUI2(item, url, {
-                                    onDownloadItem(item)
-                                })
-                            }
+                            TrackUI2(item.copy(url = url), url, {
+                                onDownloadItem(item, index)
+                            })
                         }
 
-                        if (items.isAppending) {
+                        if (items.isEmpty()) {
                             item {
                                 Column(
                                     modifier = Modifier.fillMaxWidth(),
@@ -134,9 +122,9 @@ fun AudioDownloadUI(
 
 @Composable
 fun TrackUI2(
-    item: Track,
+    item: Song,
     url: String,
-    onClicked : () -> Unit,
+    onClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
@@ -144,16 +132,14 @@ fun TrackUI2(
             .fillMaxWidth()
             .clickable {
                 onClicked()
-            }
-        ,
+            },
     ) {
 
         val (image, detail) = createRefs()
 
         GlideImage(
             imageModel = {
-                if (item.image.isNotEmpty())
-                    item.image[1].text
+                ""
             },
             imageOptions = ImageOptions(
                 contentScale = ContentScale.FillBounds
@@ -202,8 +188,11 @@ fun TrackUI2(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = item.name, style = MaterialTheme.typography.bodyLarge)
-            Text(text = item.artist, style = MaterialTheme.typography.titleMedium)
-            Text(text = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3", style = MaterialTheme.typography.bodySmall)
+            Text(text = item.duration.toString(), style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3",
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }
@@ -213,18 +202,8 @@ fun TrackUI2(
 fun TrackUI2Preview() {
     ScrutinizingTheServiceTheme {
         TrackUI2(
-            item = Track(
-                rank = Rank("1"),
-                artist = "Mahmood",
-                duration = "03:10",
-                image = emptyList(),
-                listeners = "3088",
-                mbid = "",
-                name = "Mahmood",
-                streamable = "True",
-                url = ""
-            ),
-            url = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3" ,
+            item = Song.default(),
+            url = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3",
             {}
         )
     }

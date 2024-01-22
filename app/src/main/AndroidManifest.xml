@@ -15,6 +15,7 @@
         android:name=".ServiceApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:debuggable="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,11 +24,14 @@
         android:requestRawExternalStorageAccess="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:debuggable="true"
         android:theme="@style/Theme.ScrutinizingTheService"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31"
-        tools:ignore="HardcodedDebugMode">
+        tools:ignore="HardcodedDebugMode"
+        tools:targetApi="31">
+        <profileable
+            android:shell="true"
+            tools:targetApi="29" />
+
         <activity
             android:name=".ui.music.MusicPlayerActivity"
             android:exported="false">
@@ -66,7 +70,6 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".broadcastReceivers.MediaBroadcastReceiver"
             android:exported="false">
@@ -77,7 +80,8 @@
                 <action android:name="EMITTER_PREVIOUS" />
             </intent-filter>
         </receiver>
-<!--        <receiver
+        <!--
+        <receiver
             android:name=".services.MusicPlayerService$MusicPlayerListener"
             android:exported="false">
             <intent-filter>
@@ -98,23 +102,23 @@
             <intent-filter>
                 <action android:name="RECEIVER_REWIND" />
             </intent-filter>
-        </receiver>-->
-
+        </receiver>
+        -->
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".v2.AudioPlayerActivity"
             android:exported="true"
             android:theme="@style/Theme.ScrutinizingTheService">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <service
@@ -125,22 +129,6 @@
                 <action android:name="androidx.media3.session.MediaSessionService" />
             </intent-filter>
         </service>
-
     </application>
 
-</manifest><!--
-            Register receiver dynamically for api level 26 and above because static registration wont work.
-            For api 25 and below both will work.
-
-            Not required because we can dynamically register listeners
-            <receiver
-                android:name=".v2.receiver.ConnectionReceiver"
-                android:exported="false">
-                &lt;!&ndash;dash;&gt;
-                exported = false means this will be used within the application only
-                &lt;!&ndash;dash;&gt;
-                <intent-filter>
-                    <action android:name="android.net.wifi.STATE_CHANGE" />
-                </intent-filter>
-            </receiver>
-    -->
+</manifest>

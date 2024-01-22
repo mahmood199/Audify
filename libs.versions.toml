@@ -34,6 +34,7 @@ slf4jSimple = "2.0.9"
 palette-ktx-version = "1.0.0"
 chucker = "4.0.0"
 compose-constraint-layout = "1.0.1"
+shortcut-core = "1.0.0"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -128,5 +129,7 @@ palette-ktx = { group = "androidx.palette", name = "palette-ktx", version.ref = 
 
 chucker-debug = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
+
+shortcut-core = { group = "androidx.core", name = "core-google-shortcuts", version.ref = "shortcut-core" }
 
 [plugins]

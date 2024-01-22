@@ -11,6 +11,7 @@ object ScreenName {
     const val SETTINGS_PAGE = "settings"
     const val GENRE_SELECTION = "genre_selection"
     const val AUDIO_DOWNLOAD_LIST = "audio_download_list"
+    const val SHORT_CUT_SETUP = "short_cut_setup"
 }
 
 
@@ -24,4 +25,5 @@ sealed class Screen(val name: String) {
     data object SettingsPage : Screen(name = ScreenName.SETTINGS_PAGE)
     data object GenreSelection : Screen(name = ScreenName.GENRE_SELECTION)
     data object AudioDownloadListScreen : Screen(name = ScreenName.AUDIO_DOWNLOAD_LIST)
+    data object ShortcutScreen : Screen(name = ScreenName.SHORT_CUT_SETUP)
 }

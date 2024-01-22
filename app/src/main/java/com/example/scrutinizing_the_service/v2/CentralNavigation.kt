@@ -5,15 +5,17 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
-import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Track
 import com.example.scrutinizing_the_service.v2.ui.audio_download.AudioDownloadUI
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.genre.GenreSelectionUI
@@ -22,6 +24,9 @@ import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
 import com.example.scrutinizing_the_service.v2.ui.settings.SettingsUI
+import com.example.scrutinizing_the_service.v2.ui.short_cut.ShortcutType
+import com.example.scrutinizing_the_service.v2.ui.short_cut.ShortcutUIContainer
+import kotlinx.coroutines.delay
 
 const val OFFSET = 500
 
@@ -30,10 +35,23 @@ fun NavigationCentral(
     playMusic: (Song, Int) -> Unit,
     playMusicFromRemote: (RecentlyPlayed) -> Unit,
     backPress: () -> Unit,
-    onDownloadTrack: (Track) -> Unit,
-    modifier: Modifier = Modifier
+    onDownloadSong: (com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song, Int) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
+
+    val shortcutType by viewModel.shortcutType
+
+    SaveableLaunchedEffect(Unit) {
+        delay(2000)
+        when (shortcutType) {
+            null -> Unit
+            else -> {
+                navController.navigate(route = Screen.ShortcutScreen.name)
+            }
+        }
+    }
 
     NavHost(
         navController = navController,
@@ -165,9 +183,17 @@ fun NavigationCentral(
             route = Screen.AudioDownloadListScreen.name
         ) {
             AudioDownloadUI(
-                onDownloadItem = { track ->
-                    onDownloadTrack(track)
+                onDownloadItem = { song, index ->
+                    onDownloadSong(song, index)
                 }
+            )
+        }
+
+        composable(
+            route = Screen.ShortcutScreen.name
+        ) {
+            ShortcutUIContainer(
+                parentShortcutType = shortcutType
             )
         }
     }

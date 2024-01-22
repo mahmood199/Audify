@@ -4,12 +4,15 @@ plugins {
     id("com.android.library") version "8.3.0-alpha07" apply false
     id("org.jetbrains.kotlin.android") version "1.9.10" apply false
     id("com.google.dagger.hilt.android") version "2.41" apply false
+    id("com.android.test") version "8.3.0-alpha07" apply false
+    id("androidx.baselineprofile") version "1.2.0-beta05" apply false
 }
 
 buildscript {
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
