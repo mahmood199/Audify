@@ -1,7 +1,12 @@
 package com.example.scrutinizing_the_service.v2.ui.audio_download
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,13 +21,13 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
+import com.example.scrutinizing_the_service.v2.ui.core.rotating
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
@@ -66,11 +72,32 @@ fun AudioDownloadUI(
     ) {
         when (it) {
             SearchResultState.Error -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth(.25f)
+                            .aspectRatio(1f)
+                            .rotating(duration = 2500)
+                            .border(BorderStroke(4.dp, Color.Red), RoundedCornerShape(12))
+                            .align(Alignment.Center)
+                    )
+                }
 
             }
 
             SearchResultState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize()) {
+                val alpha by animateFloatAsState(1f, tween(easing = LinearEasing), label = "")
+                val maxSize = remember {
+                    Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(12))
+                        .background(Color.White)
+                        .clickable {
+
+                        }
+                }
+
+                Box(modifier = maxSize.then(Modifier.alpha(alpha = alpha))) {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -82,7 +109,23 @@ fun AudioDownloadUI(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        item("SOme rotation UI") {
+
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(.25f)
+                                    .aspectRatio(1f)
+                                    .rotating(2500)
+                                    .background(Color.Red)
+                            )
+
+
+                        }
+
                         items(
                             count = items.size,
                             key = {
