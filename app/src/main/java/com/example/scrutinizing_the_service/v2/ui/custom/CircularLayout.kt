@@ -215,8 +215,6 @@ fun CircularLayoutPreview() {
                     nearestClickCoordinate = nearestCoordinate
                 }
 
-                val textMeasurer = rememberTextMeasurer()
-
                 Canvas(
                     modifier = Modifier
                         .fillMaxSize()
