@@ -174,4 +174,7 @@ dependencies {
 
     implementation("com.mindorks.android:prdownloader:0.6.0")
 
+    implementation("com.booking:perfsuite:0.2")
+
+
 }

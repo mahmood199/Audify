@@ -16,6 +16,7 @@ import androidx.navigation.navArgument
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconChangeUIContainer
 import com.example.scrutinizing_the_service.v2.ui.audio_download.AudioDownloadUI
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.genre.GenreSelectionUI
@@ -23,8 +24,7 @@ import com.example.scrutinizing_the_service.v2.ui.home.landing.LandingPageUI
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
-import com.example.scrutinizing_the_service.v2.ui.settings.SettingsUI
-import com.example.scrutinizing_the_service.v2.ui.short_cut.ShortcutType
+import com.example.scrutinizing_the_service.v2.ui.settings.SettingsUIContainer
 import com.example.scrutinizing_the_service.v2.ui.short_cut.ShortcutUIContainer
 import kotlinx.coroutines.delay
 
@@ -77,7 +77,22 @@ fun NavigationCentral(
         }
 
         composable(route = Screen.SettingsPage.name) {
-            SettingsUI()
+            SettingsUIContainer(
+                backPress = {
+                    navController.popBackStack()
+                },
+                navigateToIconChangeScreen = {
+                    navController.navigate(Screen.ChangeIcon.name)
+                }
+            )
+        }
+
+        composable(route = Screen.ChangeIcon.name) {
+            IconChangeUIContainer(
+                backPress = {
+                    navController.popBackStack()
+                },
+            )
         }
 
         composable(
