@@ -1,9 +1,9 @@
 package com.example.scrutinizing_the_service.v2.ui.custom
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -26,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -42,9 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.roundToIntRect
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.ui.core.rotating
 import com.example.scrutinizing_the_service.v2.util.px
-import kotlin.math.atan
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -116,6 +112,10 @@ fun CircularLayoutPreview() {
                 mutableStateOf(Offset.Zero)
             }
 
+            var nearestClickCoordinate by remember {
+                mutableStateOf(Offset.Zero)
+            }
+
             val items = remember(Unit) {
                 getHours()
             }
@@ -173,9 +173,6 @@ fun CircularLayoutPreview() {
                     }
             )
 
-            LaunchedEffect(clickCoordinate) {
-                Toast.makeText(context, "$clickCoordinate", Toast.LENGTH_SHORT).show()
-            }
 
             BoxWithConstraints(
                 modifier = Modifier
@@ -184,7 +181,7 @@ fun CircularLayoutPreview() {
                     .aspectRatio(1f)
                     .align(Alignment.Center)
                     .pointerInput(Unit) {
-                        detectTapGestures (
+                        detectTapGestures(
                             onTap = {
                                 clickCoordinate = it
                             }
@@ -198,13 +195,24 @@ fun CircularLayoutPreview() {
                 val height = maxHeight
                 val width = maxWidth
 
-                val context = LocalContext.current
-
                 SaveableLaunchedEffect(Unit) {
                     clickCoordinate = Offset(
                         x = width.value.px(context) * 0.85f,
                         y = height.value * 0.0f
                     )
+                }
+
+                LaunchedEffect(clickCoordinate) {
+                    val nearestCoordinate = getNearestCoordinate(
+                        point = clickCoordinate,
+                        center = Offset(
+                            x = width.value.px(context) * 0.5f,
+                            y = height.value.px(context) * 0.5f
+                        ),
+                        radius = width.value.px(context) * 0.5f,
+                    )
+
+                    nearestClickCoordinate = nearestCoordinate
                 }
 
                 val textMeasurer = rememberTextMeasurer()
@@ -213,12 +221,11 @@ fun CircularLayoutPreview() {
                     modifier = Modifier
                         .fillMaxSize()
                         .align(Alignment.Center)
-                        .clip(CircleShape)
                         .background(Color.Yellow)
-                        .clipToBounds()
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 clickCoordinate = Offset(change.position.x, change.position.y)
+
                             }
                             detectTapGestures {
                                 clickCoordinate = it
@@ -245,6 +252,26 @@ fun CircularLayoutPreview() {
 
                     drawText(textMeasurer.measure(pointOnCircle.toString()))
 
+                    for (i in 0 until 12) {
+                        val angle2 = (i * 30).toFloat()
+                        val pointOnCircumference =
+                            calculatePointOnCircumference2(center, radius, angle2)
+
+                        drawLine(
+                            color = Color.Gray,
+                            start = center,
+                            end = pointOnCircumference
+                        )
+                    }
+
+                    drawLine(
+                        color = Color.Blue,
+                        start = center,
+                        end = nearestClickCoordinate,
+                        strokeWidth = 12f,
+                        cap = StrokeCap.Round
+                    )
+
                     drawLine(
                         color = Color.Red,
                         start = Offset(size.width * 0.5f, size.height * 0.5f),
@@ -260,13 +287,40 @@ fun CircularLayoutPreview() {
                         strokeWidth = 12f,
                         cap = StrokeCap.Round
                     )
-
-
                 }
-
             }
         }
     }
+}
+
+fun getNearestCoordinate(point: Offset, center: Offset, radius: Float): Offset {
+    val angle = calculateAngle(
+        center = center,
+        point = point,
+    )
+
+    Log.d("ClockUI1", angle.toString())
+
+    val nearestAngle = roundToNearestAngle(angle)
+
+    Log.d("ClockUI2", nearestAngle.toString())
+
+    val result = calculatePointOnCircumference2(
+        center = center,
+        radius = radius,
+        angle = nearestAngle
+    )
+
+    Log.d("ClockUI3", result.toString())
+
+    return result
+}
+
+fun roundToNearestAngle(angle: Float): Float {
+    val degrees = Math.toDegrees(angle.toDouble()).toFloat()
+    val step = 30f
+    val nearestAngle = (degrees / step).roundToInt() * step
+    return if (nearestAngle < 0) nearestAngle + 360 else nearestAngle % 360
 }
 
 fun calculateAngle(center: Offset, point: Offset): Float {
@@ -276,7 +330,13 @@ fun calculateAngle(center: Offset, point: Offset): Float {
 fun calculatePointOnCircumference(center: Offset, radius: Float, angle: Float): Offset {
     val x = center.x + radius * cos(angle)
     val y = center.y + radius * sin(angle)
-    return Offset(x.toFloat(), y.toFloat())
+    return Offset(x, y)
+}
+
+fun calculatePointOnCircumference2(center: Offset, radius: Float, angle: Float): Offset {
+    val x = center.x + radius * cos(Math.toRadians(angle.toDouble())).toFloat()
+    val y = center.y + radius * sin(Math.toRadians(angle.toDouble())).toFloat()
+    return Offset(x, y)
 }
 
 fun getHours(): List<Int> {
