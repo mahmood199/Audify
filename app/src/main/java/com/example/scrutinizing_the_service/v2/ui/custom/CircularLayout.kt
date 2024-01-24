@@ -209,7 +209,7 @@ fun CircularLayoutPreview() {
                             x = width.value.px(context) * 0.5f,
                             y = height.value.px(context) * 0.5f
                         ),
-                        radius = width.value.px(context) * 0.5f,
+                        radius = width.value.px(context) * 0.45f,
                     )
 
                     nearestClickCoordinate = nearestCoordinate
@@ -221,7 +221,9 @@ fun CircularLayoutPreview() {
                     modifier = Modifier
                         .fillMaxSize()
                         .align(Alignment.Center)
+                        .clip(CircleShape)
                         .background(Color.Yellow)
+                        .clipToBounds()
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 clickCoordinate = Offset(change.position.x, change.position.y)
@@ -250,8 +252,6 @@ fun CircularLayoutPreview() {
                         angle
                     )
 
-                    drawText(textMeasurer.measure(pointOnCircle.toString()))
-
                     for (i in 0 until 12) {
                         val angle2 = (i * 30).toFloat()
                         val pointOnCircumference =
@@ -261,6 +261,25 @@ fun CircularLayoutPreview() {
                             color = Color.Gray,
                             start = center,
                             end = pointOnCircumference
+                        )
+                    }
+
+                    for (i in 0 until 60) {
+                        val minute = (i * 6).toFloat()
+                        val pointOnCircumference =
+                            calculatePointOnCircumference2(center, radius, minute)
+
+                        val isMultipleOf5 = (i % 5 == 0)
+
+                        drawLine(
+                            color = Color.Gray,
+                            start = pointOnCircumference,
+                            end = calculatePointOnCircumference2(
+                                center,
+                                radius - if (isMultipleOf5) 24f else 16f,
+                                minute
+                            ),
+                            strokeWidth = if (isMultipleOf5) 8f else 4f
                         )
                     }
 
