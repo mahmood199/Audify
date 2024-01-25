@@ -108,18 +108,116 @@
             android:name=".ui.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".v2.AudioPlayerActivity"
+            android:name=".v2.activity.AudioPlayerActivity"
             android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v1"
+            android:roundIcon="@mipmap/ic_app_launcher_v1_round"
             android:theme="@style/Theme.ScrutinizingTheService">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
+
+        <activity-alias
+            android:name=".v2.activity.AudioPlayerActivityAlias1"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v1"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_app_launcher_v1_round"
+            android:targetActivity=".v2.activity.AudioPlayerActivity"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".v2.activity.AudioPlayerActivityAlias2"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v2"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_app_launcher_v2_round"
+            android:targetActivity=".v2.activity.AudioPlayerActivity"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".v2.activity.AudioPlayerActivityAlias3"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v3"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_app_launcher_v3_round"
+            android:targetActivity=".v2.activity.AudioPlayerActivity"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".v2.activity.AudioPlayerActivityAlias4"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v4"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_app_launcher_v4_round"
+            android:targetActivity=".v2.activity.AudioPlayerActivity"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".v2.activity.AudioPlayerActivityAlias5"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v5"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_app_launcher_v5_round"
+            android:targetActivity=".v2.activity.AudioPlayerActivity"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".v2.activity.AudioPlayerActivityAlias6"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_app_launcher_v6"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_app_launcher_v6_round"
+            android:targetActivity=".v2.activity.AudioPlayerActivity"
+            android:theme="@style/Theme.ScrutinizingTheService">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
 
         <service
             android:name=".v2.media3.AudioPlayerService"

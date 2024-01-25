@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2
+package com.example.scrutinizing_the_service.v2.activity
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -21,10 +21,15 @@ import androidx.media3.common.util.UnstableApi
 import com.downloader.PRDownloader
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.MainScreenViewModel
+import com.example.scrutinizing_the_service.v2.NavigationCentral
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.receiver.WifiConnectionReceiver
+import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconModel
+import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconVariant
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
+import com.example.scrutinizing_the_service.v2.util.LauncherIconManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +44,10 @@ class AudioPlayerActivity : ComponentActivity() {
 
     private val receiver by lazy {
         WifiConnectionReceiver()
+    }
+
+    private val iconManager by lazy {
+        LauncherIconManager()
     }
 
     private val musicListViewModel: MusicListViewModel by viewModels()
@@ -67,6 +76,9 @@ class AudioPlayerActivity : ComponentActivity() {
                     onDownloadSong = { song, index ->
                         startDownloadService(song, index)
                     },
+                    iconChangeClicked = {
+                        changeAppIcon(it)
+                    },
                     viewModel = viewModel,
                 )
             }
@@ -79,6 +91,10 @@ class AudioPlayerActivity : ComponentActivity() {
                 addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
             }
         )
+    }
+
+    private fun changeAppIcon(iconModel: IconModel) {
+        iconManager.setCurrentIcon(this, iconModel.iconVariant)
     }
 
     private fun parseShortcutType() {
@@ -133,6 +149,9 @@ fun NavigationCentralPreview() {
             },
             playMusicFromRemote = {},
             onDownloadSong = { track: com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song, i: Int ->
+
+            },
+            iconChangeClicked = {
 
             },
             modifier = Modifier.background(

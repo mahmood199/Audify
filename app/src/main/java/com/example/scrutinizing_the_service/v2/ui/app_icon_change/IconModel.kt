@@ -4,5 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 data class IconModel(
     val resourceId: Int,
-    val backgroundColor: Color
+    val backgroundColor: Color,
+    val iconVariant: IconVariant
 )

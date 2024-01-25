@@ -17,6 +17,7 @@ import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconChangeUIContainer
+import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconModel
 import com.example.scrutinizing_the_service.v2.ui.audio_download.AudioDownloadUI
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.genre.GenreSelectionUI
@@ -36,6 +37,7 @@ fun NavigationCentral(
     playMusicFromRemote: (RecentlyPlayed) -> Unit,
     backPress: () -> Unit,
     onDownloadSong: (com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song, Int) -> Unit,
+    iconChangeClicked: (IconModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
@@ -92,6 +94,9 @@ fun NavigationCentral(
                 backPress = {
                     navController.popBackStack()
                 },
+                iconClicked = {
+                    iconChangeClicked(it)
+                }
             )
         }
 
