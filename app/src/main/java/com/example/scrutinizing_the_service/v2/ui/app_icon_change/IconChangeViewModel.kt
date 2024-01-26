@@ -30,7 +30,7 @@ class IconChangeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun getIconModels(): List<IconModel> {
+    private fun getIconModels(): Sequence<IconModel> {
         return listOf(
             IconModel(
                 R.mipmap.ic_app_launcher_v1_foreground,
@@ -62,7 +62,7 @@ class IconChangeViewModel @Inject constructor() : ViewModel() {
                 Color(R.color.ic_app_launcher_v6_background),
                 IconVariant.Variant6
             ),
-        )
+        ).asSequence()
     }
 
     private suspend fun updateState(updater: IconChangeViewState.() -> IconChangeViewState) {
