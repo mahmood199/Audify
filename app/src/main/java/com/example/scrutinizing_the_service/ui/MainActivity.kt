@@ -14,7 +14,7 @@ import com.example.scrutinizing_the_service.databinding.ActivityMainBinding
 import com.example.scrutinizing_the_service.services.BinderImpl
 import com.example.scrutinizing_the_service.services.SmartServices
 import com.example.scrutinizing_the_service.ui.music.MusicPlayerActivity
-import com.example.scrutinizing_the_service.v2.AudioPlayerActivity
+import com.example.scrutinizing_the_service.v2.activity.AudioPlayerActivity
 
 class MainActivity : AppCompatActivity() {
 

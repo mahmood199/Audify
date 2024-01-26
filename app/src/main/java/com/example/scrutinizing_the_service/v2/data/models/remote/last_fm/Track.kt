@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class Track(
     @SerializedName("@attr")
-    val rank: Rank,
+    val rank: Rank? = null,
     @SerializedName("artist")
     val artist: String,
     @SerializedName("duration")
-    val duration: String,
+    val duration: String? = null,
     @SerializedName("image")
     val image: List<Image>,
     @SerializedName("listeners")

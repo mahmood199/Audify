@@ -11,7 +11,7 @@ class SettingsViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(SettingsViewState())
+    private val _state = MutableStateFlow(SettingsViewState.default())
     val state = _state.asStateFlow()
 
 

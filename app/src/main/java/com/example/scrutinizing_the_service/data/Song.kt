@@ -3,6 +3,7 @@ package com.example.scrutinizing_the_service.data
 import android.os.Parcelable
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
+import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Album
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -13,7 +14,19 @@ data class Song(
     val isFavourite: Boolean = false,
     val path: String = "",
     val duration: Int = 0
-) : Parcelable
+) : Parcelable {
+    companion object {
+        fun default(): Song {
+            return Song(
+                album = Album.default().name,
+                duration = 200,
+                name = "Some Name",
+                artist = "Default Artist",
+                isFavourite = true,
+            )
+        }
+    }
+}
 
 
 fun Song.ToMediaItem(): MediaItem {

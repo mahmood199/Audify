@@ -32,7 +32,7 @@ class SearchAlbumViewModel @Inject constructor(
     ).flow
         .cachedIn(viewModelScope)
 
-    fun initiateSearch(query: String) {
+    private fun initiateSearch(query: String) {
         repository.setQuery(query)
     }
 

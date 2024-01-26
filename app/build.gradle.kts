@@ -8,6 +8,7 @@ plugins {
     id("kotlin-android")
     id("kotlinx-serialization")
     id("kotlin-kapt")
+    id("androidx.baselineprofile")
 }
 
 android {
@@ -16,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.scrutinizing_the_service"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -50,7 +51,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
         }
     }
 
@@ -103,12 +109,14 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.compose.runtime)
+    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
+    "baselineProfile"(project(":baselineprofile"))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
@@ -137,6 +145,7 @@ dependencies {
     //KTOR
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.gson)
@@ -157,5 +166,15 @@ dependencies {
     implementation(libs.compose.audiowaveform)
 
     implementation(libs.palette.ktx)
+
+    debugImplementation(libs.chucker.debug)
+    releaseImplementation(libs.chucker.release)
+
+    implementation(libs.compose.constraint.layout)
+
+    implementation("com.mindorks.android:prdownloader:0.6.0")
+
+    implementation("com.booking:perfsuite:0.2")
+
 
 }

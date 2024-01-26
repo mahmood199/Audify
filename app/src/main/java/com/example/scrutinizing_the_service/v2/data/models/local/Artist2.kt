@@ -13,8 +13,8 @@ data class Artist2(
     @Embedded
     val bio: Bio,
     val dob: String,
-    val dominantLanguage: String,
-    val dominantType: String,
+    val dominantLanguage: String? = "",
+    val dominantType: String? = "",
     val fanCount: String,
     val fb: String,
     val followerCount: String,

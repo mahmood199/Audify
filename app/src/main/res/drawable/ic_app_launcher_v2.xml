@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/ic_app_launcher_v2_background" />
+    <item android:drawable="@mipmap/ic_app_launcher_v2_foreground" />
+</layer-list>

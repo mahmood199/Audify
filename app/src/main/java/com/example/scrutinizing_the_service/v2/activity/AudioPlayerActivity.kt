@@ -1,10 +1,11 @@
-package com.example.scrutinizing_the_service.v2
+package com.example.scrutinizing_the_service.v2.activity
 
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,14 +16,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
+import com.downloader.PRDownloader
 import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.MainScreenViewModel
+import com.example.scrutinizing_the_service.v2.NavigationCentral
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.receiver.WifiConnectionReceiver
+import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconModel
+import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconVariant
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListViewModel
+import com.example.scrutinizing_the_service.v2.util.LauncherIconManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 var isServiceRunning = false
@@ -36,12 +46,18 @@ class AudioPlayerActivity : ComponentActivity() {
         WifiConnectionReceiver()
     }
 
-    private val viewModel: MusicListViewModel by viewModels()
+    private val iconManager by lazy {
+        LauncherIconManager()
+    }
+
+    private val musicListViewModel: MusicListViewModel by viewModels()
+    private val viewModel: MainScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        parseShortcutType()
 
         setContent {
 
@@ -51,15 +67,23 @@ class AudioPlayerActivity : ComponentActivity() {
                         finish()
                     },
                     playMusic = { song, index ->
-                        viewModel.sendMediaAction(MediaPlayerAction.PlaySongAt(index))
+                        musicListViewModel.sendMediaAction(MediaPlayerAction.PlaySongAt(index))
                         startMusicService()
                     },
                     playMusicFromRemote = {
                         startMusicService()
-                    }
+                    },
+                    onDownloadSong = { song, index ->
+                        startDownloadService(song, index)
+                    },
+                    iconChangeClicked = {
+                        changeAppIcon(it)
+                    },
+                    viewModel = viewModel,
                 )
             }
         }
+
         registerReceiver(
             receiver,
             IntentFilter().apply {
@@ -69,14 +93,41 @@ class AudioPlayerActivity : ComponentActivity() {
         )
     }
 
+    private fun changeAppIcon(iconModel: IconModel) {
+        iconManager.setCurrentIcon(this, iconModel.iconVariant)
+    }
+
+    private fun parseShortcutType() {
+        viewModel.parseShortcutType(intent)
+    }
+
+    private fun startDownloadService(
+        song: com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song,
+        index: Int
+    ) {
+        Toast.makeText(this, song.url, Toast.LENGTH_SHORT).show()
+        val builder = PRDownloader.download(song.url, "${song.name}$index", "${song.name}$index")
+        builder.build()
+            .setOnStartOrResumeListener {
+                startDownloadSafely(song)
+            }
+            .setOnPauseListener {
+
+            }.setOnProgressListener {
+
+            }
+    }
+
+    private fun startDownloadSafely(song: com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song) {
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
+
+        }
+    }
+
     private fun startMusicService() {
         if (!isServiceRunning) {
             val intent = Intent(this, AudioPlayerService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent)
-            } else {
-                startService(intent)
-            }
+            startForegroundService(intent)
             isServiceRunning = true
         }
     }
@@ -97,6 +148,12 @@ fun NavigationCentralPreview() {
             playMusic = { song: Song, i: Int ->
             },
             playMusicFromRemote = {},
+            onDownloadSong = { track: com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song, i: Int ->
+
+            },
+            iconChangeClicked = {
+
+            },
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surface
             )
