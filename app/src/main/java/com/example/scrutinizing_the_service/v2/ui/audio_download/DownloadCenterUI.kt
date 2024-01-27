@@ -38,27 +38,29 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song
+import com.example.scrutinizing_the_service.v2.data.models.local.DownloadItem
+import com.example.scrutinizing_the_service.v2.paging.isEmpty
 import com.example.scrutinizing_the_service.v2.ui.core.rotating
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun AudioDownloadUI(
-    onDownloadItem: (Song, Int) -> Unit,
+fun DownloadCenterUI(
+    onDownloadItem: (DownloadItem, Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AudioDownloadViewModel = hiltViewModel()
+    viewModel: DownloadCenterViewModel = hiltViewModel()
 ) {
 
-    val items = viewModel.tracks.toList()
+    val items = viewModel.downloadItemsFlow.collectAsLazyPagingItems()
 
     val loadTargetState: SearchResultState by remember {
         derivedStateOf {
             return@derivedStateOf when {
-                items.isEmpty().not() -> SearchResultState.Success
+                items.isEmpty.not() -> SearchResultState.Success
 
                 else -> SearchResultState.Error
             }
@@ -127,10 +129,10 @@ fun AudioDownloadUI(
                         }
 
                         items(
-                            count = items.size,
-                            key = {
-                                val item = items[it]
-                                item.id + "$it"
+                            count = items.itemCount,
+                            key = { index ->
+                                val item = items[index]
+                                item?.id ?: ("$index")
                             },
                             contentType = { "tracks" },
                         ) { index ->
@@ -141,12 +143,14 @@ fun AudioDownloadUI(
                                 2 -> "https://onlinetestcase.com/wp-content/uploads/2023/06/10-MB-MP3.mp3"
                                 else -> "https://onlinetestcase.com/wp-content/uploads/2023/06/10-MB-MP3.mp3"
                             }
-                            TrackUI2(item.copy(url = url), url, {
-                                onDownloadItem(item, index)
-                            })
+                            if (item != null) {
+                                DownloadItemUI(item = item, url, {
+                                    onDownloadItem(item, index)
+                                })
+                            }
                         }
 
-                        if (items.isEmpty()) {
+                        if (items.isEmpty) {
                             item {
                                 Column(
                                     modifier = Modifier.fillMaxWidth(),
@@ -164,8 +168,8 @@ fun AudioDownloadUI(
 }
 
 @Composable
-fun TrackUI2(
-    item: Song,
+fun DownloadItemUI(
+    item: DownloadItem,
     url: String,
     onClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -230,8 +234,12 @@ fun TrackUI2(
                 .background(Color.Red),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = item.name, style = MaterialTheme.typography.bodyLarge)
-            Text(text = item.duration.toString(), style = MaterialTheme.typography.titleMedium)
+            Text(text = item.fileName, style = MaterialTheme.typography.bodyLarge)
+            Text(text = item.fileLocation, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = item.downloadProgress.toString(),
+                style = MaterialTheme.typography.titleMedium
+            )
             Text(
                 text = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3",
                 style = MaterialTheme.typography.bodySmall
@@ -244,8 +252,8 @@ fun TrackUI2(
 @Composable
 fun TrackUI2Preview() {
     ScrutinizingTheServiceTheme {
-        TrackUI2(
-            item = Song.default(),
+        DownloadItemUI(
+            item = DownloadItem.default(),
             url = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3",
             {}
         )

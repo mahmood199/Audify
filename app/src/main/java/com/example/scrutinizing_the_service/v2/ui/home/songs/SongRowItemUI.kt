@@ -78,7 +78,6 @@ fun SongRowItemUI(
                     )
                 },
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
         ) {
             GlideImage(
                 imageModel = {
@@ -143,6 +142,21 @@ fun SongRowItemUI(
                         fontWeight = FontWeight.Bold
                     )
                 }
+
+                Text(
+                    text = recentlyPlayed.downloadUrl,
+                    style = MaterialTheme.typography.bodyMedium,
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = recentlyPlayed.url,
+                    style = MaterialTheme.typography.bodyMedium,
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.Bold
+                )
+
 
 
             }

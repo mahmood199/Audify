@@ -12,6 +12,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.scrutinizing_the_service.v2.data.local.dao.ArtistDao
+import com.example.scrutinizing_the_service.v2.data.local.dao.DownloadDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.GenreDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.LocalFileDao
 import com.example.scrutinizing_the_service.v2.data.local.dao.RecentSearchesDao
@@ -123,5 +124,12 @@ class LocalModule {
     fun provideLocalFilesDao(db: ApplicationDatabase): LocalFileDao {
         return db.fileDao()
     }
+
+    @Singleton
+    @Provides
+    fun provideDownloadItemDao(db: ApplicationDatabase): DownloadDao {
+        return db.downloadFileDao()
+    }
+
 
 }

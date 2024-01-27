@@ -44,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.scrutinizing_the_service.v2.ui.audio_download.DownloadCenterUI
 import com.example.scrutinizing_the_service.v2.ui.common.SideNavigationBar
 import com.example.scrutinizing_the_service.v2.ui.home.album.AlbumsUI
 import com.example.scrutinizing_the_service.v2.ui.home.artist.ArtistsUI
@@ -174,7 +175,7 @@ fun LandingPageUI(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerContent(
-    pagerState : PagerState,
+    pagerState: PagerState,
     redirectToGenreSelection: () -> Unit,
     redirectToLocalAudioScreen: () -> Unit,
     playMusicFromRemote: (RecentlyPlayed) -> Unit,
@@ -206,6 +207,12 @@ fun PagerContent(
 
                 FAVOURITES_PAGE_INDEX -> FavouritesUI()
 
+                DOWNLOADS_PAGE_INDEX -> DownloadCenterUI(
+                    onDownloadItem = { item, index ->
+
+                    }
+                )
+
                 else -> Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -223,6 +230,7 @@ private const val PLAYLIST_PAGE_INDEX = 2
 private const val ARTIST_PAGE_INDEX = 3
 private const val ALBUM_PAGE_INDEX = 4
 private const val FAVOURITES_PAGE_INDEX = 5
+private const val DOWNLOADS_PAGE_INDEX = 6
 
 
 @Composable
@@ -234,6 +242,7 @@ private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
         Pair("Artists", ImageVector.vectorResource(R.drawable.ic_artist_2)),
         Pair("Albums", ImageVector.vectorResource(R.drawable.ic_album_2)),
         Pair("Favourites", ImageVector.vectorResource(R.drawable.ic_favorite_filled)),
+        Pair("Downloads", ImageVector.vectorResource(R.drawable.ic_file_download_notification)),
     ).toPersistentList()
 }
 
