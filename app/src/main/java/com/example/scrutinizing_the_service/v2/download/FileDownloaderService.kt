@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -51,7 +52,6 @@ class FileDownloaderService : Service(), CoroutineScope {
         mutableMapOf<String, NotificationCompat.Builder>()
     }
 
-
     inner class LocalBinder : Binder() {
         fun getService(): FileDownloaderService = this@FileDownloaderService
     }
@@ -84,44 +84,67 @@ class FileDownloaderService : Service(), CoroutineScope {
             downloadTasks[recentlyPlayed.id] = downloadTask
             downloadTask.start { progress, sizeInBytes ->
 
-                if (progress == 1f) {
-                    Log.d("DownloadPurpose", "DownloadCompleted")
-                    removeNotification(recentlyPlayed)
+                if (progress == 1.0f) {
+                    removeNotification(recentlyPlayed = recentlyPlayed, sizeInBytes)
+                    downloadTasks.remove(recentlyPlayed.id)
                     cancel()
                 }
-                Log.d("DownloadPurpose", "Progress->${progress * 100}")
-                withContext(Dispatchers.IO) {
-                    updateDb(recentlyPlayed.name, progress * 100, sizeInBytes)
-                }
 
-                withContext(Dispatchers.Main) {
-                    updateNotification(recentlyPlayed, (progress * 100).toInt())
-                }
+                updateDb(
+                    recentlyPlayed = recentlyPlayed,
+                    progress = progress,
+                    sizeInBytes = sizeInBytes
+                )
+
+                updateNotification(
+                    fileName = recentlyPlayed,
+                    progress = (progress * 100).toInt()
+                )
             }
         }
     }
 
-    private fun removeNotification(recentlyPlayed: RecentlyPlayed) {
+    private fun removeNotification(recentlyPlayed: RecentlyPlayed, sizeInBytes: Long) {
+        // Instead of cancelling the notif, inform the user that download has completed
+        showDownloadCompletedNotifcation()
         notificationManager.cancel(recentlyPlayed.hashCode())
-    }
-
-    private suspend fun updateDb(fileName: String, progress: Float, sizeInBytes: Long) {
-        withContext(Dispatchers.IO) {
-            downloadDataSource.updateDownloadState(fileName, progress.toDouble(), sizeInBytes)
+        notifications.remove(recentlyPlayed.name)
+        launch(Dispatchers.IO) {
+            downloadDataSource.updateDownloadState(recentlyPlayed, 1.0, sizeInBytes)
         }
     }
 
-    private fun updateNotification(fileName: RecentlyPlayed, progress: Int) {
-        val notificationBuilder = notifications[fileName.id]
+    private fun showDownloadCompletedNotifcation() {
 
-        val builder = notificationBuilder?.setProgress(100, progress, true)
-            ?: NotificationCompat.Builder(this, DOWNLOAD_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_file_download_notification)
-                .setContentTitle("Downloading: ${fileName.name}")
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setOngoing(true)
+    }
 
-        notificationManager.notify(fileName.hashCode(), builder.build())
+    private suspend fun updateDb(
+        recentlyPlayed: RecentlyPlayed,
+        progress: Float,
+        sizeInBytes: Long
+    ) {
+        withContext(Dispatchers.IO) {
+            downloadDataSource.updateDownloadState(recentlyPlayed, progress.toDouble(), sizeInBytes)
+        }
+    }
+
+    private suspend fun updateNotification(fileName: RecentlyPlayed, progress: Int) {
+        withContext(Dispatchers.Main) {
+            delay(100)
+            val notificationBuilder = notifications[fileName.id]
+
+            val builder = notificationBuilder?.setProgress(100, progress, false)?.setOngoing(true)
+                ?: NotificationCompat.Builder(this@FileDownloaderService, DOWNLOAD_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_file_download_notification)
+                    .setProgress(100, progress, false)
+                    .setContentTitle("Downloading: ${fileName.name}")
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setOngoing(true)
+
+            notifications[fileName.name] = builder
+
+            notificationManager.notify(fileName.hashCode(), builder.build())
+        }
     }
 
 }

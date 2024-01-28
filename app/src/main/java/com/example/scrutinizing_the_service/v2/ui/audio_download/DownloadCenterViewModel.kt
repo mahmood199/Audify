@@ -41,4 +41,10 @@ class DownloadCenterViewModel @Inject constructor(
         }
     }
 
+    fun clearDownloadData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = fileDownloadRepository.clearData()
+        }
+    }
+
 }

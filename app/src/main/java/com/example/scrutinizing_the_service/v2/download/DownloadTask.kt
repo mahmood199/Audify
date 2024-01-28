@@ -10,7 +10,6 @@ import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import kotlin.math.pow
 
 class DownloadTask(private val url: String, private val fileName: String) {
 
@@ -31,10 +30,6 @@ class DownloadTask(private val url: String, private val fileName: String) {
                         if (response.isSuccessful) {
                             response.body?.run {
                                 val contentLengthHeader = response.header("Content-Length") ?: "1L"
-                                Log.d("DownloadPurpose", "File size ->> $contentLengthHeader")
-                                val sizeInMB = (contentLengthHeader.toInt() * 1f) / 1024.0.pow(2.0)
-                                Log.d("DownloadPurpose", "File size ->> $sizeInMB")
-                                Log.d("DownloadPurpose", "$this")
                                 saveFile(
                                     body = this,
                                     fileName = fileName,
@@ -73,15 +68,15 @@ class DownloadTask(private val url: String, private val fileName: String) {
                 outputStream = FileOutputStream(file)
                 val buffer = ByteArray(fileSize.toInt())
                 var bytesRead: Int
+                var currentByteReadCount = 0
 
                 do {
                     bytesRead = inputStream.read(buffer)
                     if (bytesRead != -1) {
                         outputStream.write(buffer, 0, bytesRead)
-                        val percentage = bytesRead.toFloat() / buffer.size
-                        Log.d("DownloadPurpose", "Bytes Read: $bytesRead")
-                        Log.d("DownloadPurpose", "Buffer: ${buffer.size}")
-                        updateProgress(percentage, fileSize)
+                        currentByteReadCount += bytesRead
+                        val progress = (currentByteReadCount * 1f) / buffer.size
+                        updateProgress(progress, buffer.size.toLong())
                     }
                 } while (bytesRead != -1)
 

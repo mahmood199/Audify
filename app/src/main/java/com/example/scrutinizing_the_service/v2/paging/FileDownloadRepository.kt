@@ -23,5 +23,9 @@ class FileDownloadRepository @Inject constructor(
         return fileDownloadDataSource.getItems(0, 0)
     }
 
+    suspend fun clearData() {
+        return fileDownloadDataSource.clearData()
+    }
+
 
 }
