@@ -18,10 +18,11 @@ import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconChangeUIContainer
 import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconModel
-import com.example.scrutinizing_the_service.v2.ui.audio_download.AudioDownloadUI
+import com.example.scrutinizing_the_service.v2.ui.audio_download.DownloadCenterUI
 import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUI
 import com.example.scrutinizing_the_service.v2.ui.genre.GenreSelectionUI
 import com.example.scrutinizing_the_service.v2.ui.home.landing.LandingPageUI
+import com.example.scrutinizing_the_service.v2.ui.notif.NotificationTestUIContainer
 import com.example.scrutinizing_the_service.v2.ui.player.AudioPlayerUI
 import com.example.scrutinizing_the_service.v2.ui.search.history.SearchHistoryUI
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultUI
@@ -69,7 +70,7 @@ fun NavigationCentral(
                     navController.navigate(Screen.AudioList.name)
                 },
                 navigateToSearch = {
-                    navController.navigate(Screen.AudioDownloadListScreen.name)
+                    navController.navigate(Screen.NotificationTest.name)
                 },
                 playMusicFromRemote = playMusicFromRemote,
                 redirectToGenreSelection = {
@@ -202,9 +203,9 @@ fun NavigationCentral(
         composable(
             route = Screen.AudioDownloadListScreen.name
         ) {
-            AudioDownloadUI(
+            DownloadCenterUI(
                 onDownloadItem = { song, index ->
-                    onDownloadSong(song, index)
+
                 }
             )
         }
@@ -215,6 +216,12 @@ fun NavigationCentral(
             ShortcutUIContainer(
                 parentShortcutType = shortcutType
             )
+        }
+
+        composable(
+            route = Screen.NotificationTest.name
+        ) {
+            NotificationTestUIContainer()
         }
     }
 }

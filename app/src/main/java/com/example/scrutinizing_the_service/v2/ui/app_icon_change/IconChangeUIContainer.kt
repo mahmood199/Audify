@@ -119,15 +119,15 @@ fun IconChangeUI(
             }
 
             items(
-                count = state.icons.size,
+                count = state.icons.count(),
                 span = {
                     GridItemSpan(1)
                 },
                 key = {
-                    "${state.icons[it].resourceId + it}"
+                    "${state.icons.elementAt(it).resourceId + it}"
                 }
             ) {
-                val item = state.icons[it]
+                val item = state.icons.elementAt(it)
                 AppIcon(
                     drawableResource = item,
                     isSelected = selectedIcon == item,
@@ -269,7 +269,8 @@ fun IconChangeUIPreview() {
             R.mipmap.ic_app_launcher_v6,
         )
         IconChangeUI(
-            state = IconChangeViewState.default().copy(icons = emptyList()),
+            state = IconChangeViewState.default()
+                .copy(icons = mutableListOf<IconModel>().asSequence()),
             backPress = {
 
             }, {

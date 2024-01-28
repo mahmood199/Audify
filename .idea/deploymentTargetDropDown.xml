@@ -2,16 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="BorderRotateUIPreview">
-        <State />
-      </entry>
-      <entry key="PreviewAudioPlayerProgressUI">
-        <State />
-      </entry>
-      <entry key="PreviewFakeAudioWaves">
-        <State />
-      </entry>
-      <entry key="SideNavigationBarUI">
+      <entry key="SecondActivity">
         <State />
       </entry>
       <entry key="app">

@@ -13,6 +13,7 @@ object ScreenName {
     const val AUDIO_DOWNLOAD_LIST = "audio_download_list"
     const val SHORT_CUT_SETUP = "short_cut_setup"
     const val CHANGE_ICON = "change_icon"
+    const val NOTIFICATION_TEST = "notification_test"
 }
 
 
@@ -28,4 +29,5 @@ sealed class Screen(val name: String) {
     data object AudioDownloadListScreen : Screen(name = ScreenName.AUDIO_DOWNLOAD_LIST)
     data object ShortcutScreen : Screen(name = ScreenName.SHORT_CUT_SETUP)
     data object ChangeIcon : Screen(name = ScreenName.CHANGE_ICON)
+    data object NotificationTest: Screen(name = ScreenName.NOTIFICATION_TEST)
 }
