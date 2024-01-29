@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     private fun setClickListeners() {
         with(binding) {
             btnStartService.setOnClickListener {

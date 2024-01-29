@@ -47,6 +47,13 @@ android {
         buildConfig = true
     }
 
+    packaging {
+        resources {
+            exclude("/META-INF/AL2.0")
+            exclude("/META-INF/LGPL2.1")
+        }
+    }
+
     kapt {
         correctErrorTypes = true
     }

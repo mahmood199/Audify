@@ -3,7 +3,7 @@ package com.example.scrutinizing_the_service.ui.music
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scrutinizing_the_service.data.Song
+import com.example.data.models.Song
 import com.example.scrutinizing_the_service.databinding.ItemMusicBinding
 
 class SongsAdapter(
@@ -30,7 +30,7 @@ class SongsAdapter(
         notifyItemChanged(size, songs.size)
     }
 
-    fun getItemAtPosition(songPosition: Int) =  songs[songPosition]
+    fun getItemAtPosition(songPosition: Int) = songs[songPosition]
 
     inner class SongViewHolder(
         private val binding: ItemMusicBinding

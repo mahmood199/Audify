@@ -2,7 +2,6 @@ package com.example.scrutinizing_the_service.v2.media3
 
 import androidx.media3.common.MediaItem
 
-
 sealed class MediaPlayerAction {
     data object PlayPause : MediaPlayerAction()
     data object Rewind : MediaPlayerAction()

@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.notifs
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -14,9 +15,9 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
+import com.example.data.models.Song
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
-import com.example.scrutinizing_the_service.data.Song
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaPlayerNotificationBuilder(
@@ -161,6 +162,7 @@ class MediaPlayerNotificationBuilder(
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun createUpdatedNotification(song: Song, currentPosition: Int, playing: Boolean) {
 
         val notification = Notification.Builder(context, MEDIA_CHANNEL_ID)

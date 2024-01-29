@@ -37,7 +37,6 @@ fun NavigationCentral(
     playMusic: (Song, Int) -> Unit,
     playMusicFromRemote: (RecentlyPlayed) -> Unit,
     backPress: () -> Unit,
-    onDownloadSong: (com.example.data.models.remote.saavn.Song, Int) -> Unit,
     iconChangeClicked: (IconModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel = hiltViewModel()

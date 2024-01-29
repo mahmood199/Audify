@@ -51,12 +51,16 @@ object MusicLocatorV4 {
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DISPLAY_NAME)
             val artistColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ARTIST)
+/*
             val dataColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA)
+*/
             val durationColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DURATION)
+/*
             val titleColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE)
+*/
             val albumColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM)
             cursor.apply {
@@ -67,9 +71,9 @@ object MusicLocatorV4 {
                         val displayName = getString(displayNameColumn)
                         val id = getLong(idColumn)
                         val artist = getString(artistColumn)
-                        val data = getString(dataColumn)
+//                        val data = getString(dataColumn)
                         val duration = getInt(durationColumn)
-                        val title = getString(titleColumn)
+//                        val title = getString(titleColumn)
                         val uri = ContentUris.withAppendedId(
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             id

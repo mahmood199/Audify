@@ -48,26 +48,30 @@ object MusicLocatorV3 {
             Log.d(TAG, "Cursor not null")
             if (cursor.moveToFirst()) {
                 do {
-                    val name = cursor.getString(
+                    /*val name = cursor.getString(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
-                    )
+                    )*/
                     val title = cursor.getString(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
                     )
 
+/*
                     val id: Long = cursor.getLong(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
                     )
+*/
 
-                    val audioPath = Uri.withAppendedPath(contentLocation, id.toString())
+//                    val audioPath = Uri.withAppendedPath(contentLocation, id.toString())
 
                     val path: String = cursor.getString(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
                     )
 
+/*
                     val size = cursor.getLong(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
                     )
+*/
 
                     val album = cursor.getString(
                         cursor.getColumnIndexOrThrow(
@@ -75,6 +79,7 @@ object MusicLocatorV3 {
                         )
                     )
 
+/*
                     val duration = cursor.getLong(
                         cursor.getColumnIndexOrThrow(
                             MediaStore.Audio.Media.DURATION
@@ -84,6 +89,7 @@ object MusicLocatorV3 {
                     val albumId: Long = cursor.getLong(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
                     )
+*/
 
                     val artist = cursor.getString(
                         cursor.getColumnIndexOrThrow(
@@ -91,9 +97,11 @@ object MusicLocatorV3 {
                         )
                     )
 
+/*
                     val composer = cursor.getString(
                         cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.COMPOSER)
                     )
+*/
 
                     allAudioContent.add(
                         Song(

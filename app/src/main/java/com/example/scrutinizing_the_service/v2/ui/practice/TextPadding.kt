@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.ui.core.fade2
 import com.example.scrutinizing_the_service.v2.ui.core.fadedBackground
 
 @Composable
@@ -45,7 +44,9 @@ fun SampleText(
             contentDescription = null,
             colorFilter = ColorFilter.tint(Color.Red),
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier.matchParentSize().fadedBackground()
+            modifier = Modifier
+                .matchParentSize()
+                .fadedBackground()
         )
     }
 }

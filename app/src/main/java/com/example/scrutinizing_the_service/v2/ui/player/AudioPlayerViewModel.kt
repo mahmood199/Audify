@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.palette.graphics.Palette
+import com.example.data.models.toSong
 import com.example.scrutinizing_the_service.TimeConverter
-import com.example.scrutinizing_the_service.data.toSong
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerState

@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.media3.common.util.UnstableApi
 import com.example.data.models.Song
+import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.MainScreenViewModel
 import com.example.scrutinizing_the_service.v2.NavigationCentral
-import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.download.FileDownloaderService
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
@@ -78,9 +78,6 @@ class AudioPlayerActivity : ComponentActivity() {
 
             ScrutinizingTheServiceTheme {
                 NavigationCentral(
-                    backPress = {
-                        finish()
-                    },
                     playMusic = { song, index ->
                         musicListViewModel.sendMediaAction(MediaPlayerAction.PlaySongAt(index))
                         startMusicService()
@@ -89,7 +86,8 @@ class AudioPlayerActivity : ComponentActivity() {
                         startDownload(it)
                         startMusicService()
                     },
-                    onDownloadSong = { song, index ->
+                    backPress = {
+                        finish()
                     },
                     iconChangeClicked = {
                         changeAppIcon(it)
@@ -162,13 +160,10 @@ class AudioPlayerActivity : ComponentActivity() {
 fun NavigationCentralPreview() {
     ScrutinizingTheServiceTheme {
         NavigationCentral(
-            backPress = {},
             playMusic = { song: Song, i: Int ->
             },
             playMusicFromRemote = {},
-            onDownloadSong = { track: com.example.data.models.remote.saavn.Song, i: Int ->
-
-            },
+            backPress = {},
             iconChangeClicked = {
 
             },

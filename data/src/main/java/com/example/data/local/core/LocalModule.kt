@@ -57,7 +57,7 @@ class LocalModule {
                 val job = CoroutineScope(EmptyCoroutineContext + Dispatchers.IO)
                 job.launch(Dispatchers.IO) {
                     try {
-                        genres.forEachIndexed { index, s ->
+                        genres.forEachIndexed { _, s ->
                             db.execSQL("INSERT INTO genres (name, userSelected) VALUES ('$s', 'false')")
                         }
                     } catch (e: Exception) {

@@ -3,7 +3,6 @@ package com.example.scrutinizing_the_service.v2.media3
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import com.example.scrutinizing_the_service.v2.ui.catalog.MusicListUiEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

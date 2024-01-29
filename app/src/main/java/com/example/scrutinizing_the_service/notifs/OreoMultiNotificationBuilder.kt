@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.notifs
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -24,6 +25,7 @@ class OreoMultiNotificationBuilder(
         NotificationManagerCompat.from(context)
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
         for (it in 1..5) {

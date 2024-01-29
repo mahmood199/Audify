@@ -1,6 +1,3 @@
-import com.android.build.api.dsl.Packaging
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")

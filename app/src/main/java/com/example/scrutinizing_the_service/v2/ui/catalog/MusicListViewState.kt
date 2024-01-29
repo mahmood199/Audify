@@ -1,6 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.catalog
 
-import com.example.scrutinizing_the_service.data.Song
+import com.example.data.models.Song
 
 data class MusicListViewState(
     var progress: Float = 0f,

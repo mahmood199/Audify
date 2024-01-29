@@ -28,8 +28,8 @@ object MusicLocator {
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         }
 
-        val x = MediaStore.Audio.AudioColumns.DATA
-        val y = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        //val x = MediaStore.Audio.AudioColumns.DATA
+        //val y = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         //columns
         val projection = arrayOf(
             MediaStore.Audio.Media.DATA,
