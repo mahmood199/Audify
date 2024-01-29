@@ -32,36 +32,6 @@
             android:shell="true"
             tools:targetApi="29" />
 
-        <activity
-            android:name=".ui.music.MusicPlayerActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ui.NotificationActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-
-        <service
-            android:name=".services.SmartServices"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".services.RussianService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".services.RussianIntentService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".services.MusicPlayerService"
-            android:stopWithTask="true" />
 
         <receiver
             android:name="androidx.media3.session.MediaButtonReceiver"
@@ -70,43 +40,7 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".broadcastReceivers.MediaBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="EMITTER_PLAY" />
-                <action android:name="EMITTER_PAUSE" />
-                <action android:name="EMITTER_NEXT" />
-                <action android:name="EMITTER_PREVIOUS" />
-            </intent-filter>
-        </receiver>
-        <!--
-        <receiver
-            android:name=".services.MusicPlayerService$MusicPlayerListener"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="RECEIVER_PLAY" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="RECEIVER_PAUSE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="RECEIVER_NEXT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="RECEIVER_PAUSE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="RECEIVER_FAST_FORWARD" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="RECEIVER_REWIND" />
-            </intent-filter>
-        </receiver>
-        -->
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".v2.activity.AudioPlayerActivity"
             android:exported="true"

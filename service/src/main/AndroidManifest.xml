@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application android:enabled="true">
+        <activity
+            android:name="com.download.service.ui.music.MusicPlayerActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.NotificationActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <service
+            android:name=".services.MusicPlayerService"
+            android:stopWithTask="true" />
+
+        <service
+            android:name="com.download.service.services.SmartServices"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name="com.download.service.services.RussianService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name="com.download.service.services.RussianIntentService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.download.service.receivers.MediaBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="EMITTER_PLAY" />
+                <action android:name="EMITTER_PAUSE" />
+                <action android:name="EMITTER_NEXT" />
+                <action android:name="EMITTER_PREVIOUS" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+
+</manifest>

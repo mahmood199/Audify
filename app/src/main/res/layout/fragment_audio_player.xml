@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="12dp"
-    tools:context=".ui.music.AudioPlayerFragment">
+    tools:context="com.download.service.ui.music.AudioPlayerFragment">
 
     <ImageView
         android:id="@+id/imageView"
