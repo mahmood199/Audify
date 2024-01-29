@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/baselineprofile" />
             <option value="$PROJECT_DIR$/benchmark" />
             <option value="$PROJECT_DIR$/data" />
-            <option value="$PROJECT_DIR$/service" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
