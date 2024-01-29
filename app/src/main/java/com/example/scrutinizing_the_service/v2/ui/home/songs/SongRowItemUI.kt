@@ -37,9 +37,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
-import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.example.scrutinizing_the_service.v2.util.convertToAbbreviatedViews
 import com.skydoves.landscapist.glide.GlideImage
@@ -48,6 +48,7 @@ import com.skydoves.landscapist.glide.GlideImage
 fun SongRowItemUI(
     recentlyPlayed: RecentlyPlayed,
     onItemClicked: (RecentlyPlayed) -> Unit,
+    updateFavourite: (RecentlyPlayed) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -73,6 +74,9 @@ fun SongRowItemUI(
                         onLongPress = {
                             expanded = true
                             pressOffset = it
+                        },
+                        onDoubleTap = {
+                            updateFavourite(recentlyPlayed)
                         }
                     )
                 },
@@ -106,7 +110,10 @@ fun SongRowItemUI(
                     .aspectRatio(1f),
             )
 
-            Column {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+            ) {
                 Text(
                     text = recentlyPlayed.name,
                     style = MaterialTheme.typography.bodyMedium,
@@ -155,10 +162,20 @@ fun SongRowItemUI(
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold
                 )
-
-
-
             }
+
+            val iconToShow = remember(recentlyPlayed) {
+                if (recentlyPlayed.isFavorite)
+                    R.drawable.ic_favorite_filled
+                else
+                    R.drawable.ic_favorite
+            }
+
+            Icon(
+                imageVector = ImageVector.vectorResource(iconToShow),
+                tint = Color.Red,
+                contentDescription = "Favourites icon"
+            )
         }
 
         val (xDp, yDp) = with(density) {
@@ -205,7 +222,8 @@ fun SongRowItemUIPreview() {
     ScrutinizingTheServiceTheme {
         SongRowItemUI(
             recentlyPlayed = sample,
-            onItemClicked = {}
+            onItemClicked = {},
+            updateFavourite = {}
         )
     }
 }

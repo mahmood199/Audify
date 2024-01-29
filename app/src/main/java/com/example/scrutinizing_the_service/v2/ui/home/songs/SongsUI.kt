@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.data.models.local.RecentlyPlayed
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 
 @Composable
@@ -51,6 +51,9 @@ fun SongsUI(
                 songSelected = { recentlyPlayed ->
                     viewModel.playItem(recentlyPlayed)
                     playMusicFromRemote(recentlyPlayed)
+                },
+                updateFavourite = { recentlyPlayed ->
+                    viewModel.updateFavourite(recentlyPlayed.copy(isFavorite = recentlyPlayed.isFavorite.not()))
                 }
             )
         }
@@ -86,6 +89,7 @@ fun SongsContentUI(
     songs: List<RecentlyPlayed>,
     redirectToGenreSelection: () -> Unit,
     songSelected: (RecentlyPlayed) -> Unit,
+    updateFavourite: (RecentlyPlayed) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimatedContent(
@@ -129,6 +133,9 @@ fun SongsContentUI(
                         recentlyPlayed = song,
                         onItemClicked = { recentlyPlayed ->
                             songSelected(recentlyPlayed)
+                        },
+                        updateFavourite = { recentlyPlayed ->
+                            updateFavourite(recentlyPlayed)
                         }
                     )
                 }
@@ -144,7 +151,7 @@ fun PreviewSongsUI() {
     ScrutinizingTheServiceTheme {
         SongsUI(
             redirectToGenreSelection = {},
-            playMusicFromRemote = {}
+            playMusicFromRemote = {},
         )
     }
 }

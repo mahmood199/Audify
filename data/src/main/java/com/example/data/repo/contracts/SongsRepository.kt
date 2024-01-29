@@ -19,4 +19,6 @@ interface SongsRepository {
 
     fun observeMostPlayed(): Flow<List<RecentlyPlayed>>
 
+    suspend fun updateFavourite(id: String, isFavorite: Boolean): Int
+
 }

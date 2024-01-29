@@ -37,5 +37,8 @@ interface RecentlyPlayedDao {
     @Delete
     suspend fun delete(recentSearch: RecentlyPlayed): Int
 
+    @Query("UPDATE recently_played SET is_favorite=:isFavorite WHERE id=:id")
+    suspend fun updateFavorite(id: String, isFavorite: Boolean): Int
+
 
 }

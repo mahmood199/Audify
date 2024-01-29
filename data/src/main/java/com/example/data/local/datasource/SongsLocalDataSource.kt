@@ -28,4 +28,8 @@ class SongsLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun updateFavorite(id: String, isFavorite: Boolean): Int {
+        return dao.updateFavorite(id, isFavorite)
+    }
+
 }

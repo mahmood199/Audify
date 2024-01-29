@@ -63,4 +63,8 @@ class SongsRepositoryImpl @Inject constructor(
         return localDataSource.insertSongs(songs)
     }
 
+    override suspend fun updateFavourite(id: String, isFavorite: Boolean): Int {
+        return localDataSource.updateFavorite(id, isFavorite)
+    }
+
 }

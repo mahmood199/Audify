@@ -102,4 +102,10 @@ class SongsViewModel @Inject constructor(
         }
     }
 
+    fun updateFavourite(recentlyPlayed: RecentlyPlayed) {
+        viewModelScope.launch(Dispatchers.IO) {
+            songsRepository.updateFavourite(recentlyPlayed.id, recentlyPlayed.isFavorite)
+        }
+    }
+
 }
