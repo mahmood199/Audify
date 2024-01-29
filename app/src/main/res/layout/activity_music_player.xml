@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.music.MusicPlayerActivity">
+    tools:context="com.download.service.ui.music.MusicPlayerActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_music_items"
