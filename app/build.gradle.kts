@@ -92,7 +92,6 @@ android {
 dependencies {
 
     implementation(project(":data"))
-    implementation(project(":service"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
