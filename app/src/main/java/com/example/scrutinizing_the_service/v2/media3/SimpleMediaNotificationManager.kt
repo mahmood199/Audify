@@ -14,7 +14,6 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.ui.PlayerNotificationManager
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.data.Song
 
 private const val NOTIFICATION_ID = 200
 private const val NOTIFICATION_CHANNEL_NAME = "notification channel 1"

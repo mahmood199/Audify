@@ -1,6 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.home.songs
 
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.data.models.local.RecentlyPlayed
 
 val sample = RecentlyPlayed(
     albumId = "12345",

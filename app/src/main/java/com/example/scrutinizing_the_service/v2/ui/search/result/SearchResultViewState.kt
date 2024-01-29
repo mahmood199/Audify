@@ -1,6 +1,6 @@
 package com.example.scrutinizing_the_service.v2.ui.search.result
 
-import com.example.scrutinizing_the_service.data.Song
+import com.example.data.models.Song
 
 data class SearchResultViewState(
     val someData: Boolean = false,

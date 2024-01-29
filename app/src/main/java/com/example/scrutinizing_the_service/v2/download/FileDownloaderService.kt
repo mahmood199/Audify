@@ -10,8 +10,8 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.data.local.datasource.FileDownloadDataSource
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.data.local.datasource.FileDownloadDataSource
+import com.example.data.models.local.RecentlyPlayed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

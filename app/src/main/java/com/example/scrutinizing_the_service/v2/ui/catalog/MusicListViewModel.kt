@@ -8,12 +8,12 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import com.example.data.models.Song
+import com.example.data.models.toSong
 import com.example.scrutinizing_the_service.TimeConverter
-import com.example.scrutinizing_the_service.data.Song
-import com.example.scrutinizing_the_service.data.toSong
 import com.example.scrutinizing_the_service.v2.connection.NetworkConnectivityObserver
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.LocalFileRepository
-import com.example.scrutinizing_the_service.v2.data.repo.implementations.MusicRepositoryImpl
+import com.example.data.repo.contracts.LocalFileRepository
+import com.example.data.repo.implementations.MusicRepositoryImpl
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
 import com.example.scrutinizing_the_service.v2.media3.PlayerState

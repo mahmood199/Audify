@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.data.models.Song
 import com.example.scrutinizing_the_service.TimeConverter
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
-import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 import com.example.scrutinizing_the_service.v2.ui.common.BottomPlayer

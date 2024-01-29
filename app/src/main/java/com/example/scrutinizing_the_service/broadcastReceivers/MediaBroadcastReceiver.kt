@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.scrutinizing_the_service.services.MusicPlayerService
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaBroadcastReceiver : BroadcastReceiver() {

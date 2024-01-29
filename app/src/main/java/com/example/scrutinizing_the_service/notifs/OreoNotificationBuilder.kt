@@ -1,5 +1,6 @@
 package com.example.scrutinizing_the_service.notifs
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -31,6 +32,7 @@ class OreoNotificationBuilder(
         NotificationManagerCompat.from(context)
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createNotification(context: Context) {
         // Pending intent is passed on the to the click listener

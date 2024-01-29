@@ -1,21 +1,16 @@
 package com.example.scrutinizing_the_service.v2.ui.home.songs
 
 import android.net.Uri
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
-import com.example.scrutinizing_the_service.v2.data.models.local.Genre
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
+import com.example.data.models.local.Genre
+import com.example.data.models.local.RecentlyPlayed
+import com.example.data.repo.contracts.GenreRepository
+import com.example.data.repo.contracts.SongsRepository
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
-import com.example.scrutinizing_the_service.v2.paging.AlbumPagingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

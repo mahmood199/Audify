@@ -43,7 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.data.models.local.DownloadItem
+import com.example.data.models.local.DownloadItem
 import com.example.scrutinizing_the_service.v2.paging.isEmpty
 import com.example.scrutinizing_the_service.v2.ui.core.rotating
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState

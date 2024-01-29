@@ -22,7 +22,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Playlist
+import com.example.data.models.remote.saavn.Playlist
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage

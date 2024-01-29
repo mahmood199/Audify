@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.scrutinizing_the_service.v2.data.models.local.Genre
+import com.example.data.models.local.Genre
 
 @Composable
 fun GenreUiItem(

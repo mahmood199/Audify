@@ -3,8 +3,8 @@ package com.example.scrutinizing_the_service.v2.ui.genre
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.scrutinizing_the_service.v2.data.models.local.Genre
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.GenreRepository
+import com.example.data.models.local.Genre
+import com.example.data.repo.contracts.GenreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

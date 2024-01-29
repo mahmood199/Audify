@@ -11,14 +11,14 @@ import android.os.*
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.example.data.models.Song
 import com.example.scrutinizing_the_service.BundleIdentifier
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionEmitter
 import com.example.scrutinizing_the_service.broadcastReceivers.MediaActionReceiver
 import com.example.scrutinizing_the_service.data.MediaPlayerStatus
-import com.example.scrutinizing_the_service.data.Song
 import com.example.scrutinizing_the_service.notifs.MediaPlayerNotificationBuilder
 import com.example.scrutinizing_the_service.notifs.PendingIntentHelper
-import com.example.scrutinizing_the_service.platform.MusicLocatorV2
+import com.example.data.platform.MusicLocatorV2
 
 
 @RequiresApi(Build.VERSION_CODES.O)

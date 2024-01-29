@@ -22,8 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.data.models.local.Artist2
-import com.example.scrutinizing_the_service.v2.data.models.remote.saavn.ArtistData
+import com.example.data.models.local.Artist2
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.skydoves.landscapist.glide.GlideImage
 
