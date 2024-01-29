@@ -133,3 +133,4 @@ chucker-release = { group = "com.github.chuckerteam.chucker", name = "library-no
 shortcut-core = { group = "androidx.core", name = "core-google-shortcuts", version.ref = "shortcut-core" }
 
 [plugins]
+kotlin-kapt = { id = "kotlin-kapt" }

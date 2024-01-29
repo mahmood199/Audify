@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
+import com.example.data.models.local.RecentSearch
 import com.example.scrutinizing_the_service.v2.ui.common.AppBar
 
 @OptIn(ExperimentalComposeUiApi::class)

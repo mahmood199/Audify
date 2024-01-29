@@ -13,9 +13,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.data.models.Song
 import com.example.scrutinizing_the_service.compose_utils.SaveableLaunchedEffect
-import com.example.scrutinizing_the_service.data.Song
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconChangeUIContainer
 import com.example.scrutinizing_the_service.v2.ui.app_icon_change.IconModel
 import com.example.scrutinizing_the_service.v2.ui.audio_download.DownloadCenterUI
@@ -37,7 +37,7 @@ fun NavigationCentral(
     playMusic: (Song, Int) -> Unit,
     playMusicFromRemote: (RecentlyPlayed) -> Unit,
     backPress: () -> Unit,
-    onDownloadSong: (com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song, Int) -> Unit,
+    onDownloadSong: (com.example.data.models.remote.saavn.Song, Int) -> Unit,
     iconChangeClicked: (IconModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel = hiltViewModel()

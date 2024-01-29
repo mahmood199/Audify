@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.scrutinizing_the_service.v2.data.models.local.DownloadItem
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.SongsRepository
-import com.example.scrutinizing_the_service.v2.paging.FileDownloadRepository
+import com.example.data.models.local.DownloadItem
+import com.example.data.repo.contracts.SongsRepository
+import com.example.data.paging.FileDownloadRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

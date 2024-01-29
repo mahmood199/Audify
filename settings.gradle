@@ -24,3 +24,4 @@ rootProject.name = "Scrutinizing-The-Service"
 include ':app'
 include ':benchmark'
 include ':baselineprofile'
+include ':data'

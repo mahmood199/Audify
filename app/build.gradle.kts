@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.Packaging
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
     id("com.android.application")
@@ -77,9 +78,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
-    fun Packaging.() {
+    packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            exclude("/META-INF/AL2.0")
+            exclude("/META-INF/LGPL2.1")
         }
     }
     kapt {
@@ -92,6 +94,7 @@ android {
 
 dependencies {
 
+    implementation(project(":data"))
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)

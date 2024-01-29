@@ -3,13 +3,12 @@ package com.example.scrutinizing_the_service.v2.ui.search.result
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.models.local.SearchPreference
+import com.example.data.models.toSong
+import com.example.data.repo.contracts.UserPreferenceRepository
 import com.example.scrutinizing_the_service.TimeConverter
-import com.example.scrutinizing_the_service.data.toSong
-import com.example.scrutinizing_the_service.v2.data.models.local.SearchPreference
-import com.example.scrutinizing_the_service.v2.data.repo.contracts.UserPreferenceRepository
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
 import com.example.scrutinizing_the_service.v2.media3.PlayerController
-import com.example.scrutinizing_the_service.v2.media3.PlayerEvent
 import com.example.scrutinizing_the_service.v2.media3.PlayerState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

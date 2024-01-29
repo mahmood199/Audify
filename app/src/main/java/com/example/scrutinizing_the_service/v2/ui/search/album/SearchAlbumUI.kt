@@ -35,7 +35,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.data.models.remote.last_fm.Album
+import com.example.data.models.remote.last_fm.Album
 import com.example.scrutinizing_the_service.v2.paging.isAppending
 import com.example.scrutinizing_the_service.v2.paging.isEmpty
 import com.example.scrutinizing_the_service.v2.paging.isFirstLoad

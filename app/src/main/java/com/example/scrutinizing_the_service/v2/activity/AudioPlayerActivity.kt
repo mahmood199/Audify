@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.media3.common.util.UnstableApi
-import com.example.scrutinizing_the_service.data.Song
+import com.example.data.models.Song
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.MainScreenViewModel
 import com.example.scrutinizing_the_service.v2.NavigationCentral
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.download.FileDownloaderService
 import com.example.scrutinizing_the_service.v2.media3.AudioPlayerService
 import com.example.scrutinizing_the_service.v2.media3.MediaPlayerAction
@@ -167,7 +166,7 @@ fun NavigationCentralPreview() {
             playMusic = { song: Song, i: Int ->
             },
             playMusicFromRemote = {},
-            onDownloadSong = { track: com.example.scrutinizing_the_service.v2.data.models.remote.saavn.Song, i: Int ->
+            onDownloadSong = { track: com.example.data.models.remote.saavn.Song, i: Int ->
 
             },
             iconChangeClicked = {

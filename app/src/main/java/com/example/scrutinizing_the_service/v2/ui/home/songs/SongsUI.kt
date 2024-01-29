@@ -18,10 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentlyPlayed
+import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun SongsUI(

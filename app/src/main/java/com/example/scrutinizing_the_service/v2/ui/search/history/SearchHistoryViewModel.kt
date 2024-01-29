@@ -2,9 +2,9 @@ package com.example.scrutinizing_the_service.v2.ui.search.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.scrutinizing_the_service.v2.data.models.local.RecentSearch
-import com.example.scrutinizing_the_service.v2.data.repo.implementations.SearchHistoryRepositoryImpl
-import com.example.scrutinizing_the_service.v2.data.repo.implementations.SearchRepositoryImpl
+import com.example.data.models.local.RecentSearch
+import com.example.data.repo.implementations.SearchHistoryRepositoryImpl
+import com.example.data.repo.implementations.SearchRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
