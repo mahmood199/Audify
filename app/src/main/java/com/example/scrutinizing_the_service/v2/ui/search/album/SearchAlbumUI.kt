@@ -36,9 +36,9 @@ import androidx.paging.compose.itemKey
 import com.example.scrutinizing_the_service.R
 import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
 import com.example.data.models.remote.last_fm.Album
-import com.example.scrutinizing_the_service.v2.paging.isAppending
-import com.example.scrutinizing_the_service.v2.paging.isEmpty
-import com.example.scrutinizing_the_service.v2.paging.isFirstLoad
+import com.example.scrutinizing_the_service.v2.util.isAppending
+import com.example.scrutinizing_the_service.v2.util.isEmpty
+import com.example.scrutinizing_the_service.v2.util.isFirstLoad
 import com.example.scrutinizing_the_service.v2.ui.search.result.SearchResultState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage

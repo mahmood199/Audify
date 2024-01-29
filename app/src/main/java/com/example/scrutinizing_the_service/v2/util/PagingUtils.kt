@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.v2.paging
+package com.example.scrutinizing_the_service.v2.util
 
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
