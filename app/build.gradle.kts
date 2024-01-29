@@ -173,9 +173,11 @@ dependencies {
 
     implementation(libs.compose.constraint.layout)
 
-    implementation("com.mindorks.android:prdownloader:0.6.0")
+    implementation(libs.prdownloader)
 
-    implementation("com.booking:perfsuite:0.2")
+    implementation(libs.perfsuite)
+
+    implementation(libs.lottie.compose)
 
 
 }
