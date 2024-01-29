@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.theme
+package com.example.scrutinizing_the_service.v2.theme
 
 import android.app.Activity
 import android.os.Build

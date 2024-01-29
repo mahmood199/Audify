@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.roundToIntRect
-import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.common.SaveableLaunchedEffect
 import com.example.scrutinizing_the_service.v2.util.px
 import kotlin.math.atan2

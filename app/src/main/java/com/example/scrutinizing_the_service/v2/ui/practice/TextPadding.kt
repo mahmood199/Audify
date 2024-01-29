@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.ui.core.fadedBackground
 
 @Composable

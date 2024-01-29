@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.data.models.local.RecentlyPlayed
 import com.example.scrutinizing_the_service.v2.ui.common.ContentLoaderUI
 import com.example.scrutinizing_the_service.v2.util.convertToAbbreviatedViews

@@ -19,7 +19,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 
 @Composable
 fun CustomRotationUIContainer(

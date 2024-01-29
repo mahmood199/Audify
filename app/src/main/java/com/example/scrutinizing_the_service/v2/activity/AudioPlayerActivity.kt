@@ -22,7 +22,7 @@ import androidx.core.view.WindowCompat
 import androidx.media3.common.util.UnstableApi
 import com.example.data.models.Song
 import com.example.data.models.local.RecentlyPlayed
-import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.scrutinizing_the_service.v2.MainScreenViewModel
 import com.example.scrutinizing_the_service.v2.NavigationCentral
 import com.example.scrutinizing_the_service.v2.download.FileDownloaderService

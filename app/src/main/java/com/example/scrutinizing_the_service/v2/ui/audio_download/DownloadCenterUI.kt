@@ -42,7 +42,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.scrutinizing_the_service.R
-import com.example.scrutinizing_the_service.theme.ScrutinizingTheServiceTheme
+import com.example.scrutinizing_the_service.v2.theme.ScrutinizingTheServiceTheme
 import com.example.data.models.local.DownloadItem
 import com.example.scrutinizing_the_service.v2.util.isEmpty
 import com.example.scrutinizing_the_service.v2.ui.core.rotating
