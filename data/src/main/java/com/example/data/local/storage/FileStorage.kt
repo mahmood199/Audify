@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.webkit.MimeTypeMap
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -86,3 +87,19 @@ fun retrieveVideosFromStorage(context: Context): List<Video> {
 
     return videoList
 }
+
+fun getFileExtensionFromUri(context: Context, uri: Uri): String? {
+    val contentResolver = context.contentResolver
+    val mimeType = MimeTypeMap.getSingleton()
+    return mimeType.getMimeTypeFromExtension(contentResolver.getType(uri))
+}
+
+fun getFileExtensionFromPath(context: Context, path: String): String? {
+    val contentResolver = context.contentResolver
+    val mimeType = MimeTypeMap.getSingleton()
+    return mimeType.getMimeTypeFromExtension(contentResolver.getType(Uri.parse(path)))
+}
+
+
+
+

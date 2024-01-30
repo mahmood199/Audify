@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.scrutinizing_the_service"
+    namespace = "com.skydiver.audify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.scrutinizing_the_service"
+        applicationId = "com.skydiver.audify"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -111,7 +111,7 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.compose.runtime)
-    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
+    implementation(libs.androidx.profileinstaller)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

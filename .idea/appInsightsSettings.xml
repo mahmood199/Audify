@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.skydiver.audify" />
+                  <option name="mobileSdkAppId" value="1:73608609793:android:a2a3f244f28965e3f4c000" />
+                  <option name="projectId" value="audify-93e9c" />
+                  <option name="projectNumber" value="73608609793" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
