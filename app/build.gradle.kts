@@ -7,6 +7,7 @@ plugins {
     id("kotlinx-serialization")
     id("kotlin-kapt")
     id("androidx.baselineprofile")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -179,5 +180,8 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }

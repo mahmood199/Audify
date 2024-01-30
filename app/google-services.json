@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "73608609793",
+    "project_id": "audify-93e9c",
+    "storage_bucket": "audify-93e9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73608609793:android:a2a3f244f28965e3f4c000",
+        "android_client_info": {
+          "package_name": "com.skydiver.audify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDI4CmfRldE7jEFoJmMWT_B8cfRnVtRMVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

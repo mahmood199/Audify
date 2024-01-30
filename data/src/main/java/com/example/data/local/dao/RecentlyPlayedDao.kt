@@ -1,10 +1,12 @@
 package com.example.data.local.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.data.models.local.DownloadItem
 import com.example.data.models.local.RecentlyPlayed
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +18,9 @@ interface RecentlyPlayedDao {
 
     @Query("Select * from recently_played order by playCount DESC")
     fun sortByMostPlayed(): Flow<List<RecentlyPlayed>>
+
+    @Query("Select * from recently_played order by playCountLocal DESC")
+    fun pagingSource(): PagingSource<Int, RecentlyPlayed>
 
     @Query(
         "Select * from recently_played where " +
