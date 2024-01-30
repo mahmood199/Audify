@@ -28,5 +28,7 @@ data class RecentlyPlayed(
     @ColumnInfo("time_stamp")
     val timeStamp: Long = System.currentTimeMillis(),
     val url: String,
-    val year: String
+    val year: String,
+    @ColumnInfo("is_favorite")
+    val isFavorite: Boolean = false
 )

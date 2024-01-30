@@ -1,5 +1,6 @@
 package com.example.data.local.datasource
 
+import androidx.paging.PagingSource
 import com.example.data.local.dao.RecentlyPlayedDao
 import com.example.data.models.local.RecentlyPlayed
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,10 @@ class SongsLocalDataSource @Inject constructor(
         return dao.sortByMostRecentlyPlayed().distinctUntilChanged()
     }
 
+    fun pagingSource(): PagingSource<Int, RecentlyPlayed> {
+        return dao.pagingSource()
+    }
+
     fun sortByMostPlayed(): Flow<List<RecentlyPlayed>> {
         return dao.sortByMostPlayed().distinctUntilChanged()
     }
@@ -26,6 +31,10 @@ class SongsLocalDataSource @Inject constructor(
         songs.forEachIndexed { _, item ->
             dao.upsert(item)
         }
+    }
+
+    suspend fun updateFavorite(id: String, isFavorite: Boolean): Int {
+        return dao.updateFavorite(id, isFavorite)
     }
 
 }

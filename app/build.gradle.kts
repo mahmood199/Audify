@@ -7,14 +7,15 @@ plugins {
     id("kotlinx-serialization")
     id("kotlin-kapt")
     id("androidx.baselineprofile")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.scrutinizing_the_service"
+    namespace = "com.skydiver.audify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.scrutinizing_the_service"
+        applicationId = "com.skydiver.audify"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -110,7 +111,7 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.compose.runtime)
-    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
+    implementation(libs.androidx.profileinstaller)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -173,9 +174,14 @@ dependencies {
 
     implementation(libs.compose.constraint.layout)
 
-    implementation("com.mindorks.android:prdownloader:0.6.0")
+    implementation(libs.prdownloader)
 
-    implementation("com.booking:perfsuite:0.2")
+    implementation(libs.perfsuite)
 
+    implementation(libs.lottie.compose)
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }

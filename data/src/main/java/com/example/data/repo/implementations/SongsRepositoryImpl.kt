@@ -1,8 +1,12 @@
 package com.example.data.repo.implementations
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.data.local.datasource.SongsLocalDataSource
 import com.example.data.mapper.SongMapper
+import com.example.data.models.local.DownloadItem
 import com.example.data.models.local.RecentlyPlayed
 import com.example.data.models.remote.saavn.SongsResponse
 import com.example.data.remote.saavn.SongsRemoteDataSource
@@ -51,6 +55,13 @@ class SongsRepositoryImpl @Inject constructor(
         return localDataSource.sortByMostRecentlyPlayed()
     }
 
+    fun observePagingSource(): Flow<PagingData<RecentlyPlayed>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, initialLoadSize = 20),
+            pagingSourceFactory = { localDataSource.pagingSource() }
+        ).flow
+    }
+
     override fun observeMostPlayed(): Flow<List<RecentlyPlayed>> {
         return localDataSource.sortByMostPlayed()
     }
@@ -61,6 +72,10 @@ class SongsRepositoryImpl @Inject constructor(
 
     override suspend fun insertSongs(songs: List<RecentlyPlayed>) {
         return localDataSource.insertSongs(songs)
+    }
+
+    override suspend fun updateFavourite(id: String, isFavorite: Boolean): Int {
+        return localDataSource.updateFavorite(id, isFavorite)
     }
 
 }

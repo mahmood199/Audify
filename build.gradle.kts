@@ -6,6 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.41" apply false
     id("com.android.test") version "8.3.0-alpha07" apply false
     id("androidx.baselineprofile") version "1.2.0-beta05" apply false
+    id("com.google.gms.google-services") version "4.4.0" apply false
 }
 
 buildscript {
@@ -16,9 +17,9 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.48")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.9.10")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
+        classpath(libs.hilt.android.gradle.plugin)
+        classpath(libs.kotlin.serialization)
+        classpath(libs.kotlin.gradle.plugin)
     }
 }
 

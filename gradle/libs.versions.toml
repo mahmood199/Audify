@@ -1,9 +1,16 @@
 [versions]
+hiltAndroidGradlePlugin = "2.48"
+kotlinGradlePlugin = "1.6.21"
+kotlinSerialization = "1.9.10"
 ktx = "1.12.0"
 appcompat = "1.6.1"
+lottieCompose = "6.3.0"
 material = "1.10.0"
 ktor = "2.3.2"
 ktor-gson = "1.5.0"
+perfsuite = "0.2"
+prdownloader = "0.6.0"
+profileinstaller = "1.3.1"
 serialization-json = "1.5.1"
 media3-version = "1.1.1"
 androidx-legacy-support = "1.0.0"
@@ -41,6 +48,7 @@ androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx"
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -49,6 +57,10 @@ compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permission" }
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist-animation" }
@@ -92,6 +104,8 @@ ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serializati
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding", version.ref = "ktor" }
+perfsuite = { module = "com.booking:perfsuite", version.ref = "perfsuite" }
+prdownloader = { module = "com.mindorks.android:prdownloader", version.ref = "prdownloader" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 
 
