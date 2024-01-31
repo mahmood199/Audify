@@ -40,15 +40,15 @@ import androidx.compose.ui.unit.dp
 import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
 import com.example.audify.v2.ui.common.ContentLoaderUI
 import com.example.audify.v2.util.convertToAbbreviatedViews
-import com.example.data.models.local.RecentlyPlayed
+import com.example.data.models.remote.saavn.Song
 import com.skydiver.audify.R
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun SongRowItemUI(
-    recentlyPlayed: RecentlyPlayed,
-    onItemClicked: (RecentlyPlayed) -> Unit,
-    updateFavourite: (RecentlyPlayed) -> Unit,
+    song: Song,
+    onItemClicked: (Song) -> Unit,
+    updateFavourite: (Song) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -65,33 +65,38 @@ fun SongRowItemUI(
     BoxWithConstraints {
         Row(
             modifier = modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.95f)
                 .pointerInput(true) {
                     detectTapGestures(
                         onTap = {
-                            onItemClicked(recentlyPlayed)
+                            onItemClicked(song)
                         },
                         onLongPress = {
                             expanded = true
                             pressOffset = it
                         },
                         onDoubleTap = {
-                            updateFavourite(recentlyPlayed)
+                            updateFavourite(song)
                         }
                     )
                 },
             horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             GlideImage(
                 imageModel = {
-                    recentlyPlayed.imageUrl
+                    if (song.image.isNotEmpty()) {
+                        song.image.last().link
+                    } else {
+                        ""
+                    }
                 },
                 failure = {
                     Icon(
                         imageVector = ImageVector.vectorResource(
                             R.drawable.ic_album_place_holder
                         ),
-                        contentDescription = "Album place holder",
+                        contentDescription = "Song Thumbnail place holder",
                         tint = MaterialTheme.colorScheme.onSecondary,
                         modifier = Modifier
                             .clip(RoundedCornerShape(15))
@@ -115,7 +120,7 @@ fun SongRowItemUI(
                     .weight(1f)
             ) {
                 Text(
-                    text = recentlyPlayed.name,
+                    text = song.name,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
@@ -123,9 +128,9 @@ fun SongRowItemUI(
                     fontWeight = FontWeight.Bold
                 )
 
-                if (recentlyPlayed.label.isNotEmpty()) {
+                if (song.label.isNotEmpty()) {
                     Text(
-                        text = recentlyPlayed.label,
+                        text = song.label,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
@@ -135,7 +140,7 @@ fun SongRowItemUI(
                 }
 
                 val plays = rememberSaveable() {
-                    recentlyPlayed.playCount.convertToAbbreviatedViews()
+                    song.playCount.convertToAbbreviatedViews()
                 }
 
                 if (plays.isNotEmpty()) {
@@ -149,26 +154,32 @@ fun SongRowItemUI(
                     )
                 }
 
-                Text(
-                    text = recentlyPlayed.downloadUrl,
-                    style = MaterialTheme.typography.bodyMedium,
-                    overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight.Bold
-                )
+                /*
+                                val downloadUrl = remember {
+                                    if (song.downloadUrl.isEmpty())
+                                        ""
+                                    else
+                                        song.downloadUrl.last().link
+                                }
 
-                Text(
-                    text = recentlyPlayed.url,
-                    style = MaterialTheme.typography.bodyMedium,
-                    overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight.Bold
-                )
+                                Text(
+                                    text = downloadUrl,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                Text(
+                                    text = song.url,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontWeight = FontWeight.Bold
+                                )
+                */
             }
 
-            val iconToShow = remember(recentlyPlayed) {
-                if (recentlyPlayed.isFavorite)
-                    R.drawable.ic_favorite_filled
-                else
-                    R.drawable.ic_favorite
+            val iconToShow = remember(song) {
+                R.drawable.ic_favorite
             }
 
             Icon(
@@ -221,7 +232,7 @@ private val dropDownOptions = listOf(
 fun SongRowItemUIPreview() {
     ScrutinizingTheServiceTheme {
         SongRowItemUI(
-            recentlyPlayed = sample,
+            song = Song.default(),
             onItemClicked = {},
             updateFavourite = {}
         )

@@ -10,7 +10,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.data.local.datasource.FileDownloadDataSource
-import com.example.data.models.local.RecentlyPlayed
+import com.example.data.models.remote.saavn.Song
 import com.skydiver.audify.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -76,41 +76,44 @@ class FileDownloaderService : Service(), CoroutineScope {
         manager.createNotificationChannel(serviceChannel)
     }
 
-    fun startDownload(recentlyPlayed: RecentlyPlayed) {
+    fun startDownload(recentlyPlayed: Song) {
         launch {
             Log.d("DownloadPurpose", "startDownload")
             Log.d("DownloadPurpose", "$recentlyPlayed")
-            val downloadTask = DownloadTask(recentlyPlayed.downloadUrl, recentlyPlayed.name)
+            val downloadTask = DownloadTask(
+                url = recentlyPlayed.downloadUrl.first().link,
+                fileName = recentlyPlayed.name
+            )
             downloadTasks[recentlyPlayed.id] = downloadTask
             downloadTask.start { progress, sizeInBytes ->
 
                 if (progress == 1.0f) {
-                    removeNotification(recentlyPlayed = recentlyPlayed, sizeInBytes)
+                    removeNotification(song = recentlyPlayed, sizeInBytes)
                     downloadTasks.remove(recentlyPlayed.id)
                     cancel()
                 }
 
                 updateDb(
-                    recentlyPlayed = recentlyPlayed,
+                    song = recentlyPlayed,
                     progress = progress,
                     sizeInBytes = sizeInBytes
                 )
 
                 updateNotification(
-                    fileName = recentlyPlayed,
+                    song = recentlyPlayed,
                     progress = (progress * 100).toInt()
                 )
             }
         }
     }
 
-    private fun removeNotification(recentlyPlayed: RecentlyPlayed, sizeInBytes: Long) {
+    private suspend fun removeNotification(song: Song, sizeInBytes: Long) {
         // Instead of cancelling the notif, inform the user that download has completed
         showDownloadCompletedNotifcation()
-        notificationManager.cancel(recentlyPlayed.hashCode())
-        notifications.remove(recentlyPlayed.name)
-        launch(Dispatchers.IO) {
-            downloadDataSource.updateDownloadState(recentlyPlayed, 1.0, sizeInBytes)
+        notificationManager.cancel(song.hashCode())
+        notifications.remove(song.name)
+        withContext(Dispatchers.IO) {
+            downloadDataSource.updateDownloadState(song, 1.0, sizeInBytes)
         }
     }
 
@@ -119,31 +122,31 @@ class FileDownloaderService : Service(), CoroutineScope {
     }
 
     private suspend fun updateDb(
-        recentlyPlayed: RecentlyPlayed,
+        song: Song,
         progress: Float,
         sizeInBytes: Long
     ) {
         withContext(Dispatchers.IO) {
-            downloadDataSource.updateDownloadState(recentlyPlayed, progress.toDouble(), sizeInBytes)
+            downloadDataSource.updateDownloadState(song, progress.toDouble(), sizeInBytes)
         }
     }
 
-    private suspend fun updateNotification(fileName: RecentlyPlayed, progress: Int) {
+    private suspend fun updateNotification(song: Song, progress: Int) {
         withContext(Dispatchers.Main) {
             delay(100)
-            val notificationBuilder = notifications[fileName.id]
+            val notificationBuilder = notifications[song.id]
 
             val builder = notificationBuilder?.setProgress(100, progress, false)?.setOngoing(true)
                 ?: NotificationCompat.Builder(this@FileDownloaderService, DOWNLOAD_CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_file_download_notification)
                     .setProgress(100, progress, false)
-                    .setContentTitle("Downloading: ${fileName.name}")
+                    .setContentTitle("Downloading: ${song.name}")
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .setOngoing(true)
 
-            notifications[fileName.name] = builder
+            notifications[song.name] = builder
 
-            notificationManager.notify(fileName.hashCode(), builder.build())
+            notificationManager.notify(song.hashCode(), builder.build())
         }
     }
 

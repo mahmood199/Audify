@@ -16,12 +16,13 @@ class SongsRemoteDataSource @Inject constructor(
     private val gson: Gson,
 ) {
 
-    suspend fun getSongsByGenres(genre: String): NetworkResult<SongsResponse> {
+    suspend fun getSongsByGenres(genre: String, page: Int = 1): NetworkResult<SongsResponse> {
         return safeApiCall {
             val response = client.get(
                 "https://saavn.me/search/songs"
             ) {
                 parameter("query", genre)
+                parameter("page", page)
             }
             return responseProcessor.getResultFromResponse<SongsResponse>(gson, response)
         }
