@@ -22,7 +22,7 @@ class SongToMediaItemMapper @Inject constructor() : Mapper<Song, MediaItem> {
             .setAlbumArtist(from.album.name)
             .setDisplayTitle(from.name)
             .setSubtitle(from.releaseDate)
-            .setArtworkUri(Uri.parse(from.image.first().link))
+            .setArtworkUri(Uri.parse(from.image.last().link))
             .setReleaseYear(
                 try {
                     from.year.toInt()
