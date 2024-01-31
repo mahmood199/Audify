@@ -96,7 +96,7 @@ fun AudioPlayerUI(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
-                    .background(Color.Cyan)
+                    .background(Color.Transparent)
                     .padding(top = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(space = 16.dp)
             ) {
