@@ -136,6 +136,7 @@ room-paging = { group = "androidx.room", name = "room-paging", version.ref = "ro
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging-version" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-version" }
 landscapist-glide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "glide-version" }
+landscapist-glide-transformation = { group = "com.github.skydoves", name = "landscapist-transformation", version.ref = "glide-version" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore-version" }
 compose-audiowaveform = { group = "com.github.lincollincol", name = "compose-audiowaveform", version.ref = "compose-audio-wave-form" }
 

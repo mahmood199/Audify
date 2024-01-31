@@ -166,6 +166,7 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
     implementation(libs.landscapist.glide)
+    implementation(libs.landscapist.glide.transformation)
     implementation(libs.datastore.preferences)
     implementation(libs.compose.audiowaveform)
 

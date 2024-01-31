@@ -10,6 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -58,7 +59,9 @@ import com.example.audify.v2.ui.common.SaveableLaunchedEffect
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.linc.audiowaveform.infiniteLinearGradient
 import com.skydiver.audify.R
+import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.glide.GlideImage
+import com.skydoves.landscapist.transformation.blur.BlurTransformationPlugin
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -91,7 +94,6 @@ fun AudioPlayerUI(
         bottomBar = {
             Column(
                 modifier = Modifier
-                    .background(state.backGroundColor)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
                     .background(Color.Cyan)
@@ -128,66 +130,81 @@ fun AudioPlayerUI(
         },
         modifier = modifier
             .fillMaxSize()
-            .background(state.backGroundColor)
     ) { paddingValues ->
-        Column(
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
                     top = paddingValues.calculateTopPadding(),
                     bottom = paddingValues.calculateBottomPadding()
                 )
-                .background(state.backGroundColor),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(
-                text = "Hey there",
-                modifier = Modifier
-                    .background(Color.Blue)
-                    .fillMaxWidth()
-                    .basicMarquee(300)
-                    .padding(12.dp),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.ExtraBold
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(10))
-            ) {
-                val imageLink = remember(state.currentMediaItem) {
-                    state.currentMediaItem?.mediaMetadata?.artworkUri?.let {
-                        "${it.scheme}:${it.schemeSpecificPart}"
-                    } ?: ""
-                }
-
-                GlideImage(
-                    imageModel = {
-                        imageLink
-                    },
-                    loading = {
-                        ContentLoaderUI()
-                    },
-                    failure = {
-                        FailedToLoadImage()
-                    }
-                )
+            val imageLink = remember(state.currentMediaItem) {
+                state.currentMediaItem?.mediaMetadata?.artworkUri?.let {
+                    "${it.scheme}:${it.schemeSpecificPart}"
+                } ?: ""
             }
 
-            Text(
-                text = "Hey there",
-                modifier = Modifier
-                    .background(Color.Blue)
-                    .fillMaxWidth()
-                    .basicMarquee(300)
-                    .padding(12.dp),
-                textAlign = TextAlign.Center
+            GlideImage(
+                imageModel = {
+                    imageLink
+                },
+                component = rememberImageComponent {
+                    +BlurTransformationPlugin(radius = maxOf(maxHeight, maxWidth).value.toInt())
+                },
+                modifier = Modifier.matchParentSize()
             )
 
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = state.currentSong?.name ?: "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(300)
+                        .padding(12.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(10))
+                ) {
+
+                    GlideImage(
+                        imageModel = {
+                            imageLink
+                        },
+                        loading = {
+                            ContentLoaderUI()
+                        },
+                        failure = {
+                            FailedToLoadImage()
+                        }
+                    )
+                }
+
+                val album = remember(state.currentSong) {
+                    state.currentSong?.album ?: ""
+                }
+
+                Text(
+                    text = album,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(300)
+                        .padding(12.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
