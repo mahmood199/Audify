@@ -155,6 +155,7 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-database = { group = "com.google.firebase", name = "firebase-database" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
+firebase-remote-config = { group = "com.google.firebase", name = "firebase-config" }
 
 
 [plugins]
