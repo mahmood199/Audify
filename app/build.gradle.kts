@@ -8,6 +8,7 @@ plugins {
     id("kotlin-kapt")
     id("androidx.baselineprofile")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -180,8 +181,7 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
-    //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
-    implementation("com.google.firebase:firebase-analytics")
-
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 }

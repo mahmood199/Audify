@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -106,5 +107,12 @@ dependencies {
     implementation(libs.media3.ui.leanback)
     implementation(libs.media3.session)
     implementation(libs.media3.extractor)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
+
 
 }
