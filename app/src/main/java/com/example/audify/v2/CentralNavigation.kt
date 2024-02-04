@@ -27,7 +27,6 @@ import com.example.audify.v2.ui.search.result.SearchResultUI
 import com.example.audify.v2.ui.settings.SettingsUIContainer
 import com.example.audify.v2.ui.short_cut.ShortcutUIContainer
 import com.example.data.models.Song
-import com.example.data.models.local.RecentlyPlayed
 import kotlinx.coroutines.delay
 
 const val OFFSET = 500
@@ -35,7 +34,7 @@ const val OFFSET = 500
 @Composable
 fun NavigationCentral(
     playMusic: (Song, Int) -> Unit,
-    playMusicFromRemote: (RecentlyPlayed) -> Unit,
+    playMusicFromRemote: (com.example.data.models.remote.saavn.Song) -> Unit,
     backPress: () -> Unit,
     iconChangeClicked: (IconModel) -> Unit,
     modifier: Modifier = Modifier,
@@ -74,6 +73,9 @@ fun NavigationCentral(
                 playMusicFromRemote = playMusicFromRemote,
                 redirectToGenreSelection = {
                     navController.navigate(Screen.GenreSelection.name)
+                },
+                navigateToPlayer = {
+                    navController.navigate(Screen.AudioPlayer.name)
                 }
             )
         }
@@ -196,7 +198,11 @@ fun NavigationCentral(
         composable(
             route = Screen.GenreSelection.name
         ) {
-            GenreSelectionUI()
+            GenreSelectionUI(
+                doneWithSelection = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(

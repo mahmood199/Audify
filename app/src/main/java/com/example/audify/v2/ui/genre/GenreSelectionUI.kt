@@ -32,6 +32,7 @@ import kotlinx.collections.immutable.toPersistentList
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GenreSelectionUI(
+    doneWithSelection: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GenresViewModel = hiltViewModel()
 ) {
@@ -107,6 +108,7 @@ fun GenreSelectionUI(
         Button(
             onClick = {
                 viewModel.confirmGenreSelection()
+                doneWithSelection()
             }
         ) {
             Text("Confirm selection")
@@ -119,6 +121,8 @@ fun GenreSelectionUI(
 @Composable
 fun GenreSelectionUIPreview() {
     ScrutinizingTheServiceTheme {
-        GenreSelectionUI()
+        GenreSelectionUI(
+            doneWithSelection = {}
+        )
     }
 }

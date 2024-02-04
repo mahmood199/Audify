@@ -8,6 +8,8 @@ plugins {
     id("kotlin-kapt")
     id("androidx.baselineprofile")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -113,20 +115,19 @@ dependencies {
     implementation(libs.compose.runtime)
     implementation(libs.androidx.profileinstaller)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.compose.ui.test.junit4)
-    "baselineProfile"(project(":baselineprofile"))
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.service)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    testImplementation(libs.hilt.android.testing)
+    kaptTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
+
+
 
     // Media3 ExoPlayer
 
@@ -164,6 +165,7 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
     implementation(libs.landscapist.glide)
+    implementation(libs.landscapist.glide.transformation)
     implementation(libs.datastore.preferences)
     implementation(libs.compose.audiowaveform)
 
@@ -180,8 +182,28 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
-    //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
-    implementation("com.google.firebase:firebase-analytics")
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.performance)
+    implementation(libs.firebase.remote.config)
+
+
+    // Tests
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    "baselineProfile"(project(":baselineprofile"))
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test.jvm)
 
 }

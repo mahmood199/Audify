@@ -1,6 +1,7 @@
 package com.example.audify.v2.ui.genre
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.models.local.Genre
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GenresViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GenresViewState())

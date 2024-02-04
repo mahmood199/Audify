@@ -1,13 +1,19 @@
 [versions]
+coreTesting = "2.2.0"
+hiltAndroidCompiler = "2.44"
 hiltAndroidGradlePlugin = "2.48"
+hiltAndroidTesting = "2.44"
 kotlinGradlePlugin = "1.6.21"
 kotlinSerialization = "1.9.10"
+kotlinxCoroutinesTest = "1.6.1"
+kotlinxCoroutinesTestJvm = "1.7.3"
 ktx = "1.12.0"
 appcompat = "1.6.1"
 lottieCompose = "6.3.0"
 material = "1.10.0"
 ktor = "2.3.2"
 ktor-gson = "1.5.0"
+mockitoCore = "3.4.6"
 perfsuite = "0.2"
 prdownloader = "0.6.0"
 profileinstaller = "1.3.1"
@@ -43,7 +49,12 @@ chucker = "4.0.0"
 compose-constraint-layout = "1.0.1"
 shortcut-core = "1.0.0"
 
+
+firebase-bom = "32.7.1"
+turbine = "0.13.0"
+
 [libraries]
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -57,10 +68,21 @@ compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+
+
+
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltAndroidTesting" }
+
+
+
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "kotlinxCoroutinesTestJvm" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permission" }
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist-animation" }
@@ -133,6 +155,7 @@ room-paging = { group = "androidx.room", name = "room-paging", version.ref = "ro
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging-version" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-version" }
 landscapist-glide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "glide-version" }
+landscapist-glide-transformation = { group = "com.github.skydoves", name = "landscapist-transformation", version.ref = "glide-version" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore-version" }
 compose-audiowaveform = { group = "com.github.lincollincol", name = "compose-audiowaveform", version.ref = "compose-audio-wave-form" }
 
@@ -145,5 +168,15 @@ chucker-debug = { group = "com.github.chuckerteam.chucker", name = "library", ve
 chucker-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
 
 shortcut-core = { group = "androidx.core", name = "core-google-shortcuts", version.ref = "shortcut-core" }
+
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
+firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
+firebase-remote-config = { group = "com.google.firebase", name = "firebase-config" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+
 
 [plugins]

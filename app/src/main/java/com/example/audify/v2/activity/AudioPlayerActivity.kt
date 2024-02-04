@@ -31,7 +31,6 @@ import com.example.audify.v2.ui.app_icon_change.IconModel
 import com.example.audify.v2.ui.catalog.MusicListViewModel
 import com.example.audify.v2.util.LauncherIconManager
 import com.example.data.models.Song
-import com.example.data.models.local.RecentlyPlayed
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -120,7 +119,7 @@ class AudioPlayerActivity : ComponentActivity() {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
-    private fun startDownload(recentlyPlayed: RecentlyPlayed) {
+    private fun startDownload(recentlyPlayed: com.example.data.models.remote.saavn.Song) {
         if (isBound) {
             startDownloadService()
             fileDownloadService.startDownload(recentlyPlayed)

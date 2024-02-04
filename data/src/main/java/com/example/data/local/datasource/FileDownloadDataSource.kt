@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.paging.PagingSource
 import com.example.data.local.dao.DownloadDao
 import com.example.data.models.local.DownloadItem
-import com.example.data.models.local.RecentlyPlayed
+import com.example.data.models.remote.saavn.Song
 import javax.inject.Inject
 
 class FileDownloadDataSource @Inject constructor(
@@ -20,15 +20,15 @@ class FileDownloadDataSource @Inject constructor(
     }
 
     suspend fun updateDownloadState(
-        recentlyPlayed: RecentlyPlayed,
+        song: Song,
         progress: Double,
         sizeInBytes: Long
     ) {
-        val item = dao.getDownloadItem(recentlyPlayed.downloadUrl)
+        val item = dao.getDownloadItem(song.downloadUrl.first().link)
         if (item == null) {
             val downloadItem = DownloadItem(
-                fileName = recentlyPlayed.name,
-                fileUrl = recentlyPlayed.downloadUrl,
+                fileName = song.name,
+                fileUrl = song.downloadUrl.first().link,
                 fileLocation = "",
                 downloadProgress = 0.0,
                 fileSizeInBytes = sizeInBytes,
@@ -39,13 +39,13 @@ class FileDownloadDataSource @Inject constructor(
             Log.d("FileDataSource", "InsertFile --> Affected rows $rows")
         } else {
             val rows = dao.updateDownload(
-                fileName = recentlyPlayed.name,
+                fileName = song.name,
                 progress = progress,
             )
             Log.d("FileDataSource", "UpdateFile --> Affected rows $rows")
         }
 
-        val result = dao.getDownloadItem(fileUrl = recentlyPlayed.downloadUrl)
+        val result = dao.getDownloadItem(fileUrl = song.downloadUrl.first().link)
         Log.d("FileDataSource", "Actual progress $progress")
         Log.d("FileDataSource", "Row progress ${result?.downloadProgress}")
     }

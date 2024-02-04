@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
@@ -50,7 +51,7 @@ import com.example.audify.v2.ui.home.favourites.FavouritesUI
 import com.example.audify.v2.ui.home.playlist.PlaylistUI
 import com.example.audify.v2.ui.home.quick_pick.QuickPicksUI
 import com.example.audify.v2.ui.home.songs.SongsUI
-import com.example.data.models.local.RecentlyPlayed
+import com.example.data.models.remote.saavn.Song
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydiver.audify.R
 import kotlinx.collections.immutable.PersistentList
@@ -64,7 +65,8 @@ fun LandingPageUI(
     redirectToLocalAudioScreen: () -> Unit,
     navigateToSearch: () -> Unit,
     backPress: () -> Unit,
-    playMusicFromRemote: (RecentlyPlayed) -> Unit,
+    playMusicFromRemote: (Song) -> Unit,
+    navigateToPlayer: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LandingPageViewModel = hiltViewModel()
 ) {
@@ -120,6 +122,16 @@ fun LandingPageUI(
                     modifier = Modifier.weight(1f)
                 )
             }
+        },
+        bottomBar = {
+            AnimatedBottomPlayer(
+                state = state,
+                isShown = state.isPlaying,
+                sendMediaAction = viewModel::sendMediaAction,
+                sendUiEvent = viewModel::sendUIEvent,
+                navigateToPlayer = navigateToPlayer,
+                modifier = Modifier.navigationBarsPadding()
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -178,7 +190,7 @@ fun PagerContent(
     pagerState: PagerState,
     redirectToGenreSelection: () -> Unit,
     redirectToLocalAudioScreen: () -> Unit,
-    playMusicFromRemote: (RecentlyPlayed) -> Unit,
+    playMusicFromRemote: (Song) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -258,7 +270,8 @@ fun PreviewLandingPageUI() {
             navigateToSearch = {},
             backPress = {},
             playMusicFromRemote = {},
-            redirectToGenreSelection = {}
+            redirectToGenreSelection = {},
+            navigateToPlayer = {}
         )
     }
 }

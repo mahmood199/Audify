@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.audify.v2.media3.PlayerController
 import com.example.data.models.local.Artist2
 import com.example.data.models.remote.saavn.Album
 import com.example.data.models.remote.saavn.ArtistData
@@ -27,11 +26,10 @@ import javax.inject.Inject
 class QuickPickViewModel @Inject constructor(
     private val landingPageRepository: LandingPageRepositoryImpl,
     private val artistsRepository: ArtistsRepository,
-    private val genreRepository: GenreRepository,
-    private val controller: PlayerController
+    private val genreRepository: GenreRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(QuickPickViewState())
+    private val _state = MutableStateFlow(QuickPickViewState.default())
     val state = _state.asStateFlow()
 
     val albums = mutableStateListOf<Album>()
@@ -42,6 +40,14 @@ class QuickPickViewModel @Inject constructor(
     var localArtist = mutableStateListOf<Artist2>()
 
     init {
+        getLandingPageData()
+
+        getArtistsData()
+
+        getGenresData()
+    }
+
+    private fun getLandingPageData() {
         viewModelScope.launch(Dispatchers.IO) {
             _state.emit(_state.value.copy(isLoading = true))
             when (val result = landingPageRepository.getLandingPageData()) {
@@ -69,14 +75,18 @@ class QuickPickViewModel @Inject constructor(
                 else -> {}
             }
         }
+    }
 
+    private fun getArtistsData() {
         viewModelScope.launch(Dispatchers.IO) {
             artistsRepository.getAll().collectLatest {
                 localArtist.clear()
                 localArtist.addAll(it)
             }
         }
+    }
 
+    private fun getGenresData() {
         viewModelScope.launch(Dispatchers.IO) {
             genreRepository.getAll().collectLatest {
                 _state.emit(_state.value.copy(genreCount = it.size))
