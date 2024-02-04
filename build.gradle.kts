@@ -22,6 +22,7 @@ buildscript {
         classpath(libs.hilt.android.gradle.plugin)
         classpath(libs.kotlin.serialization)
         classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.kotlinx.coroutines.test.jvm)
     }
 }
 

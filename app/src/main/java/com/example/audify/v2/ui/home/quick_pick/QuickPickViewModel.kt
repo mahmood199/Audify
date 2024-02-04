@@ -29,7 +29,7 @@ class QuickPickViewModel @Inject constructor(
     private val genreRepository: GenreRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(QuickPickViewState())
+    private val _state = MutableStateFlow(QuickPickViewState.default())
     val state = _state.asStateFlow()
 
     val albums = mutableStateListOf<Album>()
@@ -40,6 +40,14 @@ class QuickPickViewModel @Inject constructor(
     var localArtist = mutableStateListOf<Artist2>()
 
     init {
+        getLandingPageData()
+
+        getArtistsData()
+
+        getGenresData()
+    }
+
+    private fun getLandingPageData() {
         viewModelScope.launch(Dispatchers.IO) {
             _state.emit(_state.value.copy(isLoading = true))
             when (val result = landingPageRepository.getLandingPageData()) {
@@ -67,14 +75,18 @@ class QuickPickViewModel @Inject constructor(
                 else -> {}
             }
         }
+    }
 
+    private fun getArtistsData() {
         viewModelScope.launch(Dispatchers.IO) {
             artistsRepository.getAll().collectLatest {
                 localArtist.clear()
                 localArtist.addAll(it)
             }
         }
+    }
 
+    private fun getGenresData() {
         viewModelScope.launch(Dispatchers.IO) {
             genreRepository.getAll().collectLatest {
                 _state.emit(_state.value.copy(genreCount = it.size))
