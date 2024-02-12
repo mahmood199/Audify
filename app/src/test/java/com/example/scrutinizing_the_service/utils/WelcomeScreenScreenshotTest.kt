@@ -3,7 +3,7 @@ package com.example.scrutinizing_the_service.utils
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.home.songs.SongsUI
 import org.junit.Rule
 import org.junit.Test
@@ -21,7 +21,7 @@ class WelcomeScreenScreenshotTest {
     @Test
     fun launchWelcomeScreen_lightTheme() {
         paparazzi.snapshot {
-            ScrutinizingTheServiceTheme(darkTheme = false) {
+            AudifyTheme(darkTheme = false) {
                 SongsUI(
                     redirectToGenreSelection = {
 

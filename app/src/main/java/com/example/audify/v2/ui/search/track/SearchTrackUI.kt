@@ -33,7 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.search.result.SearchResultState
 import com.example.audify.v2.util.isAppending
 import com.example.audify.v2.util.isEmpty
@@ -171,7 +171,7 @@ fun TrackUI(item: Track) {
 @Preview
 @Composable
 fun SearchTrackUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         SearchTrackUI()
     }
 }

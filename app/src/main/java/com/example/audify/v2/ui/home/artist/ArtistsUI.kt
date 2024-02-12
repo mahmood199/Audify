@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun ArtistsUI() {
@@ -24,7 +24,7 @@ fun ArtistsUI() {
 @Preview
 @Composable
 fun PreviewArtistsUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         ArtistsUI()
     }
 }

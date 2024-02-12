@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun LoadMoreItemsRowUI(
@@ -38,7 +38,7 @@ fun LoadMoreItemsRowUI(
 @Preview
 @Composable
 fun PreviewLoadMoreItemsRowUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         LoadMoreItemsRowUI(modifier = Modifier.fillMaxSize())
     }
 

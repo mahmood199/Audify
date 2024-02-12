@@ -21,7 +21,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import kotlinx.collections.immutable.toPersistentList
 import kotlin.random.Random
 
@@ -76,7 +76,7 @@ fun PlayerProgressUI() {
 @Preview
 @Composable
 fun PlayerProgressUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         PlayerProgressUI()
     }
 }

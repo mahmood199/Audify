@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.skydiver.audify.R
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -209,7 +209,7 @@ fun BottomPlayer(
 @Preview
 @Composable
 fun BottomPlayerPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         BottomPlayer(
             progress = 0.7f,
             songName = "Some Random Long Name Song",

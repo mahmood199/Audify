@@ -1,10 +1,5 @@
 package com.example.audify.v2
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
-
-
 object ScreenName {
     const val AUDIO_LIST = "audio-list"
     const val AUDIO_PLAYER = "audio-player"
@@ -18,6 +13,7 @@ object ScreenName {
     const val SHORT_CUT_SETUP = "short_cut_setup"
     const val CHANGE_ICON = "change_icon"
     const val NOTIFICATION_TEST = "notification_test"
+    const val REMINDER_NOTIFICATION = "reminder_notification"
 }
 
 
@@ -33,13 +29,6 @@ sealed class Screen(val name: String) {
     data object AudioDownloadListScreen : Screen(name = ScreenName.AUDIO_DOWNLOAD_LIST)
     data object ShortcutScreen : Screen(name = ScreenName.SHORT_CUT_SETUP)
     data object ChangeIcon : Screen(name = ScreenName.CHANGE_ICON)
-    data object NotificationTest: Screen(name = ScreenName.NOTIFICATION_TEST)
-}
-
-private suspend fun doLongRunningTaskAndDoNotReturnResult() {
-    withContext(Dispatchers.Default) {
-        // your code for doing a long running task
-        // Added delay to simulate
-        delay(2000)
-    }
+    data object NotificationTest : Screen(name = ScreenName.NOTIFICATION_TEST)
+    data object ReminderNotification : Screen(name = ScreenName.REMINDER_NOTIFICATION)
 }

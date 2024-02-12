@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.group
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 
 @Composable
@@ -435,7 +435,7 @@ fun rememberAppIconChange(): ImageVector {
 @Preview
 @Composable
 fun SomePreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         rememberAppIconChange()
     }
 }

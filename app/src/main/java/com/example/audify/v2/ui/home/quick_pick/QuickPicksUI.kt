@@ -42,7 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.ContentLoaderUI
 import com.example.audify.v2.ui.common.LoadMoreItemsRowUI
 import com.example.audify.v2.ui.common.SnappingLazyRow
@@ -198,7 +198,7 @@ fun AlbumCatalogs(
         val snappingLayout = remember(lazyGridState) {
             SnapLayoutInfoProvider(
                 lazyGridState = lazyGridState
-            ) { _, _, _ -> lazyGridState.firstVisibleItemIndex }
+            ) { _, _, _, _, _ -> lazyGridState.firstVisibleItemIndex }
         }
 
         val flingBehavior = rememberSnapFlingBehavior(snappingLayout)
@@ -361,7 +361,7 @@ fun SongCatalogs(
 @Preview
 @Composable
 fun PreviewQuickPicksUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         QuickPicksUI()
     }
 }

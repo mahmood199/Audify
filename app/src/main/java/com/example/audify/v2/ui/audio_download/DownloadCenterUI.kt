@@ -41,7 +41,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.core.rotating
 import com.example.audify.v2.ui.search.result.SearchResultState
 import com.example.audify.v2.util.bytesToKb
@@ -273,7 +273,7 @@ fun DownloadItemUI(
 @Preview
 @Composable
 fun TrackUI2Preview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         DownloadItemUI(
             item = DownloadItem.default(),
             url = "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3",

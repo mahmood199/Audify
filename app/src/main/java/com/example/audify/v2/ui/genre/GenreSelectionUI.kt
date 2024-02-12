@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.home.songs.GenreUiItem
 import kotlinx.collections.immutable.toPersistentList
 
@@ -120,7 +120,7 @@ fun GenreSelectionUI(
 @Preview
 @Composable
 fun GenreSelectionUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         GenreSelectionUI(
             doneWithSelection = {}
         )

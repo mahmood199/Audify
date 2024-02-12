@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun AppBar(
@@ -59,7 +59,7 @@ fun AppBar(
 @Preview
 @Composable
 fun AppBarPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         AppBar(
             imageVector = Icons.Default.ArrowBack,
             title = "Demo",

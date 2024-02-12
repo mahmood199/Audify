@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.AppBar
 import com.skydiver.audify.R
 
@@ -105,7 +105,7 @@ fun SettingsUI(
 @Preview
 @Composable
 fun PreviewSettingsUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         SettingsUI(
             state = SettingsViewState.default(),
             backPress = {},

@@ -26,7 +26,7 @@ import com.example.audify.v2.download.FileDownloaderService
 import com.example.audify.v2.media3.AudioPlayerService
 import com.example.audify.v2.media3.MediaPlayerAction
 import com.example.audify.v2.receiver.WifiConnectionReceiver
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.app_icon_change.IconModel
 import com.example.audify.v2.ui.catalog.MusicListViewModel
 import com.example.audify.v2.util.LauncherIconManager
@@ -75,7 +75,7 @@ class AudioPlayerActivity : ComponentActivity() {
 
         setContent {
 
-            ScrutinizingTheServiceTheme {
+            AudifyTheme {
                 NavigationCentral(
                     playMusic = { song, index ->
                         musicListViewModel.sendMediaAction(MediaPlayerAction.PlaySongAt(index))
@@ -157,7 +157,7 @@ class AudioPlayerActivity : ComponentActivity() {
 @Preview
 @Composable
 fun NavigationCentralPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         NavigationCentral(
             playMusic = { song: Song, i: Int ->
             },

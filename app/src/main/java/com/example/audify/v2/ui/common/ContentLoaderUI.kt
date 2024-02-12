@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun ContentLoaderUI(
@@ -24,7 +24,7 @@ fun ContentLoaderUI(
 @Preview
 @Composable
 fun PreviewContentLoaderUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         ContentLoaderUI()
     }
 }

@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.ContentLoaderUI
 import com.example.audify.v2.util.convertToAbbreviatedViews
 import com.example.data.models.remote.saavn.Song
@@ -230,7 +230,7 @@ private val dropDownOptions = listOf(
 @Preview
 @Composable
 fun SongRowItemUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         SongRowItemUI(
             song = Song.default(),
             onItemClicked = {},

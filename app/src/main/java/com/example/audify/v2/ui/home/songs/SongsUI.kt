@@ -26,7 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.ContentLoaderUI
 import com.example.audify.v2.util.isEmpty
 import com.example.data.models.remote.saavn.Song
@@ -162,7 +162,7 @@ fun SongsContentUI(
 @Preview
 @Composable
 fun PreviewSongsUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         SongsUI(
             redirectToGenreSelection = {},
             playMusicFromRemote = {},

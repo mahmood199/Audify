@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun ClockUI(
@@ -22,7 +22,7 @@ fun ClockUI(
 @Preview
 @Composable
 fun ClockUUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         ClockUI()
     }
 }
