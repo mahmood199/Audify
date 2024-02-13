@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun ShortcutUIContainer(
@@ -57,7 +57,7 @@ fun ShortcutUI(
 @Preview
 @Composable
 fun ShortcutUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         ShortcutUI(ShortcutType.Dynamic)
     }
 }

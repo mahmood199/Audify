@@ -19,7 +19,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Composable
 fun CustomRotationUIContainer(
@@ -49,7 +49,7 @@ fun CustomRotationUI(
 @Preview
 @Composable
 fun CustomRotationUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         CustomRotationUIContainer()
     }
 }

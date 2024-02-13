@@ -30,7 +30,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.util.px
 import com.linc.audiowaveform.infiniteLinearGradient
 import kotlinx.collections.immutable.toPersistentList
@@ -161,7 +161,7 @@ fun AudioPlayerProgressUI(
 @Preview
 @Composable
 fun PreviewAudioPlayerProgressUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
 
         var progress by remember {
             mutableFloatStateOf(0f)

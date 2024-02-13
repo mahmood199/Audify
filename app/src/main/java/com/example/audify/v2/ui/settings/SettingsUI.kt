@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.AppBar
 import com.skydiver.audify.R
 
@@ -35,6 +36,7 @@ import com.skydiver.audify.R
 fun SettingsUIContainer(
     backPress: () -> Unit,
     navigateToIconChangeScreen: () -> Unit,
+    navigateToReminderScreen: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
 
@@ -44,6 +46,7 @@ fun SettingsUIContainer(
         state = state,
         backPress = backPress,
         navigateToIconChangeScreen = navigateToIconChangeScreen,
+        navigateToReminderScreen = navigateToReminderScreen,
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
@@ -55,6 +58,7 @@ fun SettingsUI(
     state: SettingsViewState,
     backPress: () -> Unit,
     navigateToIconChangeScreen: () -> Unit,
+    navigateToReminderScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -99,17 +103,44 @@ fun SettingsUI(
                 )
             }
         }
+
+        item(key = "reminder_screen") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+                    .clickable {
+                        navigateToReminderScreen()
+                    }
+            ) {
+                Text(
+                    text = "Reminder Settings",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.weight(weight = 1f)
+                )
+
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "Change App Icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Unspecified
+                )
+            }
+        }
     }
 }
 
 @Preview
 @Composable
 fun PreviewSettingsUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         SettingsUI(
             state = SettingsViewState.default(),
             backPress = {},
-            navigateToIconChangeScreen = {}
+            navigateToIconChangeScreen = {},
+            navigateToReminderScreen = {}
         )
     }
 }

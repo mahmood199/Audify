@@ -10,6 +10,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -80,8 +81,8 @@ android {
     }
     packaging {
         resources {
-            exclude("/META-INF/AL2.0")
-            exclude("/META-INF/LGPL2.1")
+            jniLibs.excludes.add("/META-INF/AL2.0")
+            jniLibs.excludes.add("/META-INF/LGPL2.1")
         }
     }
     kapt {

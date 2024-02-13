@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.AppBar
 import com.example.audify.v2.ui.common.SaveableLaunchedEffect
 import com.skydiver.audify.R
@@ -257,7 +257,7 @@ fun AppIcon(
 @Preview
 @Composable
 fun IconChangeUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         val context = LocalContext.current
         val icons = listOf(
             R.mipmap.ic_app_launcher_v1,

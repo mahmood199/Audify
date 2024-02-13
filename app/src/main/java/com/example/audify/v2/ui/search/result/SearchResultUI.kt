@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.audify.v2.media3.MediaPlayerAction
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.BottomPlayer
 import com.example.audify.v2.ui.common.SideNavigationBar
 import com.example.audify.v2.ui.search.album.SearchAlbumUI
@@ -211,7 +211,7 @@ private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
 @Preview
 @Composable
 fun SearchResultUIPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         SearchResultUI(
             query = "",
             navigateToPlayer = {},

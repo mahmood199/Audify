@@ -21,12 +21,12 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 
 @Preview
 @Composable
 fun DottedColorBorderPreview() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

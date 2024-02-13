@@ -22,6 +22,7 @@ import com.example.audify.v2.ui.genre.GenreSelectionUI
 import com.example.audify.v2.ui.home.landing.LandingPageUI
 import com.example.audify.v2.ui.notif.NotificationTestUIContainer
 import com.example.audify.v2.ui.player.AudioPlayerUI
+import com.example.audify.v2.ui.reminder_settings.ReminderSettingsUIContainer
 import com.example.audify.v2.ui.search.history.SearchHistoryUI
 import com.example.audify.v2.ui.search.result.SearchResultUI
 import com.example.audify.v2.ui.settings.SettingsUIContainer
@@ -87,6 +88,9 @@ fun NavigationCentral(
                 },
                 navigateToIconChangeScreen = {
                     navController.navigate(Screen.ChangeIcon.name)
+                },
+                navigateToReminderScreen = {
+                    navController.navigate(Screen.ReminderNotification.name)
                 }
             )
         }
@@ -227,6 +231,12 @@ fun NavigationCentral(
             route = Screen.NotificationTest.name
         ) {
             NotificationTestUIContainer()
+        }
+
+        composable(
+            route = Screen.ReminderNotification.name
+        ) {
+            ReminderSettingsUIContainer()
         }
     }
 }

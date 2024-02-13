@@ -37,7 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.audify.v2.theme.ScrutinizingTheServiceTheme
+import com.example.audify.v2.theme.AudifyTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -144,7 +144,7 @@ fun Header(
 @Preview
 @Composable
 fun SideNavigationBarUI() {
-    ScrutinizingTheServiceTheme {
+    AudifyTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()
