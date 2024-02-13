@@ -5,7 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-android")
     id("kotlinx-serialization")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("androidx.baselineprofile")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -35,6 +35,10 @@ android {
         buildConfigField("String", "LAST_FM_BASE_URL", "\"https://ws.audioscrobbler.com/2.0/\"")
 
         buildConfigField("String", "SAAVN_BASE_URL", "\"saavn.me/\"")
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     signingConfigs {
@@ -85,9 +89,6 @@ android {
             jniLibs.excludes.add("/META-INF/LGPL2.1")
         }
     }
-    kapt {
-        correctErrorTypes = true
-    }
     lint {
         baseline = file("lint-baseline.xml")
     }
@@ -120,13 +121,13 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.service)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
     testImplementation(libs.hilt.android.testing)
-    kaptTest(libs.hilt.android.compiler)
+    kspTest(libs.hilt.android.compiler)
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
+    kspAndroidTest(libs.hilt.android.compiler)
 
 
 
@@ -161,7 +162,7 @@ dependencies {
 
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.paging)
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
