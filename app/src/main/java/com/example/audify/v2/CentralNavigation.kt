@@ -88,6 +88,9 @@ fun NavigationCentral(
                 },
                 navigateToIconChangeScreen = {
                     navController.navigate(Screen.ChangeIcon.name)
+                },
+                navigateToReminderScreen = {
+                    navController.navigate(Screen.ReminderNotification.name)
                 }
             )
         }

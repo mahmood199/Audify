@@ -1,5 +1,6 @@
 package com.example.audify.reminder
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -8,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class NotificationAlarmScheduler @Inject constructor(
-    @ApplicationContext val context: Context
+    @ApplicationContext private val context: Context
 ) : AlarmScheduler {
 
     private val alarmManager by lazy {
@@ -16,7 +17,7 @@ class NotificationAlarmScheduler @Inject constructor(
     }
 
     override fun createPendingIntent(reminderItem: ReminderItem): PendingIntent {
-        val intent = Intent()
+        val intent = Intent(context, AlarmReceiver::class.java)
 
         return PendingIntent.getBroadcast(
             context,
@@ -26,11 +27,11 @@ class NotificationAlarmScheduler @Inject constructor(
         )
     }
 
+    @SuppressLint("ScheduleExactAlarm")
     override fun schedule(reminderItem: ReminderItem) {
-        alarmManager.setInexactRepeating(
+        alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             reminderItem.time,
-            AlarmManager.INTERVAL_DAY,
             createPendingIntent(reminderItem)
         )
     }

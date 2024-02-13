@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
+import com.skydiver.audify.R
 
 class RunnerNotifier(
     private val notificationManager: NotificationManager,
@@ -18,15 +19,15 @@ class RunnerNotifier(
         return NotificationCompat.Builder(context, notificationChannelId)
             .setContentTitle(getNotificationTitle())
             .setContentText(getNotificationMessage())
-            .setSmallIcon(android.R.drawable.btn_star)
+            .setSmallIcon(R.mipmap.ic_app_launcher_v1)
             .build()
     }
 
     override fun getNotificationTitle(): String {
-        return "Time to go for a run 🏃‍️"
+        return "Have you listened anything today?‍️"
     }
 
     override fun getNotificationMessage(): String {
-        return "You are ready to go for a run?"
+        return "Listen to top trending songs for today"
     }
 }
