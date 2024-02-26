@@ -1,10 +1,11 @@
 [versions]
+benchmarkMacroJunit4 = "1.2.2"
 coreTesting = "2.2.0"
 hiltAndroidCompiler = "2.50"
 hiltAndroidGradlePlugin = "2.50"
 hiltAndroidTesting = "2.50"
 kotlinGradlePlugin = "1.6.21"
-kotlinSerialization = "1.9.10"
+kotlin-version = "1.9.10"
 kotlinxCoroutinesTest = "1.6.1"
 kotlinxCoroutinesTestJvm = "1.7.3"
 ktx = "1.12.0"
@@ -54,13 +55,29 @@ shortcut-core = "1.0.0"
 firebase-bom = "32.7.1"
 turbine = "0.13.0"
 
+
+# Plugins verison
+android-application = "8.2.2"
+android-library = "8.2.2"
+kotlin-android = "1.9.10"
+dagger-hilt-android = "2.50"
+android-test = "8.2.2"
+androidx-baselineprofile = "1.2.3"
+google-services = "4.4.0"
+firebase-crashlytics = "2.9.9"
+firebase-perf = "1.4.2"
+ksp = "1.9.10-1.0.13"
+uiautomator = "2.3.0"
+
 [libraries]
+androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
+androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -79,7 +96,7 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 
 
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-version" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "kotlinxCoroutinesTestJvm" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
@@ -183,3 +200,15 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [plugins]
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazziGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "android-application" }
+android-library = { id = "com.android.library", version.ref = "android-library" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt-android" }
+android-test = { id = "com.android.test", version.ref = "android-test" }
+androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-parcelize = { id = "kotlin-parcelize", version.ref = "kotlin-version" }
+kotlinx-serialization = { id = "kotlinx-serialization" , version.ref = "kotlin-version" }
