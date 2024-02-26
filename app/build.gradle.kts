@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.dagger.hilt.android)
     id("kotlin-parcelize")
+    //alias(libs.plugins.kotlin.parcelize)
     id("kotlinx-serialization")
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.baselineprofile)
@@ -112,7 +113,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.system.ui.controller)
     implementation(libs.compose.runtime)
     implementation(libs.androidx.profileinstaller)
 
