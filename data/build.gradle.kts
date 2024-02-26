@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
-    id("kotlin-parcelize")
+//    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.dagger.hilt.android)
 }
 
@@ -22,6 +23,11 @@ android {
 
         buildConfigField("String", "SAAVN_BASE_URL", "\"saavn.me/\"")
         buildConfigField("String", "VERSION_NAME", "\"1.0\"")
+/*
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+*/
     }
 
     buildTypes {
