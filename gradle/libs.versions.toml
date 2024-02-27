@@ -1,23 +1,24 @@
 [versions]
-coreTesting = "2.2.0"
-hiltAndroidCompiler = "2.50"
-hiltAndroidGradlePlugin = "2.50"
-hiltAndroidTesting = "2.50"
-kotlinGradlePlugin = "1.6.21"
-kotlinSerialization = "1.9.10"
-kotlinxCoroutinesTest = "1.6.1"
-kotlinxCoroutinesTestJvm = "1.7.3"
+benchmark-macro-junit4 = "1.2.2"
+core-testing = "2.2.0"
+hilt-android-compiler = "2.50"
+hilt-android-gradle-plugin = "2.50"
+hilt-android-testing = "2.50"
+kotlin-gradle-plugin = "1.6.21"
+kotlin-version = "1.9.10"
+kotlinx-coroutines-test = "1.6.1"
+kotlinx-coroutines-test-jvm = "1.7.3"
 ktx = "1.12.0"
-appcompat = "1.6.1"
-lottieCompose = "6.3.0"
+app-compat = "1.6.1"
+lottie-compose = "6.3.0"
 material = "1.10.0"
 ktor = "2.3.2"
 ktor-gson = "1.5.0"
-mockitoCore = "3.4.6"
-paparazziGradlePlugin = "1.3.2"
-perfsuite = "0.2"
-prdownloader = "0.6.0"
-profileinstaller = "1.4.0-alpha01"
+mockito-core = "3.4.6"
+paparazzi-gradle-plugin = "1.3.2"
+perf-suite = "0.2"
+pr-downloader = "0.6.0"
+profile-installer = "1.4.0-alpha01"
 serialization-json = "1.5.1"
 media3-version = "1.1.1"
 androidx-legacy-support = "1.0.0"
@@ -25,7 +26,7 @@ glide = "4.16.0"
 room-version = "2.6.1"
 paging-version = "3.2.1"
 glide-version = "2.2.12"
-dataStore-version = "1.0.0"
+data-store-version = "1.0.0"
 compose-audio-wave-form = "1.1.1"
 kotlinx-collections-immutable-version = "0.3.7"
 brotli-dec-version = "0.1.2"
@@ -54,13 +55,29 @@ shortcut-core = "1.0.0"
 firebase-bom = "32.7.1"
 turbine = "0.13.0"
 
+
+# Plugins verison
+android-application = "8.2.2"
+android-library = "8.2.2"
+kotlin-android = "1.9.10"
+dagger-hilt-android = "2.50"
+android-test = "8.2.2"
+androidx-baselineprofile = "1.2.3"
+google-services = "4.4.0"
+firebase-crashlytics = "2.9.9"
+firebase-perf = "1.4.2"
+ksp = "1.9.10-1.0.13"
+uiautomator = "2.3.0"
+
 [libraries]
-androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "app-compat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
-androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profile-installer" }
+androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -72,23 +89,23 @@ compose-material3-window-size = { group = "androidx.compose.material3", name = "
 
 
 
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
-hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltAndroidTesting" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
+hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-android-gradle-plugin" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt-android-testing" }
 
 
 
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
-kotlinx-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "kotlinxCoroutinesTestJvm" }
-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-version" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+kotlinx-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "kotlinx-coroutines-test-jvm" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permission" }
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist-animation" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist-system-ui-controller" }
+accompanist-system-ui-controller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist-system-ui-controller" }
 compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-runtime" }
 compose-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "compose-constraint-layout" }
 
@@ -127,9 +144,9 @@ ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serializati
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding", version.ref = "ktor" }
-paparazzi-gradle-plugin = { module = "app.cash.paparazzi:paparazzi-gradle-plugin", version.ref = "paparazziGradlePlugin" }
-perfsuite = { module = "com.booking:perfsuite", version.ref = "perfsuite" }
-prdownloader = { module = "com.mindorks.android:prdownloader", version.ref = "prdownloader" }
+paparazzi-gradle-plugin = { module = "app.cash.paparazzi:paparazzi-gradle-plugin", version.ref = "paparazzi-gradle-plugin" }
+perfsuite = { module = "com.booking:perfsuite", version.ref = "perf-suite" }
+prdownloader = { module = "com.mindorks.android:prdownloader", version.ref = "pr-downloader" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 
 
@@ -158,7 +175,7 @@ paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.r
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-version" }
 landscapist-glide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "glide-version" }
 landscapist-glide-transformation = { group = "com.github.skydoves", name = "landscapist-transformation", version.ref = "glide-version" }
-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore-version" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "data-store-version" }
 compose-audiowaveform = { group = "com.github.lincollincol", name = "compose-audiowaveform", version.ref = "compose-audio-wave-form" }
 
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable-version" }
@@ -182,4 +199,16 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 
 [plugins]
-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazziGradlePlugin" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi-gradle-plugin" }
+android-application = { id = "com.android.application", version.ref = "android-application" }
+android-library = { id = "com.android.library", version.ref = "android-library" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt-android" }
+android-test = { id = "com.android.test", version.ref = "android-test" }
+androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-version" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization" , version.ref = "kotlin-version" }
