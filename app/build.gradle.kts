@@ -72,6 +72,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs = freeCompilerArgs + listOf("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
     }
 
     buildFeatures {
@@ -114,6 +115,10 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.system.ui.controller)
     implementation(libs.compose.runtime)
+    //implementation("androidx.compose.material:material")
+    implementation(libs.compose.foundation)
+
+
     implementation(libs.androidx.profileinstaller)
 
 

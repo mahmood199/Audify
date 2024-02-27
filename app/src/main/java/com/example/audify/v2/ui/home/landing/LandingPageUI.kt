@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,15 +19,22 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -58,7 +66,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun LandingPageUI(
     redirectToGenreSelection: () -> Unit,
@@ -92,6 +100,36 @@ fun LandingPageUI(
 
     LaunchedEffect(Unit) {
         uiController.setNavigationBarColor(Color.Transparent)
+    }
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    val dismissSnackBarState = rememberSwipeToDismissBoxState(confirmValueChange = { value ->
+        if (value != SwipeToDismissBoxValue.Settled) {
+            snackBarHostState.currentSnackbarData?.dismiss()
+            true
+        } else {
+            false
+        }
+    })
+
+    LaunchedEffect(dismissSnackBarState.currentValue) {
+        if (dismissSnackBarState.currentValue != SwipeToDismissBoxValue.Settled) {
+            dismissSnackBarState.reset()
+        }
+    }
+
+    LaunchedEffect(state.isConnected) {
+        if (state.isConnected) {
+            snackBarHostState.showSnackbar(
+                message = "Connected to Internet",
+                withDismissAction = true
+            )
+        } else {
+            snackBarHostState.showSnackbar(
+                message = "Internet connection lost",
+                withDismissAction = true
+            )
+        }
     }
 
     Scaffold(
@@ -144,6 +182,21 @@ fun LandingPageUI(
                     contentDescription = "Search Song Button"
                 )
             }
+        },
+        snackbarHost = {
+            SwipeToDismissBox(
+                state = dismissSnackBarState,
+                backgroundContent = {
+
+                },
+                content = {
+                    SnackbarHost(
+                        hostState = snackBarHostState,
+                        modifier = Modifier
+                            .imePadding()
+                    )
+                },
+            )
         },
         modifier = modifier
     ) { paddingValues ->

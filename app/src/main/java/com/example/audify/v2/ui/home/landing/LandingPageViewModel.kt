@@ -91,7 +91,6 @@ class LandingPageViewModel @Inject constructor(
         viewModelScope.launch {
             networkConnectivityObserver.networkState.collectLatest {
                 updateState { copy(isConnected = it) }
-                _state.value = _state.value.copy(isConnected = it)
             }
         }
     }
