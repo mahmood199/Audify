@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service
+package com.example.audify
 
 /**
  * Instrumented test, which will execute on an Android device.

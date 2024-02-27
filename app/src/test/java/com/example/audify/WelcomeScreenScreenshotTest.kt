@@ -1,4 +1,4 @@
-package com.example.scrutinizing_the_service.utils
+package com.example.audify
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
