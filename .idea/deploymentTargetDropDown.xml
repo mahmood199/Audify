@@ -8,18 +8,6 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="nextQuote_outputCorrectQuote()">
-        <State />
-      </entry>
-      <entry key="populateColorsFromAssets_inputInvalidJson_outputException()">
-        <State />
-      </entry>
-      <entry key="populateColorsFromAssets_inputValidFileName_outputCount()">
-        <State />
-      </entry>
-      <entry key="previousQuote_outputCorrectQuote()">
-        <State />
-      </entry>
     </value>
   </component>
 </project>
