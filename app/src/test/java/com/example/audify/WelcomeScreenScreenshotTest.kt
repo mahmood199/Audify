@@ -23,7 +23,7 @@ class WelcomeScreenScreenshotTest {
         paparazzi.snapshot {
             AudifyTheme(darkTheme = false) {
                 SongsUI(
-                    redirectToGenreSelection = {
+                    navigateToGenreSelection = {
 
                     },
                     playMusicFromRemote = {

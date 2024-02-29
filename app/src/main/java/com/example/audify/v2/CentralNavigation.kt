@@ -19,7 +19,7 @@ import com.example.audify.v2.ui.audio_download.DownloadCenterUI
 import com.example.audify.v2.ui.catalog.MusicListUI
 import com.example.audify.v2.ui.common.SaveableLaunchedEffect
 import com.example.audify.v2.ui.genre.GenreSelectionUI
-import com.example.audify.v2.ui.home.landing.LandingPageUI
+import com.example.audify.v2.ui.home.landing.LandingPageUIRoot
 import com.example.audify.v2.ui.notif.NotificationTestUIContainer
 import com.example.audify.v2.ui.player.AudioPlayerUI
 import com.example.audify.v2.ui.reminder_settings.ReminderSettingsUIContainer
@@ -61,18 +61,18 @@ fun NavigationCentral(
         modifier = modifier
     ) {
         composable(route = Screen.LandingPage.name) {
-            LandingPageUI(
+            LandingPageUIRoot(
                 backPress = {
                     navController.navigate(Screen.SettingsPage.name)
                 },
-                redirectToLocalAudioScreen = {
+                navigateToLocalAudioScreen = {
                     navController.navigate(Screen.AudioList.name)
                 },
                 navigateToSearch = {
-                    navController.navigate(Screen.NotificationTest.name)
+                    navController.navigate(Screen.SearchHistory.name)
                 },
                 playMusicFromRemote = playMusicFromRemote,
-                redirectToGenreSelection = {
+                navigateToGenreSelection = {
                     navController.navigate(Screen.GenreSelection.name)
                 },
                 navigateToPlayer = {

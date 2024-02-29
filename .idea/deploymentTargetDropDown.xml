@@ -2,10 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ColorManagerTest">
+      <entry key="FirstUITesting">
         <State />
       </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="perform()">
         <State />
       </entry>
     </value>
