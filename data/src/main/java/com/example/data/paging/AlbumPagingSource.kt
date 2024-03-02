@@ -41,10 +41,11 @@ class AlbumPagingSource @Inject constructor(
                 }
 
                 is NetworkResult.Success -> {
+                    val list = response.data.albumsResults.album.albums
                     LoadResult.Page(
-                        data = response.data.albumsResults.album.albums,
+                        data = list,
                         prevKey = null, // Only paging forward.
-                        nextKey = nextPageNumber + 1
+                        nextKey = if (list.isEmpty()) null else nextPageNumber + 1
                     )
                 }
 

@@ -41,10 +41,11 @@ class TrackPagingSource @Inject constructor(
                 }
 
                 is NetworkResult.Success -> {
+                    val tracks = response.data.results.trackMatchesList.tracks
                     LoadResult.Page(
-                        data = response.data.results.trackMatchesList.tracks,
+                        data = tracks,
                         prevKey = null, // Only paging forward.
-                        nextKey = nextPageNumber + 1
+                        nextKey = if (tracks.isEmpty()) null else nextPageNumber + 1
                     )
                 }
 
