@@ -41,12 +41,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.common.SideNavigationBar
+import com.example.audify.v2.ui.common.clickAllNodesWithText
+import com.example.audify.v2.ui.common.scrollAllNodesWithText
 import com.example.audify.v2.ui.home.landing.LandingPageViewState
 import com.example.audify.v2.ui.home.landing.getHeaders
 import com.example.audify.v2.ui.home.quick_pick.QuickPickViewState
@@ -60,6 +67,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydiver.audify.R
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
@@ -69,7 +77,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class LandingQuickPickUITest {
 
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -77,54 +84,73 @@ class LandingQuickPickUITest {
     @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
     @Test
     fun performQuickPickUITest(): Unit = runBlocking {
-        composeTestRule.setContent {
-            val state = LandingPageViewState()
-            val headers = getHeaders()
+        with(composeTestRule) {
 
-            val pagerState = rememberPagerState(
-                initialPage = state.userSelectedPage,
-                initialPageOffsetFraction = 0f
-            ) {
-                headers.size
+            setContent {
+                val state = LandingPageViewState()
+                val headers = getHeaders()
+
+                val pagerState = rememberPagerState(
+                    initialPage = state.userSelectedPage,
+                    initialPageOffsetFraction = 0f
+                ) {
+                    headers.size
+                }
+
+                val uiController = rememberSystemUiController()
+
+                val snackBarHostState = remember { SnackbarHostState() }
+
+                val dismissSnackBarState =
+                    rememberSwipeToDismissBoxState(confirmValueChange = { value ->
+                        if (value != SwipeToDismissBoxValue.Settled) {
+                            snackBarHostState.currentSnackbarData?.dismiss()
+                            true
+                        } else {
+                            false
+                        }
+                    })
+
+                AudifyTheme {
+                    ContainerUI(
+                        state = state,
+                        pagerState = pagerState,
+                        headers = headers,
+                        snackBarHostState = snackBarHostState,
+                        dismissSnackBarState = dismissSnackBarState,
+                        backPress = {
+
+                        },
+                        sendMediaAction = {},
+                        sendUIEvent = {},
+                        navigateToGenreSelection = { /*TODO*/ },
+                        navigateToLocalAudioScreen = { /*TODO*/ },
+                        playMusicFromRemote = {},
+                        navigateToPlayer = { /*TODO*/ },
+                        navigateToSearch = { /*TODO*/ }
+                    )
+                }
+
             }
 
-            val uiController = rememberSystemUiController()
+            clickAllNodesWithText("Quick Picks")
+            onNodeWithText("Songs").performClick()
+            delay(1000)
+            onNodeWithText("Playlists").performClick()
+            delay(1000)
 
-            val snackBarHostState = remember { SnackbarHostState() }
+            clickAllNodesWithText("Artists")
 
-            val dismissSnackBarState =
-                rememberSwipeToDismissBoxState(confirmValueChange = { value ->
-                    if (value != SwipeToDismissBoxValue.Settled) {
-                        snackBarHostState.currentSnackbarData?.dismiss()
-                        true
-                    } else {
-                        false
-                    }
-                })
+            clickAllNodesWithText("Albums")
 
-            AudifyTheme {
-                ContainerUI(
-                    state = state,
-                    pagerState = pagerState,
-                    headers = headers,
-                    snackBarHostState = snackBarHostState,
-                    dismissSnackBarState = dismissSnackBarState,
-                    backPress = {
+            clickAllNodesWithText("Favourites")
 
-                    },
-                    sendMediaAction = {},
-                    sendUIEvent = {},
-                    navigateToGenreSelection = { /*TODO*/ },
-                    navigateToLocalAudioScreen = { /*TODO*/ },
-                    playMusicFromRemote = {},
-                    navigateToPlayer = { /*TODO*/ },
-                    navigateToSearch = { /*TODO*/ }
-                )
-            }
+            clickAllNodesWithText("Downloads")
 
+            clickAllNodesWithText("Trending Playlists")
+
+            scrollAllNodesWithText("Trending Playlists")
         }
-
-        composeTestRule.waitUntil(1000000) { false }
     }
 
     @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)

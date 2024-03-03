@@ -127,6 +127,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.service)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.navigation.testing)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
@@ -213,5 +214,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test.jvm)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.mock.webserver)
 
 }
