@@ -18,9 +18,9 @@ data class Album(
     val year: String? = null
 ) {
     companion object {
-        fun default() = Album(
+        fun default(index: Int) = Album(
             explicitContent = null,
-            id = "231432",
+            id = "231432${index}",
             name = "Demo album",
             url = "http://www.testingmcafeesites.com/testcat_wx.html"
         )

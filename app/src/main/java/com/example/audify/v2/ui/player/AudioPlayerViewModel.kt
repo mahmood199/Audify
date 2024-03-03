@@ -27,7 +27,7 @@ class AudioPlayerViewModel @Inject constructor(
     private val playerController: PlayerController,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(AudioPlayerViewState())
+    private val _state = MutableStateFlow(AudioPlayerViewState.default())
     val state = _state.asStateFlow()
 
     init {

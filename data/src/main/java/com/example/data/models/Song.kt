@@ -18,7 +18,7 @@ data class Song(
     companion object {
         fun default(): Song {
             return Song(
-                album = Album.default().name,
+                album = Album.default(0).name,
                 duration = 200,
                 name = "Some Name",
                 artist = "Default Artist",

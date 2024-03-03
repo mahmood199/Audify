@@ -2,19 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="FirstUITesting">
+      <entry key="AudioPlayerUITest">
         <State />
       </entry>
-      <entry key="SampleUITesting">
+      <entry key="EndToEndTesting">
         <State />
       </entry>
-      <entry key="SecondUITesting">
+      <entry key="LandingQuickPickUITest">
+        <State />
+      </entry>
+      <entry key="QuickPickUITest">
         <State />
       </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="perform()">
+      <entry key="performQuickPickUITest()">
         <State />
       </entry>
     </value>

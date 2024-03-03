@@ -6,14 +6,30 @@ import com.example.data.models.Song
 
 
 data class AudioPlayerViewState(
-    val someData: Boolean = false,
-    var progress: Float = 0f,
-    var duration: String = "00:00",
-    var progressString: String = "00:00",
-    var currentSong: Song? = null,
-    var isPlaying: Boolean = false,
-    var userSelectedPage: Int = 0,
-    var backGroundColor: Color = Color.DarkGray,
-    var currentMediaItem: MediaItem? = null
+    val someData: Boolean,
+    var progress: Float,
+    var duration: String,
+    var progressString: String,
+    var currentSong: Song?,
+    var isPlaying: Boolean,
+    var userSelectedPage: Int,
+    var backGroundColor: Color,
+    var currentMediaItem: MediaItem?,
 ) {
+
+    companion object {
+        fun default(): AudioPlayerViewState {
+            return AudioPlayerViewState(
+                someData = false,
+                progress = 0f,
+                duration = "00:00",
+                progressString = "00:00",
+                currentSong = null,
+                isPlaying = false,
+                userSelectedPage = 0,
+                backGroundColor = Color.DarkGray,
+                currentMediaItem = null,
+            )
+        }
+    }
 }

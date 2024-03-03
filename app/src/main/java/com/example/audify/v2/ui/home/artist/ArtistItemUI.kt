@@ -67,6 +67,7 @@ fun ArtistItemUI(
             text = artist.name,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
+            color = Color.White,
             fontWeight = FontWeight.Bold,
             maxLines = 2,
             minLines = 2

@@ -60,7 +60,7 @@ import com.example.audify.v2.ui.home.album.AlbumsUI
 import com.example.audify.v2.ui.home.artist.ArtistsUI
 import com.example.audify.v2.ui.home.favourites.FavouritesUI
 import com.example.audify.v2.ui.home.playlist.PlaylistUI
-import com.example.audify.v2.ui.home.quick_pick.QuickPicksUI
+import com.example.audify.v2.ui.home.quick_pick.QuickPicksUIRoot
 import com.example.audify.v2.ui.home.songs.SongsUI
 import com.example.data.models.remote.saavn.Song
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -293,7 +293,7 @@ fun PagerContent(
         ) { currentPage ->
             when (currentPage) {
 
-                QUICK_PICKS_PAGE_INDEX -> QuickPicksUI()
+                QUICK_PICKS_PAGE_INDEX -> QuickPicksUIRoot()
 
                 SONGS_PAGE_INDEX -> SongsUI(
                     navigateToGenreSelection = navigateToGenreSelection,
@@ -326,7 +326,6 @@ fun PagerContent(
             }
         }
     }
-
 }
 
 private const val QUICK_PICKS_PAGE_INDEX = 0

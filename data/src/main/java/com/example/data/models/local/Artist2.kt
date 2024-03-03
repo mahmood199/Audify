@@ -26,4 +26,26 @@ data class Artist2(
     val twitter: String,
     val url: String,
     val wiki: String
-)
+) {
+    companion object {
+        fun default(index: Int): Artist2 {
+            return Artist2(
+                id = "$index",
+                bio = Bio.default(),
+                dob = "August 22, 1995",
+                dominantLanguage = "English",
+                dominantType = "Vocal",
+                fanCount = "25M",
+                fb = "https://www.facebook.com/dualipa/",
+                followerCount = "43.7M",
+                image = Image.default(),
+                isRadioPresent = true,
+                isVerified = true,
+                name = "Dua Lipa",
+                twitter = "https://twitter.com/DUALIPA",
+                url = "https://www.dualipa.com/",
+                wiki = "https://en.wikipedia.org/wiki/Dua_Lipa"
+            )
+        }
+    }
+}

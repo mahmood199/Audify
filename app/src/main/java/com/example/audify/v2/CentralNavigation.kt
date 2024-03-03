@@ -21,7 +21,7 @@ import com.example.audify.v2.ui.common.SaveableLaunchedEffect
 import com.example.audify.v2.ui.genre.GenreSelectionUI
 import com.example.audify.v2.ui.home.landing.LandingPageUIRoot
 import com.example.audify.v2.ui.notif.NotificationTestUIContainer
-import com.example.audify.v2.ui.player.AudioPlayerUI
+import com.example.audify.v2.ui.player.AudioPlayerUIRoot
 import com.example.audify.v2.ui.reminder_settings.ReminderSettingsUIContainer
 import com.example.audify.v2.ui.search.history.SearchHistoryUI
 import com.example.audify.v2.ui.search.result.SearchResultUI
@@ -178,7 +178,7 @@ fun NavigationCentral(
         composable(
             route = Screen.AudioPlayer.name,
         ) {
-            AudioPlayerUI(
+            AudioPlayerUIRoot(
                 backPress = {
                     navController.popBackStack()
                 }
