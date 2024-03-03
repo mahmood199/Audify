@@ -2,10 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AudioPlayerUITest">
-        <State />
-      </entry>
-      <entry key="EndToEndTesting">
+      <entry key="GenreDaoTesting">
         <State />
       </entry>
       <entry key="LandingQuickPickUITest">
@@ -30,7 +27,10 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="performQuickPickUITest()">
+      <entry key="deleteItem()">
+        <State />
+      </entry>
+      <entry key="insertItem()">
         <State />
       </entry>
     </value>

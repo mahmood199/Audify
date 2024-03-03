@@ -73,6 +73,8 @@ navigationTesting = "2.7.7"
 [libraries]
 androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }
+androidx-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "core-testing" }
+androidx-core-common = { module = "androidx.arch.core:core-common", version.ref = "core-testing" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "app-compat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -173,6 +175,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-ver
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room-version" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room-version" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging-version" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-version" }
 landscapist-glide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "glide-version" }

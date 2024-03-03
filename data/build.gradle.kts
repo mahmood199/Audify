@@ -121,4 +121,13 @@ dependencies {
     implementation(libs.firebase.remote.config)
 
 
+    testImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.common)
+    androidTestImplementation(libs.androidx.core.runtime)
+
+    testImplementation(libs.room.testing)
+    androidTestImplementation(libs.room.testing)
+
+
 }
