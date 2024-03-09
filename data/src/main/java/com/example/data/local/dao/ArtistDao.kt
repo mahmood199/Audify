@@ -11,13 +11,16 @@ import kotlinx.coroutines.flow.Flow
 interface ArtistDao {
 
     @Query("SELECT * FROM artists")
-    fun getAll(): Flow<List<Artist2>>
+    fun getAllAsFlow(): Flow<List<Artist2>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(artist2: Artist2): Long
 
     @Query("SELECT * from artists WHERE id = :artistId")
     suspend fun getById(artistId: String): Artist2?
+
+    @Query("SELECT * from artists")
+    suspend fun getAll(): List<Artist2>
 
 
 }

@@ -127,7 +127,12 @@ dependencies {
     androidTestImplementation(libs.androidx.core.runtime)
 
     testImplementation(libs.room.testing)
+//    testImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.room.testing)
+    //testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    androidTestImplementation(libs.mockito.android)
 
+    testImplementation(libs.byte.buddy.agent)
 
 }
