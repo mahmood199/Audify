@@ -14,7 +14,7 @@ class GenreLocalDataSource @Inject constructor(
     }
 
     fun getAll(): Flow<List<Genre>> {
-        return dao.getAll()
+        return dao.getAllAsFlow()
     }
 
 }

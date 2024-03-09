@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
@@ -36,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,7 +63,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlin.math.abs
 
 @Composable
-fun QuickPicksUI(
+fun QuickPicksUIRoot(
     modifier: Modifier = Modifier,
     viewModel: QuickPickViewModel = hiltViewModel()
 ) {
@@ -72,6 +75,26 @@ fun QuickPicksUI(
     val artists = viewModel.localArtist.toPersistentList()
     val playlists = viewModel.playlists.toPersistentList()
 
+    QuickPicksUI(
+        state = state,
+        albums = albums,
+        songs = songs,
+        artists = artists,
+        playlists = playlists,
+        modifier = modifier
+            .navigationBarsPadding()
+    )
+}
+
+@Composable
+fun QuickPicksUI(
+    state: QuickPickViewState,
+    albums: PersistentList<Album>,
+    songs: PersistentList<Song>,
+    artists: PersistentList<Artist2>,
+    playlists: PersistentList<Playlist>,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -114,9 +137,6 @@ fun QuickPicksUIContent(
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
-        Text(text = "${state.genreCount}")
-
         AlbumCatalogs(
             albums = albums
         )
@@ -147,6 +167,7 @@ fun PlaylistCatalogs(
         Text(
             text = "Trending Playlists",
             style = MaterialTheme.typography.titleLarge,
+            color = Color.White,
             fontWeight = FontWeight.ExtraBold
         )
 
@@ -190,6 +211,7 @@ fun AlbumCatalogs(
         Text(
             text = "Albums",
             style = MaterialTheme.typography.titleLarge,
+            color = Color.White,
             fontWeight = FontWeight.ExtraBold
         )
 
@@ -269,7 +291,8 @@ fun ArtistCatalogs(
             Text(
                 text = "Artists",
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.ExtraBold,
+                color = Color.White
             )
 
             val lazyListState = rememberLazyListState()
@@ -362,6 +385,6 @@ fun SongCatalogs(
 @Composable
 fun PreviewQuickPicksUI() {
     AudifyTheme {
-        QuickPicksUI()
+        QuickPicksUIRoot()
     }
 }

@@ -32,7 +32,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -120,5 +120,19 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.firebase.remote.config)
 
+
+    testImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.common)
+    androidTestImplementation(libs.androidx.core.runtime)
+
+    testImplementation(libs.room.testing)
+//    testImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.room.testing)
+    //testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    androidTestImplementation(libs.mockito.android)
+
+    testImplementation(libs.byte.buddy.agent)
 
 }

@@ -33,7 +33,7 @@ import com.example.data.models.remote.saavn.Song
 
 @Composable
 fun SongsUI(
-    redirectToGenreSelection: () -> Unit,
+    navigateToGenreSelection: () -> Unit,
     playMusicFromRemote: (Song) -> Unit,
     viewModel: SongsViewModel = hiltViewModel()
 ) {
@@ -58,12 +58,12 @@ fun SongsUI(
         modifier = Modifier.fillMaxSize()) {
         if (it) {
             GoToGenreSelectionScreen(
-                redirectToGenreSelection = redirectToGenreSelection
+                redirectToGenreSelection = navigateToGenreSelection
             )
         } else {
             SongsContentUI(state = state,
                 songs = songs,
-                redirectToGenreSelection = redirectToGenreSelection,
+                redirectToGenreSelection = navigateToGenreSelection,
                 songSelected = { recentlyPlayed ->
                     viewModel.playItem(recentlyPlayed)
                     playMusicFromRemote(recentlyPlayed)
@@ -164,7 +164,7 @@ fun SongsContentUI(
 fun PreviewSongsUI() {
     AudifyTheme {
         SongsUI(
-            redirectToGenreSelection = {},
+            navigateToGenreSelection = {},
             playMusicFromRemote = {},
         )
     }

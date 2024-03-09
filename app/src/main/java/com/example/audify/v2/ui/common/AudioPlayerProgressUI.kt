@@ -31,6 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.audify.v2.theme.AudifyTheme
+import com.example.audify.v2.theme.LightRed
+import com.example.audify.v2.theme.Peach
 import com.example.audify.v2.util.px
 import com.linc.audiowaveform.infiniteLinearGradient
 import kotlinx.collections.immutable.toPersistentList
@@ -41,6 +43,7 @@ import kotlin.random.Random
 fun AudioPlayerProgressUI(
     progress: Float,
     backGroundColor: Color,
+    brush: Brush,
     progressColor: Brush,
     seekToPosition: (Float) -> Unit,
     modifier: Modifier = Modifier
@@ -148,7 +151,7 @@ fun AudioPlayerProgressUI(
 
             clipPath(path = path, clipOp = ClipOp.Difference) {
                 drawRoundRect(
-                    color = backGroundColor,
+                    brush = brush,
                     size = Size(width = canvasWidth, height = canvasHeight),
                     cornerRadius = CornerRadius(screenWidth * 0.1f, screenWidth * 0.1f)
                 )
@@ -187,6 +190,7 @@ fun PreviewAudioPlayerProgressUI() {
         AudioPlayerProgressUI(
             progress = progress,
             backGroundColor = Color.Blue,
+            brush = Brush.horizontalGradient(listOf(LightRed, LightRed, Peach)),
             progressColor = animatedGradientBrush,
             seekToPosition = {
                 progress = it

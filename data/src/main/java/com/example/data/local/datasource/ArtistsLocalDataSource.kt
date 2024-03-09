@@ -13,7 +13,11 @@ class ArtistsLocalDataSource @Inject constructor(
         return dao.add(artist2)
     }
 
-    fun getAll(): Flow<List<Artist2>> {
+    fun getAllAsFlow(): Flow<List<Artist2>> {
+        return dao.getAllAsFlow()
+    }
+
+    suspend fun getAll(): List<Artist2> {
         return dao.getAll()
     }
 

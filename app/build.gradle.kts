@@ -23,7 +23,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.audify.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -51,12 +52,13 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
         create("benchmark") {
             initWith(buildTypes.getByName("release"))
@@ -125,6 +127,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.service)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.navigation.testing)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
@@ -208,8 +211,11 @@ dependencies {
 
     testImplementation(libs.mockito.core)
     testImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test.jvm)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.mock.webserver)
 
 }

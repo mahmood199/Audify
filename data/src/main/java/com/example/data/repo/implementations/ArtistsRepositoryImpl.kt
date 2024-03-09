@@ -18,7 +18,7 @@ class ArtistsRepositoryImpl @Inject constructor(
 ) : ArtistsRepository {
 
     override fun getAll(): Flow<List<Artist2>> {
-        return localDataSource.getAll().distinctUntilChanged()
+        return localDataSource.getAllAsFlow().distinctUntilChanged()
     }
 
     override suspend fun add(artist2: Artist2): Long {

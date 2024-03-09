@@ -41,10 +41,11 @@ class ArtistPagingSource @Inject constructor(
                 }
 
                 is NetworkResult.Success -> {
+                    val artists = response.data.artistResults.artistMatchesList.artists
                     LoadResult.Page(
-                        data = response.data.artistResults.artistMatchesList.artists,
-                        prevKey = null, // Only paging forward.
-                        nextKey = nextPageNumber + 1
+                        data = artists,
+                        prevKey = null,
+                        nextKey = if (artists.isEmpty()) null else nextPageNumber + 1
                     )
                 }
 

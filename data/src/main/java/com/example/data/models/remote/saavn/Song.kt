@@ -21,13 +21,13 @@ data class Song(
     val year: String,
 ) {
     companion object {
-        fun default(): Song {
+        fun default(index: Int): Song {
             return Song(
-                album = Album.default(),
+                album = Album.default(0),
                 duration = "03:20",
                 explicitContent = "No",
                 hasLyrics = "No",
-                id = "231231",
+                id = "$index",
                 downloadUrl = emptyList(),
                 image = emptyList(),
                 label = "Some label",

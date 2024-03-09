@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
@@ -50,14 +51,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.audify.v2.media3.MediaPlayerAction
 import com.example.audify.v2.theme.AudifyTheme
 import com.example.audify.v2.ui.audio_download.DownloadCenterUI
+import com.example.audify.v2.ui.catalog.MusicListUiEvent
 import com.example.audify.v2.ui.common.SideNavigationBar
 import com.example.audify.v2.ui.home.album.AlbumsUI
 import com.example.audify.v2.ui.home.artist.ArtistsUI
 import com.example.audify.v2.ui.home.favourites.FavouritesUI
 import com.example.audify.v2.ui.home.playlist.PlaylistUI
-import com.example.audify.v2.ui.home.quick_pick.QuickPicksUI
+import com.example.audify.v2.ui.home.quick_pick.QuickPicksUIRoot
 import com.example.audify.v2.ui.home.songs.SongsUI
 import com.example.data.models.remote.saavn.Song
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -68,9 +71,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun LandingPageUI(
-    redirectToGenreSelection: () -> Unit,
-    redirectToLocalAudioScreen: () -> Unit,
+fun LandingPageUIRoot(
+    navigateToGenreSelection: () -> Unit,
+    navigateToLocalAudioScreen: () -> Unit,
     navigateToSearch: () -> Unit,
     backPress: () -> Unit,
     playMusicFromRemote: (Song) -> Unit,
@@ -83,9 +86,6 @@ fun LandingPageUI(
 
     val headers = getHeaders()
 
-    var selectedIndex by rememberSaveable {
-        mutableIntStateOf(value = state.userSelectedPage)
-    }
 
     val pagerState = rememberPagerState(
         initialPage = state.userSelectedPage,
@@ -93,8 +93,6 @@ fun LandingPageUI(
     ) {
         headers.size
     }
-
-    val coroutineScope = rememberCoroutineScope()
 
     val uiController = rememberSystemUiController()
 
@@ -132,6 +130,47 @@ fun LandingPageUI(
         }
     }
 
+    LandingPageUI(
+        state = state,
+        pagerState = pagerState,
+        headers = headers,
+        snackBarHostState = snackBarHostState,
+        dismissSnackBarState = dismissSnackBarState,
+        sendMediaAction = viewModel::sendMediaAction,
+        sendUIEvent = viewModel::sendUIEvent,
+        backPress = backPress,
+        navigateToPlayer = navigateToPlayer,
+        navigateToSearch = navigateToSearch,
+        navigateToGenreSelection = navigateToGenreSelection,
+        navigateToLocalAudioScreen = navigateToLocalAudioScreen,
+        playMusicFromRemote = playMusicFromRemote
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun LandingPageUI(
+    state: LandingPageViewState,
+    pagerState: PagerState,
+    headers: PersistentList<Pair<String, ImageVector>>,
+    snackBarHostState: SnackbarHostState,
+    dismissSnackBarState: SwipeToDismissBoxState,
+    backPress: () -> Unit,
+    sendMediaAction: (MediaPlayerAction) -> Unit,
+    sendUIEvent: (MusicListUiEvent) -> Unit,
+    navigateToGenreSelection: () -> Unit,
+    navigateToLocalAudioScreen: () -> Unit,
+    playMusicFromRemote: (Song) -> Unit,
+    navigateToPlayer: () -> Unit,
+    navigateToSearch: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var selectedIndex by rememberSaveable {
+        mutableIntStateOf(value = state.userSelectedPage)
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             Row(
@@ -165,8 +204,8 @@ fun LandingPageUI(
             AnimatedBottomPlayer(
                 state = state,
                 isShown = state.isPlaying,
-                sendMediaAction = viewModel::sendMediaAction,
-                sendUiEvent = viewModel::sendUIEvent,
+                sendMediaAction = sendMediaAction,
+                sendUiEvent = sendUIEvent,
                 navigateToPlayer = navigateToPlayer,
                 modifier = Modifier.navigationBarsPadding()
             )
@@ -228,21 +267,22 @@ fun LandingPageUI(
                 PagerContent(
                     modifier = Modifier.weight(1f),
                     pagerState = pagerState,
-                    redirectToGenreSelection = redirectToGenreSelection,
+                    navigateToGenreSelection = navigateToGenreSelection,
                     playMusicFromRemote = playMusicFromRemote,
-                    redirectToLocalAudioScreen = redirectToLocalAudioScreen
+                    navigateToLocalAudioScreen = navigateToLocalAudioScreen
                 )
             }
         }
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerContent(
     pagerState: PagerState,
-    redirectToGenreSelection: () -> Unit,
-    redirectToLocalAudioScreen: () -> Unit,
+    navigateToGenreSelection: () -> Unit,
+    navigateToLocalAudioScreen: () -> Unit,
     playMusicFromRemote: (Song) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -253,17 +293,17 @@ fun PagerContent(
         ) { currentPage ->
             when (currentPage) {
 
-                QUICK_PICKS_PAGE_INDEX -> QuickPicksUI()
+                QUICK_PICKS_PAGE_INDEX -> QuickPicksUIRoot()
 
                 SONGS_PAGE_INDEX -> SongsUI(
-                    redirectToGenreSelection = redirectToGenreSelection,
+                    navigateToGenreSelection = navigateToGenreSelection,
                     playMusicFromRemote = { recentlyPlayed ->
                         playMusicFromRemote(recentlyPlayed)
                     }
                 )
 
                 PLAYLIST_PAGE_INDEX -> PlaylistUI(
-                    goToLocalAudioScreen = redirectToLocalAudioScreen,
+                    goToLocalAudioScreen = navigateToLocalAudioScreen,
                 )
 
                 ARTIST_PAGE_INDEX -> ArtistsUI()
@@ -286,7 +326,6 @@ fun PagerContent(
             }
         }
     }
-
 }
 
 private const val QUICK_PICKS_PAGE_INDEX = 0
@@ -299,7 +338,7 @@ private const val DOWNLOADS_PAGE_INDEX = 6
 
 
 @Composable
-private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
+fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
     return listOf(
         Pair("Quick Picks", ImageVector.vectorResource(R.drawable.ic_music_note)),
         Pair("Songs", ImageVector.vectorResource(R.drawable.ic_library_music)),
@@ -316,14 +355,14 @@ private fun getHeaders(): PersistentList<Pair<String, ImageVector>> {
 @Composable
 fun PreviewLandingPageUI() {
     AudifyTheme {
-        LandingPageUI(
-            redirectToLocalAudioScreen = {
+        LandingPageUIRoot(
+            navigateToLocalAudioScreen = {
 
             },
             navigateToSearch = {},
             backPress = {},
             playMusicFromRemote = {},
-            redirectToGenreSelection = {},
+            navigateToGenreSelection = {},
             navigateToPlayer = {}
         )
     }

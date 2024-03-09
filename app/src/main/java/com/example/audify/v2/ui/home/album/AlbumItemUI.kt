@@ -1,5 +1,6 @@
 package com.example.audify.v2.ui.home.album
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -28,6 +29,7 @@ import com.skydiver.audify.R
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun AlbumItemUI(
     album: Album,
@@ -50,7 +52,7 @@ fun AlbumItemUI(
                     }
                 },
                 imageOptions = ImageOptions(
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Crop
                 ),
                 modifier = Modifier
                     .fillMaxWidth(fraction = imageWidthRatio)
@@ -83,12 +85,14 @@ fun AlbumItemUI(
                     text = album.name,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.White
                 )
                 Text(
                     text = album.id,
                     style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.White
                 )
             }
         }

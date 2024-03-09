@@ -232,7 +232,7 @@ private val dropDownOptions = listOf(
 fun SongRowItemUIPreview() {
     AudifyTheme {
         SongRowItemUI(
-            song = Song.default(),
+            song = Song.default(0),
             onItemClicked = {},
             updateFavourite = {}
         )

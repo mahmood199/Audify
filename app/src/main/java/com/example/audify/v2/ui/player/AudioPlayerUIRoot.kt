@@ -51,6 +51,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.audify.v2.media3.MediaPlayerAction
+import com.example.audify.v2.theme.LightRed
+import com.example.audify.v2.theme.Peach
 import com.example.audify.v2.ui.common.AppBar
 import com.example.audify.v2.ui.common.AudioPlayerProgressUI
 import com.example.audify.v2.ui.common.ContentLoaderUI
@@ -63,9 +65,8 @@ import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.glide.GlideImage
 import com.skydoves.landscapist.transformation.blur.BlurTransformationPlugin
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AudioPlayerUI(
+fun AudioPlayerUIRoot(
     backPress: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AudioPlayerViewModel = hiltViewModel()
@@ -80,17 +81,25 @@ fun AudioPlayerUI(
         systemUiController.setNavigationBarColor(Color.Cyan)
     }
 
+    AudioPlayerUI(
+        state = state,
+        backPress = backPress,
+        sendUiEvent = viewModel::sendUIEvent,
+        sendMediaAction = viewModel::sendMediaAction,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun AudioPlayerUI(
+    state: AudioPlayerViewState,
+    backPress: () -> Unit,
+    sendUiEvent: (PlayerUiEvent) -> Unit,
+    sendMediaAction: (MediaPlayerAction) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
-        topBar = {
-            AppBar(
-                imageVector = Icons.Default.ArrowBack,
-                title = "Music Player UI",
-                backPressAction = backPress,
-                modifier = Modifier
-                    .padding(top = 32.dp)
-                    .shadow(12.dp)
-            )
-        },
         bottomBar = {
             Column(
                 modifier = Modifier
@@ -103,21 +112,21 @@ fun AudioPlayerUI(
                 AudioPlayerState(
                     state = state,
                     seekToPosition = {
-                        viewModel.sendUIEvent(PlayerUiEvent.UpdateProgress(it))
-                        viewModel.sendMediaAction(MediaPlayerAction.UpdateProgress(it))
+                        sendUiEvent(PlayerUiEvent.UpdateProgress(it))
+                        sendMediaAction(MediaPlayerAction.UpdateProgress(it))
                     }
                 )
 
                 PlayerActions(
                     isPlaying = state.isPlaying,
                     skipToNext = {
-                        viewModel.sendMediaAction(MediaPlayerAction.PlayNextItem)
+                        sendMediaAction(MediaPlayerAction.PlayNextItem)
                     },
                     pausePlay = {
-                        viewModel.sendMediaAction(MediaPlayerAction.PlayPause)
+                        sendMediaAction(MediaPlayerAction.PlayPause)
                     },
                     skipToPrevious = {
-                        viewModel.sendMediaAction(MediaPlayerAction.PlayPreviousItem)
+                        sendMediaAction(MediaPlayerAction.PlayPreviousItem)
                     }
                 )
 
@@ -130,9 +139,11 @@ fun AudioPlayerUI(
         },
         modifier = modifier
             .fillMaxSize()
+            .background(Brush.horizontalGradient(listOf(LightRed, Peach)))
     ) { paddingValues ->
         BoxWithConstraints(
             modifier = Modifier
+                .background(Brush.horizontalGradient(listOf(LightRed, Peach)))
                 .fillMaxSize()
                 .padding(
                     top = paddingValues.calculateTopPadding(),
@@ -145,9 +156,13 @@ fun AudioPlayerUI(
                 } ?: ""
             }
 
+            val demoImage = remember {
+                "https://i.ytimg.com/vi/Ob4Nk6gz8Ec/maxresdefault.jpg"
+            }
+
             GlideImage(
                 imageModel = {
-                    imageLink
+                    demoImage
                 },
                 component = rememberImageComponent {
                     +BlurTransformationPlugin(radius = maxOf(maxHeight, maxWidth).value.toInt())
@@ -162,7 +177,7 @@ fun AudioPlayerUI(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
-                    text = state.currentSong?.name ?: "",
+                    text = "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .basicMarquee(300)
@@ -181,7 +196,7 @@ fun AudioPlayerUI(
 
                     GlideImage(
                         imageModel = {
-                            imageLink
+                            demoImage
                         },
                         loading = {
                             ContentLoaderUI()
@@ -202,7 +217,9 @@ fun AudioPlayerUI(
                         .fillMaxWidth()
                         .basicMarquee(300)
                         .padding(12.dp),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold
                 )
             }
         }
@@ -236,6 +253,7 @@ fun AudioPlayerState(
         AudioPlayerProgressUI(
             progress = state.progress,
             backGroundColor = Color.Blue,
+            brush = Brush.horizontalGradient(listOf(LightRed, Peach)),
             progressColor = animatedGradientBrush,
             seekToPosition = {
                 seekToPosition(it)
@@ -303,6 +321,7 @@ fun PlayerActions(
                     .padding(2.dp)
             )
         }
+
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_skip_previous),
             contentDescription = "",
@@ -310,12 +329,14 @@ fun PlayerActions(
             modifier = Modifier
                 .padding(4.dp)
                 .size(40.dp)
+                .clip(CircleShape)
                 .clickable {
                     skipToPrevious()
                 }
                 .border(width = 2.dp, color = Color.Black, CircleShape)
                 .padding(2.dp)
         )
+
         Icon(
             imageVector = ImageVector.vectorResource(
                 if (isPlaying)
@@ -327,12 +348,14 @@ fun PlayerActions(
             tint = Color.Black,
             modifier = Modifier
                 .size(64.dp)
+                .clip(CircleShape)
                 .clickable {
                     pausePlay()
                 }
                 .border(width = 2.dp, color = Color.Black, CircleShape)
                 .padding(8.dp)
         )
+
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
             contentDescription = "",
@@ -340,12 +363,14 @@ fun PlayerActions(
             modifier = Modifier
                 .padding(4.dp)
                 .size(40.dp)
+                .clip(CircleShape)
                 .clickable {
                     skipToNext()
                 }
                 .border(width = 2.dp, color = Color.Black, CircleShape)
                 .padding(2.dp)
         )
+
         IconButton(
             onClick = {
                 isAddedToFavourite = !isAddedToFavourite
@@ -391,7 +416,7 @@ fun ClosePlayerBottomArc(
             val canvasHeight = size.height
 
             drawArc(
-                Color.Blue,
+                color = Color.Transparent,
                 startAngle = 180f,
                 sweepAngle = 180f,
                 useCenter = true,
@@ -411,5 +436,5 @@ fun ClosePlayerBottomArc(
 @Preview
 @Composable
 fun AudioPlayerUIPreview() {
-    AudioPlayerUI(backPress = {})
+    AudioPlayerUIRoot(backPress = {})
 }

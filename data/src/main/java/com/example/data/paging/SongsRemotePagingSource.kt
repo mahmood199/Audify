@@ -28,7 +28,7 @@ class SongsRemotePagingSource @Inject constructor(
         val nextPageNumber = params.key ?: 1
 
         val result =
-            when (val response = dataSource.getSongsByGenres(query, nextPageNumber)) {
+            when (val response = dataSource.getSongsByGenres(genre = query, page = nextPageNumber)) {
                 is NetworkResult.Exception -> {
                     LoadResult.Error(response.e)
                 }
@@ -42,10 +42,11 @@ class SongsRemotePagingSource @Inject constructor(
                 }
 
                 is NetworkResult.Success -> {
+                    val songs = response.data.data.results
                     LoadResult.Page(
-                        response.data.data.results,
+                        data = songs,
                         prevKey = null,
-                        nextKey = nextPageNumber + 1
+                        nextKey = if (songs.isEmpty()) null else nextPageNumber + 1
                     )
                 }
 

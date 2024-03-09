@@ -82,18 +82,21 @@ fun PlayListItemUI(
                     text = album.title,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
+                    color = Color.White,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = album.subtitle,
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
+                    color = Color.White,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = "Songs: ${album.songCount}",
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
+                    color = Color.White,
                     overflow = TextOverflow.Ellipsis
                 )
             }
