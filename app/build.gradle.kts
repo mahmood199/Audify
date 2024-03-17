@@ -23,8 +23,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner = "com.example.audify.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "com.example.audify.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -94,6 +94,10 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
+    hilt {
+        enableAggregatingTask = false
+    }
+
 }
 
 dependencies {
