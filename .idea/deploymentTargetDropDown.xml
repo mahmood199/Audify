@@ -2,13 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ArtistsRepositoryImplTest">
+      <entry key="IconChangeViewModelTest">
         <State />
       </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="getAll()">
+      <entry key="getAppIcons()">
+        <State />
+      </entry>
+      <entry key="test-App-Icons-View-State()">
         <State />
       </entry>
     </value>

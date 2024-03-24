@@ -18,24 +18,25 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class FirebaseModule {
 
+/*
     @Provides
-    @Singleton
     fun provideFirebaseDatabase(
         @ApplicationContext context: Context
     ): FirebaseDatabase {
         return FirebaseDatabase.getInstance("")
     }
+*/
 
+/*
     @Provides
-    @Singleton
     fun provideFirebaseStorage(
         @ApplicationContext context: Context
     ): FirebaseStorage {
         return FirebaseStorage.getInstance()
     }
+*/
 
     @Provides
-    @Singleton
     fun provideRemoteConfig(): FirebaseRemoteConfig {
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 3600

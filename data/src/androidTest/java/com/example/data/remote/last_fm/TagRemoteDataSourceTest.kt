@@ -1,4 +1,4 @@
-package com.example.data.remote
+package com.example.data.remote.last_fm
 
 import org.junit.Assert.*
 
@@ -6,7 +6,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class ArtistsRemoteDataSourceTest {
+class TagRemoteDataSourceTest {
 
     @Before
     fun setUp() {

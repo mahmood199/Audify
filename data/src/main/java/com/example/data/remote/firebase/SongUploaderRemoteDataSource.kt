@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 
 class SongUploaderRemoteDataSource @Inject constructor(
-    private val firebaseDatabase: FirebaseDatabase,
+//    private val firebaseDatabase: FirebaseDatabase,
     private val firebaseStorage: FirebaseStorage
 ) {
 
@@ -17,7 +17,7 @@ class SongUploaderRemoteDataSource @Inject constructor(
     }
 
     fun uploadData(recentlyPlayed: RecentlyPlayed) {
-        firebaseDatabase.getReference(DATABASE_FILE_LOCATION)
+  //      firebaseDatabase.getReference(DATABASE_FILE_LOCATION)
     }
 
 }

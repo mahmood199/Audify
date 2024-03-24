@@ -23,8 +23,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner = "com.example.audify.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "com.example.audify.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -74,7 +74,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs = freeCompilerArgs + listOf("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+//            "-Xjvm-default=compatibility"
+        )
     }
 
     buildFeatures {
@@ -94,6 +97,10 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
+    hilt {
+        enableAggregatingTask = false
+    }
+
 }
 
 dependencies {
@@ -165,6 +172,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.encoding)
+    implementation(libs.ktor.client.mock)
     implementation(libs.slf4j.simple)
 
     implementation(libs.room.ktx)
@@ -210,6 +218,8 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 
     testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    androidTestImplementation(libs.mockito.android)
     testImplementation(libs.androidx.core.testing)
     androidTestImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
