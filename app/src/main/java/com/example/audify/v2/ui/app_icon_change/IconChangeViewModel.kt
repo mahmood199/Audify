@@ -1,6 +1,8 @@
 package com.example.audify.v2.ui.app_icon_change
 
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skydiver.audify.R
@@ -19,18 +21,26 @@ class IconChangeViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(IconChangeViewState.default())
     val state = _state.asStateFlow()
 
+    private val _stateLiveData = MutableLiveData(IconChangeViewState.default())
+    val stateLiveData: LiveData<IconChangeViewState> = _stateLiveData
+
     private val stateLock = Mutex()
 
     fun addIconsToState() {
         viewModelScope.launch(Dispatchers.IO) {
             val icons = getIconModels()
+            var tempViewState = IconChangeViewState.default()
             updateState {
-                copy(icons = icons)
+                tempViewState = copy(icons = icons)
+                tempViewState
             }
+            _stateLiveData.postValue(
+                tempViewState
+            )
         }
     }
 
-    private fun getIconModels(): Sequence<IconModel> {
+    fun getIconModels(): Sequence<IconModel> {
         return listOf(
             IconModel(
                 R.mipmap.ic_app_launcher_v1_foreground,

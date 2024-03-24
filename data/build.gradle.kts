@@ -101,6 +101,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.encoding)
+    implementation(libs.ktor.client.mock)
     implementation(libs.slf4j.simple)
 
     debugImplementation(libs.chucker.debug)
