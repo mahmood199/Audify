@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
     alias(libs.plugins.paparazzi)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -55,9 +56,7 @@ android {
             isMinifyEnabled = true
             isDebuggable = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
         create("benchmark") {
@@ -94,8 +93,13 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
+    ktlint {
+        android = true
+        ignoreFailures = false
+    }
 }
 
+@Suppress("ktlint:standard:comment-spacing")
 dependencies {
 
     implementation(project(":data"))
@@ -117,13 +121,8 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.system.ui.controller)
     implementation(libs.compose.runtime)
-    //implementation("androidx.compose.material:material")
     implementation(libs.compose.foundation)
-
-
     implementation(libs.androidx.profileinstaller)
-
-
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.service)
     implementation(libs.hilt.android)
@@ -135,9 +134,6 @@ dependencies {
     kspTest(libs.hilt.android.compiler)
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
-
-
-
     // Media3 ExoPlayer
 
     implementation(libs.media3.exoplayer)
@@ -150,11 +146,10 @@ dependencies {
     implementation(libs.media3.extractor)
     implementation(libs.legacy.support.v4)
     implementation(libs.glide)
-
-
-    implementation(libs.kotlinx.collections.immutable)
-
-    //KTOR
+    
+    // KTOR
+    
+    
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.okhttp)
@@ -185,7 +180,7 @@ dependencies {
 
     implementation(libs.compose.constraint.layout)
 
-    implementation(libs.prdownloader)
+    //implementation(libs.prdownloader)
 
     implementation(libs.perfsuite)
 
@@ -197,8 +192,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.performance)
     implementation(libs.firebase.remote.config)
-
-
+    implementation(libs.kotlinx.collections.immutable)
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -217,5 +211,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test.jvm)
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.mock.webserver)
+
 
 }

@@ -9,7 +9,7 @@ class ServiceApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DownloaderModule.providePRDownloader(context = this)
+//        DownloaderModule.providePRDownloader(context = this)
     }
 
 }

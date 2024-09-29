@@ -7,6 +7,7 @@ import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.uiautomator.UiSelector
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,6 +31,7 @@ import org.junit.runner.RunWith
  * For more information, see the [Macrobenchmark documentation](https://d.android.com/macrobenchmark#create-macrobenchmark)
  * and the [instrumentation arguments documentation](https://d.android.com/topic/performance/benchmarking/macrobenchmark-instrumentation-args).
  **/
+@Suppress("ktlint:standard:no-empty-first-line-in-class-body")
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class StartupBenchmarks {
@@ -40,10 +42,6 @@ class StartupBenchmarks {
     @Test
     fun startupCompilationNone() =
         benchmark(CompilationMode.None())
-
-    @Test
-    fun startupCompilationBaselineProfiles() =
-        benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
 
     private fun benchmark(compilationMode: CompilationMode) {
         rule.measureRepeated(
@@ -57,6 +55,9 @@ class StartupBenchmarks {
             },
             measureBlock = {
                 startActivityAndWait()
+
+
+                this.device.findObject(UiSelector().descriptionContains("dsavlogh")).swipeDown(5)
 
                 // TODO Add interactions to wait for when your app is fully drawn.
                 // The app is fully drawn when Activity.reportFullyDrawn is called.

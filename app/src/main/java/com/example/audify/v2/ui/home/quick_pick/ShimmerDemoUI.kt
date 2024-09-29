@@ -24,9 +24,10 @@ import com.example.audify.v2.ui.common.shimmerLoadingAnimation
 @Composable
 fun ShimmerDemoUI() {
     Column(
-        modifier = Modifier
-            .padding(12.dp),
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
+        modifier =
+            Modifier
+                .padding(12.dp),
     ) {
         Column {
             ComponentRectangle()
@@ -66,59 +67,63 @@ fun ShimmerDemoUI() {
 @Composable
 fun ComponentCircle(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .clip(shape = CircleShape)
-            .background(color = Color.DarkGray)
-            .size(100.dp)
-            .shimmerLoadingAnimation()
+        modifier =
+            modifier
+                .clip(shape = CircleShape)
+                .background(color = Color.DarkGray)
+                .size(100.dp)
+                .shimmerLoadingAnimation(),
     )
 }
 
 @Composable
 fun ComponentSquare(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(24.dp))
-            .background(color = Color.DarkGray)
-            .size(100.dp)
-            .shimmerLoadingAnimation()
+        modifier =
+            modifier
+                .clip(shape = RoundedCornerShape(24.dp))
+                .background(color = Color.DarkGray)
+                .size(100.dp)
+                .shimmerLoadingAnimation(),
     )
 }
 
 @Composable
 fun ComponentRectangle(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(24.dp))
-            .background(color = Color.DarkGray)
-            .height(200.dp)
-            .fillMaxWidth()
-            .shimmerLoadingAnimation()
+        modifier =
+            modifier
+                .clip(shape = RoundedCornerShape(24.dp))
+                .background(color = Color.DarkGray)
+                .height(200.dp)
+                .fillMaxWidth()
+                .shimmerLoadingAnimation(),
     )
 }
 
 @Composable
 fun ComponentRectangleLineLong(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(8.dp))
-            .background(color = Color.DarkGray)
-            .size(height = 30.dp, width = 200.dp)
-            .shimmerLoadingAnimation()
+        modifier =
+            modifier
+                .clip(shape = RoundedCornerShape(8.dp))
+                .background(color = Color.DarkGray)
+                .size(height = 30.dp, width = 200.dp)
+                .shimmerLoadingAnimation(),
     )
 }
 
 @Composable
 fun ComponentRectangleLineShort(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(8.dp))
-            .background(color = Color.DarkGray)
-            .size(height = 30.dp, width = 100.dp)
-            .shimmerLoadingAnimation()
+        modifier =
+            modifier
+                .clip(shape = RoundedCornerShape(8.dp))
+                .background(color = Color.DarkGray)
+                .size(height = 30.dp, width = 100.dp)
+                .shimmerLoadingAnimation(),
     )
 }
-
 
 @Preview
 @Composable

@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.ktlint) apply false
 }
 
 buildscript {
@@ -28,6 +29,7 @@ buildscript {
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.kotlinx.coroutines.test.jvm)
         classpath(libs.paparazzi.gradle.plugin)
+        classpath(libs.ktlint.gradle)
     }
 }
 
